@@ -9,6 +9,7 @@ We have decided to meet twice every week apart from scrum meeting, communicate e
 
 About the Creators
 This project was created with ❤️ by 
+Mithish Ravisankar Geetha
 Pratham Shah
 Mahi Gangal 
 Sparsh Khanna 
