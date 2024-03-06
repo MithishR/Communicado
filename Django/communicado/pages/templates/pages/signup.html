@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        body{font-family:Arial,sans-serif;background-color:#f4f4f4;color:#333;margin:0;padding:0;display:flex;align-items:center;justify-content:center;height:100vh}.container{text-align:center;padding:20px;border-radius:10px;background-color:#fff;box-shadow:0 0 10px rgba(0,0,0,.1)}.container p{font-size:18px;line-height:1.6;margin-bottom:10px}.container input[type="text"],.container input[type="password"],.container input[type="email"],.container select{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:5px;box-sizing:border-box}.container input[type="submit"]{background-color:#3498db;color:#fff;padding:10px 20px;border:none;border-radius:5px;cursor:pointer}.container input[type="submit"]:hover{background-color:#2980b9}.container a{color:#3498db;text-decoration:none}.container a:hover{text-decoration:underline}
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Communicado</h1>
+    </div>
+    <div class="container">
+        <h1>Signup</h1>
+        <form>
+            <p><label for="username">Username:</label><br><input type="text" id="username" name="username" required></p>
+            <p><label for="password">Password:</label><br><input type="password" id="password" name="password" required></p>
+            <p><label for="name">Name:</label><br><input type="text" id="name" name="name" required></p>
+            <p><label for="email">Email:</label><br><input type="email" id="email" name="email" required></p>
+            <p><label for="address">Address:</label><br><input type="text" id="address" name="address" required></p>
+            <p><label for="role">Role:</label><br><select id="role" name="role"><option value="customer">Customer</option><option value="organiser">Organiser</option></select></p>
+            <p><input type="submit" value="Sign Up"></p>
+        </form>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+</body>
+
+</html>
