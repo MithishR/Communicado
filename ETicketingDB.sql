@@ -33,19 +33,23 @@ CREATE TABLE events (
     eventDateTime DATETIME NOT NULL,
     location varchar(100),
     capacity int,
+    category varchar
+    artist varchar
     isVerified boolean,
     adminID int,
-    FOREIGN KEY (adminID) REFERENCES users(userID)
+    eventOrganizerID int
+    FOREIGN KEY (adminID) REFERENCES Admin(userID)
+    FOREIGN KEY (eventOrganizerID) REFERENCES EventOrganizer(userID)
 );
 
 CREATE TABLE bookedEvent (
     eventID int primary key,
     quantity int,
     isPaid boolean, 
-    customerID int,
+    ID int,
 	referenceNumber varchar(40),
     FOREIGN KEY (eventID) references events(eventID),
-    FOREIGN KEY (customerID) references users(userID)
+    FOREIGN KEY (ID) references users(userID)
 );
 
 INSERT INTO users (userID, role, username, email, address, password) VALUES
@@ -61,11 +65,14 @@ INSERT INTO EventOrganizer (userID, phoneNumber) VALUES
 INSERT INTO Admin (userID, officeNo) VALUES
 (4, '101');
 
-INSERT INTO events (eventId, name, eventDateTime, location, capacity, isVerified, adminID) VALUES
-(1, 'Music Concert', '2024-03-10 18:00:00', 'Prospera Place', 500, true, 4),
-(2, 'Art Exhibition', '2024-04-15 10:00:00', 'Kelowna Art Gallery', 200, true, 4),
-(3, 'Food Festival', '2024-05-20 12:00:00', 'Bernard Avenue', 300, true, 4),
-(4, 'Technology Conference', '2024-06-25 09:00:00', 'Innovation Center', 1000, true, 4),
-(5, 'Fashion Show', '2024-07-10 15:00:00', 'Delta Hotel Ballroom', 400, true, 4);
+INSERT INTO Customer (userID, phoneNumber) VALUES
+(3, '000-000-0001');
 
-select officeNo,location from events,Admin where events.adminID=Admin.userID;
+
+INSERT INTO events (eventId, name, eventDateTime, location, capacity, category, artist, isVerified, adminID, eventOrganizerID) VALUES
+(1, 'Music Concert', '2024-03-10 18:00:00', 'Prospera Place', 500, 'Music', 'Taylor Swift' true, 4, 1),
+(2, 'Art Exhibition', '2024-04-15 10:00:00', 'Kelowna Art Gallery', 200, 'Art', null, true, 4, 2),
+(3, 'Food Festival', '2024-05-20 12:00:00', 'Bernard Avenue', 300, 'Food', null, true, 4, 1),
+(4, 'Technology Conference', '2024-06-25 09:00:00', 'Innovation Center', 'Tech', null, 1000, true, 4, 2),
+(5, 'Fashion Show', '2024-07-10 15:00:00', 'Delta Hotel Ballroom', 400, 'Fashion', 'Jill Setah', true, 4, 2);
+
