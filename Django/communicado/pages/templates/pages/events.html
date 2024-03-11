@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Align items evenly */
+        }
+
+        li {
+            width: calc(50% - 10px); /* Two events per row with a gap of 20px */
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            overflow: hidden; /* Prevent content overflow */
+        }
+
+        .event-details {
+            padding: 20px;
+        }
+
+        .event-name {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .event-date {
+            color: #555;
+        }
+
+        .event-location {
+            color: #888;
+        }
+
+        .event-capacity,
+        .event-category,
+        .event-artist {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Events</h1>
+        <ul>
+            {% for event in events %}
+                <li>
+                    <div class="event-details">
+                        <div class="event-name">{{ event.name }}</div>
+                        <div class="event-date">{{ event.eventDateTime }}</div>
+                        {% if event.location %}
+                            <div class="event-location">Location: {{ event.location }}</div>
+                        {% endif %}
+                        {% if event.capacity %}
+                            <div class="event-capacity">Capacity: {{ event.capacity }}</div>
+                        {% endif %}
+                        {% if event.category %}
+                            <div class="event-category">Category: {{ event.category }}</div>
+                        {% endif %}
+                        {% if event.artist %}
+                            <div class="event-artist">Artist: {{ event.artist }}</div>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
