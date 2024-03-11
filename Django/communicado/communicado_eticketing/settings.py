@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'communicado_eticketing.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'defaultdb',  
+        'NAME': 'communicado',  
         'USER': 'doadmin',    
         'PASSWORD': 'AVNS_tI2TCyKPy0modu93VLO',  
         'HOST': 'db-mysql-nyc3-62851-do-user-15997349-0.c.db.ondigitalocean.com',  
