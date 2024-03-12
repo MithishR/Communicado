@@ -7,4 +7,4 @@ docker-compose build
 # Start the development server
 docker-compose up -d
 
-# chmod +x docker_build_and_run.sh
+# chmod +x mac_docker_build_and_run.sh
