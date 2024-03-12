@@ -83,4 +83,3 @@ UPDATE events SET imageURL = 'Django/media/artexhibition.jpg' WHERE eventID = 2;
 UPDATE events SET imageURL = 'Django/media/foodfestival.jpg' WHERE eventID = 3;
 UPDATE events SET imageURL = 'Django/media/technologyconference.jpeg' WHERE eventID = 4;
 UPDATE events SET imageURL = 'Django/media/fashionshow.jpeg' WHERE eventID = 5;
-

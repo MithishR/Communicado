@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import users
 from .models import events
 
@@ -16,4 +16,7 @@ def event(request):
     data = events.objects.all()
     context = {"events": data}
     return render (request , "pages/events.html",context)
+def test_page(request):
+    return render(request, "pages/test_page.html")
+
 
