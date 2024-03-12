@@ -75,3 +75,12 @@ INSERT INTO events (name, eventDateTime, location, capacity, category, artist, i
 ('Food Festival', '2024-05-20 12:00:00', 'Bernard Avenue', 300, 'Food', null, true, 4, 1),
 ('Technology Conference', '2024-06-25 09:00:00', 'Innovation Center', 1000, 'Tech', null, true, 4, 2),
 ('Fashion Show', '2024-07-10 15:00:00', 'Delta Hotel Ballroom', 400, 'Fashion', 'Jill Setah', true, 4, 2);
+
+ALTER TABLE events ADD imageURL VARCHAR(100);
+
+UPDATE events SET imageURL = 'Django/media/musicconcert.jpg' WHERE eventID = 1;
+UPDATE events SET imageURL = 'Django/media/artexhibition.jpg' WHERE eventID = 2;
+UPDATE events SET imageURL = 'Django/media/foodfestival.jpg' WHERE eventID = 3;
+UPDATE events SET imageURL = 'Django/media/technologyconference.jpeg' WHERE eventID = 4;
+UPDATE events SET imageURL = 'Django/media/fashionshow.jpeg' WHERE eventID = 5;
+
