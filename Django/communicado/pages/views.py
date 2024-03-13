@@ -27,6 +27,10 @@ def signup(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
+        role=request.POST.get('role')
+        address=request.POST.get('address')
+        user = users(userID=user.id, role=role, username=username, email=email, address=address, password=password)
+        user.save()
         return redirect('login')
     else:
         return render(request, "pages/signup.html", {})
@@ -42,5 +46,4 @@ def event(request):
     return render (request , "pages/events.html",context)
 def test_page(request):
     return render(request, "pages/test_page.html")
-
 
