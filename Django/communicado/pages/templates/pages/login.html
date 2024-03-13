@@ -63,7 +63,15 @@
     </div>
     <div class="login-container">
         <h2>Login</h2>
+
         <form action="login" method="post">
+
+        {% if error_message %}
+            <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
             <label for="password">Password</label>
