@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'communicado',  
         'USER': 'doadmin',    
-        'PASSWORD': 'AVNS_tI2TCyKPy0modu93VLO',  
+        'PASSWORD': 'AVNS_4jAw-6qt08UxZZrRQep',  
         'HOST': 'db-mysql-nyc3-62851-do-user-15997349-0.c.db.ondigitalocean.com',  
         'PORT': '25060',
     }
