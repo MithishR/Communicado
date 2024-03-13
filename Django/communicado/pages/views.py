@@ -3,6 +3,7 @@ from .models import users
 from .models import events
 from django.contrib.auth import authenticate, login as auth_login
 from django.views.decorators.csrf import csrf_exempt
+from django.db import connection
 
 
 def home(request):
@@ -12,15 +13,18 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            auth_login(request, user)
-            return redirect('home')  # Redirect to home page after successful login
-        else:
-            error_message = "Invalid username or password."
-            return render(request, 'login.html', {'error_message': error_message})
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT COUNT(*) FROM users where username = %s and password = %s",[username,password],)
+            row = cursor.fetchone()
+            count = row[0]
+            if(count==1):
+                return redirect('home')
+            else: 
+                error_message = "Invalid username or password."
+                return render(request, 'pages/login.html', {'error_message': error_message})
+            
     else:
-        return render(request, 'login.html')
+        return render(request,'pages/login.html')
 
 def signup(request):
     if request.method == 'POST':
