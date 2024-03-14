@@ -1,30 +1,48 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
-from django.contrib.auth import authenticate, login as auth_login
-from django.views.decorators.csrf import csrf_exempt
 
-
-from django.db import connection
 
 def home(request):
     return render(request, "pages/home.html", {})
-def login(request):
+# def login(request):
 
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         with connection.cursor() as cursor:
+#             cursor.execute("SELECT COUNT(*) FROM users where username = %s and password = %s",[username,password],)
+#             row = cursor.fetchone()
+#             count = row[0]
+#             if(count==1):
+#                 return redirect('home')
+#             else: 
+#                 error_message = "Invalid username or password."
+#                 return render(request, 'pages/login.html', {'error_message': error_message})
+            
+#     else:
+#         return render(request,'pages/login.html')
+
+def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) FROM users where username = %s and password = %s",[username,password],)
-            row = cursor.fetchone()
-            count = row[0]
-            if(count==1):
-                return redirect('home')
-            else: 
+        try:
+            user = users.objects.get(username=username, password=password)
+            # Authentication successful
+            if user:
+                # Redirect to home page or any other page you want
+                success_message = "Welcome " + user.username  # Accessing username from the user object
+                return render(request, 'pages/home.html', {'success_message': success_message})
+                
+            else:
                 error_message = "Invalid username or password."
                 return render(request, 'pages/login.html', {'error_message': error_message})
-            
+        except users.DoesNotExist:
+            error_message = "Invalid username or password."
+            return render(request, 'pages/login.html', {'error_message': error_message})
     else:
-        return render(request,'pages/login.html')
+        return render(request, 'pages/login.html')
+
 
 def signup(request):
     if request.method == 'POST':
@@ -33,11 +51,11 @@ def signup(request):
         email = request.POST.get('email')
         role=request.POST.get('role')
         address=request.POST.get('address')
-        #user = users(role=role, username=username, email=email, address=address, password=password)
-       # user.save()
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO users (role, username, email, address, password) VALUES (%s, %s, %s, %s, %s)",[role, username, email, address, password],)
-        return redirect('login')
+        user = users(role=role, username=username, email=email, address=address, password=password)
+        user.save()
+        success_message = "User Account Created for: " + user.username  # Accessing username from the user object
+        return render(request, 'pages/login.html', {'success_message': success_message})
+        
     else:
         return render(request, "pages/signup.html", {})
 

@@ -67,6 +67,9 @@
         {% if error_message %}
             <p style="color: red;">{{ error_message }}</p>
         {% endif %}
+        {% if success_message %}
+            <p style="color: blue;">{{ success_message }}</p>
+        {% endif %}
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
 
