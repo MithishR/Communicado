@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
 from django.contrib.auth import authenticate, login as auth_login
 from django.views.decorators.csrf import csrf_exempt
@@ -52,4 +52,7 @@ def event(request):
     return render (request , "pages/events.html",context)
 def test_page(request):
     return render(request, "pages/test_page.html")
+def eventinfo(request,event_ID):
+    event = get_object_or_404(Events,eventID=event_ID)
+    return render(request, 'pages/i.html', {'event': event})
 
