@@ -31,7 +31,7 @@ def login(request):
             # Authentication successful
             if user:
                 # Redirect to home page or any other page you want
-                success_message = "Welcome " + user.username  # Accessing username from the user object
+                success_message = "Welcome " + user.name  # Accessing name from the user object
                 return render(request, 'pages/home.html', {'success_message': success_message})
                 
             else:
@@ -47,13 +47,14 @@ def login(request):
 def signup(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        name = request.POST.get('name')
         password = request.POST.get('password')
         email = request.POST.get('email')
         role=request.POST.get('role')
         address=request.POST.get('address')
-        user = users(role=role, username=username, email=email, address=address, password=password)
+        user = users(role=role, name = name, username=username, email=email, address=address, password=password)
         user.save()
-        success_message = "User Account Created for: " + user.username  # Accessing username from the user object
+        success_message = "User Account Created for: " + user.name  # Accessing name from the user object
         return render(request, 'pages/login.html', {'success_message': success_message})
         
     else:

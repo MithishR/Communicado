@@ -2,6 +2,7 @@ from django.db import models
 
 class users(models.Model):
     userID = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
     role = models.CharField(max_length=50)
     username = models.CharField(max_length=100)
     email = models.EmailField()

@@ -4,7 +4,7 @@ from django.contrib import admin
 from .models import *
 
 class UsersAdmin(admin.ModelAdmin):
-    list_display = ('userID', 'role', 'username', 'email', 'address')
+    list_display = ('userID', 'name', 'role', 'username', 'email', 'address')
     search_fields = ('username', 'email')
 
 class EventsAdmin(admin.ModelAdmin):
