@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event.name }} Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .event-details {
+            padding: 20px;
+        }
+
+        .event-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .event-info {
+            margin-bottom: 15px;
+        }
+        .event-desc{
+            margin-bottom: 20px;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .value {
+            margin-left: 10px;
+        }
+
+        .back-link, .book-btn {
+            display: inline-block;
+            background-color: #5d00ff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .back-link:hover, .book-btn:hover {
+            background-color: #18b022;
+        }
+
+        .back-link {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ event.name }} Details</h1>
+        {% if event.imageURL %}
+                            <div class="event-image">
+                                <img src="{{ event.imageURL }}" alt="Event Image">
+                            </div>{% endif %}
+        <div class="event-details">
+            <div class="event-info">
+                <span class="label">Name:</span>
+                <span class="value">{{ event.name }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Date and Time:</span>
+                <span class="value">{{ event.eventDateTime }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Location:</span>
+                <span class="value">{{ event.location }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Capacity:</span>
+                <span class="value">{{ event.capacity }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Category:</span>
+                <span class="value">{{ event.category }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Artist:</span>
+                <span class="value">{{ event.artist }}</span>
+            </div>
+            <div class="event-desc">
+                <span class="label">About:</span>
+                <span class="value">Here we will display the paragraph details about the event</span>
+            </div>
+            
+            <a href="{% url 'events' %}" class="back-link">Back to Events</a>
+            <button class="book-btn">Book</button>
+        </div>
+    </div>
+</body>
+</html>
