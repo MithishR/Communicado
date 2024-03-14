@@ -21,78 +21,77 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between; /* Align items evenly */
-        }
-
-        li {
-            width: calc(50% - 10px); /* Two events per row with a gap of 20px */
+        .event {
+            display: flex; /* Use flexbox */
             margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            overflow: hidden; /* Prevent content overflow */
         }
 
         .event-details {
+            flex: 1; /* Take up remaining space */
             padding: 20px;
         }
 
-        .event-name {
-            font-size: 20px;
-            margin-bottom: 5px;
+        .event-details > * {
+            margin-bottom: 10px; /* Add spacing between elements */
         }
 
-        .event-date {
-            color: #555;
+        .event-image {
+            margin-left: 20px; /* Add margin to separate image from text */
+            width: 200px; /* Set a fixed width for the image */
         }
 
-        .event-location {
-            color: #888;
+        .event-image img {
+            width: 100%; /* Make the image fill its container */
+            border-radius: 5px; /* Add rounded corners */
         }
 
-        .event-capacity,
-        .event-category,
-        .event-artist {
-            color: #777;
+        .btn {
+            color: #fff;
+            background-color: #5d00ff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #18b022;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Events</h1>
-        <ul>
-            {% for event in events %}
-                <li>
-                    <div class="event-details">
-                        <div class="event-name">{{ event.name }}</div>
-                        <div class="event-date">{{ event.eventDateTime }}</div>
-                        {% if event.location %}
-                            <div class="event-location">Location: {{ event.location }}</div>
-                        {% endif %}
-                        {% if event.capacity %}
-                            <div class="event-capacity">Capacity: {{ event.capacity }}</div>
-                        {% endif %}
-                        {% if event.category %}
-                            <div class="event-category">Category: {{ event.category }}</div>
-                        {% endif %}
-                        {% if event.artist %}
-                            <div class="event-artist">Artist: {{ event.artist }}</div>
-                        {% endif %}
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for event in events %}
+        <div class="event">
+            {% if event.imageURL %}
+            <div class="event-image">
+                <img src="{{ event.imageURL }}" alt="Event Image">
+            </div>
+            {% endif %}
+            <div class="event-details">
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-date">{{ event.eventDateTime }}</div>
+                {% if event.location %}
+                <div class="event-location">Location: {{ event.location }}</div>
+                {% endif %}
+                {% if event.capacity %}
+                <div class="event-capacity">Capacity: {{ event.capacity }}</div>
+                {% endif %}
+                {% if event.category %}
+                <div class="event-category">Category: {{ event.category }}</div>
+                {% endif %}
+                {% if event.artist %}
+                <div class="event-artist">Artist: {{ event.artist }}</div>
+                {% endif %}
+                <a href="{% url 'eventinfo' event_ID=event.eventID %}" class="btn btn-outline-secondary">View</a>
+                <button data-product="{{ event.eventID }}" class="btn btn-outline-secondary">Book</button>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </body>
 </html>

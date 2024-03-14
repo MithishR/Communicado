@@ -37,14 +37,19 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(" ")
 
 INSTALLED_APPS = [
     'pages.apps.PagesConfig',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'jazzmin'
+
+    
+
 ]
+    
+    
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

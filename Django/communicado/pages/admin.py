@@ -1,10 +1,10 @@
 # admin.py
 
 from django.contrib import admin
-from .models import users, events, EventOrganizer, Customer, BookedEvent
+from .models import *
 
 class UsersAdmin(admin.ModelAdmin):
-    list_display = ('userID', 'role', 'username', 'email', 'address')
+    list_display = ('userID', 'name', 'role', 'username', 'email', 'address')
     search_fields = ('username', 'email')
 
 class EventsAdmin(admin.ModelAdmin):
@@ -26,7 +26,7 @@ class BookedEventAdmin(admin.ModelAdmin):
     list_filter = ('isPaid',)
 
 admin.site.register(users, UsersAdmin)
-admin.site.register(events, EventsAdmin)
+admin.site.register(Events, EventsAdmin)
 admin.site.register(EventOrganizer, EventOrganizerAdmin)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(BookedEvent, BookedEventAdmin)
