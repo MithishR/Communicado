@@ -33,12 +33,10 @@ def signup(request):
         email = request.POST.get('email')
         role=request.POST.get('role')
         address=request.POST.get('address')
-        user = users(role=role, username=username, email=email, address=address, password=password)
-        user.save()
-        # with connection.cursor() as cursor:
-        #     cursor.execute("INSERT INTO users (role, username, email, address, password) VALUES (%s, %s, %s, %s, %s)",[role,username,email,address,password],)
-        #     user.save()
-        # messages.success(request, 'Account created successfully')
+        #user = users(role=role, username=username, email=email, address=address, password=password)
+       # user.save()
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO users (role, username, email, address, password) VALUES (%s, %s, %s, %s, %s)",[role, username, email, address, password],)
         return redirect('login')
     else:
         return render(request, "pages/signup.html", {})
