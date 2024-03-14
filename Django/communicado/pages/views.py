@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import users
 from .models import events
-from django.contrib.auth import messages
+# from django.contrib.auth import messages
 from django.views.decorators.csrf import csrf_exempt 
 from django.db import connection
 
@@ -33,12 +33,12 @@ def signup(request):
         email = request.POST.get('email')
         role=request.POST.get('role')
         address=request.POST.get('address')
-        # user = users(role=role, username=username, email=email, address=address, password=password)
-        # user.save()
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO users (role, username, email, address, password) VALUES (%s, %s, %s, %s, %s)",[role,username,email,address,password],)
+        user = users(role=role, username=username, email=email, address=address, password=password)
         user.save()
-        messages.success(request, 'Account created successfully')
+        # with connection.cursor() as cursor:
+        #     cursor.execute("INSERT INTO users (role, username, email, address, password) VALUES (%s, %s, %s, %s, %s)",[role,username,email,address,password],)
+        #     user.save()
+        # messages.success(request, 'Account created successfully')
         return redirect('login')
     else:
         return render(request, "pages/signup.html", {})
