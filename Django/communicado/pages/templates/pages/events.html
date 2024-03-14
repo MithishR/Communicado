@@ -29,13 +29,9 @@
         ul {
             list-style-type: none;
             padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between; /* Align items evenly */
         }
 
         li {
-            width: calc(50% - 10px); /* Two events per row with a gap of 20px */
             margin-bottom: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -57,10 +53,7 @@
             color: #555;
         }
 
-        .event-location {
-            color: #888;
-        }
-
+        .event-location,
         .event-capacity,
         .event-category,
         .event-artist {
@@ -72,7 +65,7 @@
     <div class="container">
         <h1>Events</h1>
         <ul>
-            {% for event in events %}
+            {% for event in events.all %}
                 <li>
                     <div class="event-details">
                         <div class="event-name">{{ event.name }}</div>

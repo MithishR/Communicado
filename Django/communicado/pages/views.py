@@ -1,10 +1,8 @@
 from django.shortcuts import render,redirect
-from .models import users
-from .models import events
+from .models import *
 from django.contrib.auth import authenticate, login as auth_login
 from django.views.decorators.csrf import csrf_exempt
 from django.db import connection
-
 
 def home(request):
     return render(request, "pages/home.html", {})
@@ -41,7 +39,7 @@ def useracc(request):
     context = {"users": data}
     return render (request,"pages/useraccount.html",context)
 def event(request):
-    data = events.objects.all()
+    data = Events.objects.all()
     context = {"events": data}
     return render (request , "pages/events.html",context)
 def test_page(request):
