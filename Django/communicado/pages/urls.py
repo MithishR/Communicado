@@ -8,5 +8,6 @@ urlpatterns = [
     path("useracc", views.useracc, name='useracc'),
     path("events",views.event , name = 'events'),
     path('eventinfo/<int:event_ID>', views.eventinfo, name='eventinfo'),
+    path("xyz",views.xyz , name = 'xyz'),
  
 ]

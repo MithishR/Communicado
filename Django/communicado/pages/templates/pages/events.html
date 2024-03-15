@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,35 +10,50 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #0c0808;
         }
 
         .container {
-            max-width: 800px;
+            
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #0e0101;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 80%;
+        }
+
+        .event-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd; /* Add border to separate events */
+            border-radius: 5px; /* Add rounded corners */
         }
 
         .event {
             display: flex; /* Use flexbox */
+            align-items: center; /* Center align items vertically */
             margin-bottom: 20px;
         }
 
         .event-details {
             flex: 1; /* Take up remaining space */
             padding: 20px;
+            color: #fff;
         }
 
         .event-details > * {
             margin-bottom: 10px; /* Add spacing between elements */
+            color: #fff;
         }
 
         .event-image {
             margin-left: 20px; /* Add margin to separate image from text */
-            width: 200px; /* Set a fixed width for the image */
+            width: 800px; /* Set a fixed width for the image */
+            margin-bottom: 10px;
+            margin-top: 20px;
+            height: 500px;
+            
         }
 
         .event-image img {
@@ -46,49 +62,95 @@
         }
 
         .btn {
-            color: #fff;
-            background-color: #5d00ff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
             display: inline-block;
-            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: transparent; 
+            color: #fff; 
+            text-decoration: none;
+            border: 2px solid #fff; 
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
+            text-align: center;
         }
 
         .btn:hover {
-            background-color: #18b022;
+            background-color: #fff; 
+            border-color: #fff; 
+            color: #000; 
+        }
+
+        h1 {
+            text-align: center; /* Center-align the title */
+            color: #fff;
+        }
+        
+        .event-name {
+            text-align: left; /* Center-align the event name */
+            font-weight: bold;
+            font-size: medium;
+            color: #fff;
+            
+        }
+        header {
+            background-color: rgba(0, 0, 0, 0.7); 
+            color: #fff;
+            padding: 10px;
+            text-align: right;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; 
+        }
+
+        header a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <header>
+    <a href="login">Login</a>
+    <a href="signup">Signup</a>
+    <a href="#">View Cart</a>
+    <a href="admin">Admin Panel</a>
+</header>
     <div class="container">
         <h1>Events</h1>
         {% for event in events %}
-        <div class="event">
-            {% if event.imageURL %}
-            <div class="event-image">
-                <img src="{{ event.imageURL }}" alt="Event Image">
-            </div>
-            {% endif %}
-            <div class="event-details">
-                <div class="event-name">{{ event.name }}</div>
-                <div class="event-date">{{ event.eventDateTime }}</div>
-                {% if event.location %}
-                <div class="event-location">Location: {{ event.location }}</div>
+        <div class="event-container">
+            <div class="event">
+                {% if event.imageURL %}
+                <div class="event-image">
+                    <img src="{% static event.imageURL %}" alt="Event Image">
+                </div>
                 {% endif %}
-                {% if event.capacity %}
-                <div class="event-capacity">Capacity: {{ event.capacity }}</div>
-                {% endif %}
-                {% if event.category %}
-                <div class="event-category">Category: {{ event.category }}</div>
-                {% endif %}
-                {% if event.artist %}
-                <div class="event-artist">Artist: {{ event.artist }}</div>
-                {% endif %}
-                <a href="{% url 'eventinfo' event_ID=event.eventID %}" class="btn btn-outline-secondary">View</a>
-                <button data-product="{{ event.eventID }}" class="btn btn-outline-secondary">Book</button>
+                <div class="event-details">
+                    <div class="event-name">{{ event.name }}</div>
+                    <div class="event-date">{{ event.eventDateTime }}</div>
+                    {% if event.location %}
+                    <div class="event-location">Location: {{ event.location }}</div>
+                    {% endif %}
+                    {% if event.capacity %}
+                    <div class="event-capacity">Capacity: {{ event.capacity }}</div>
+                    {% endif %}
+                    {% if event.category %}
+                    <div class="event-category">Category: {{ event.category }}</div>
+                    {% endif %}
+                    {% if event.artist %}
+                    <div class="event-artist">Artist: {{ event.artist }}</div>
+                    {% endif %}
+                    <a href="{% url 'eventinfo' event_ID=event.eventID %}" class="btn btn-outline-secondary">View</a>
+                    <button data-product="{{ event.eventID }}" class="btn btn-outline-secondary">Book</button>
+                </div>
             </div>
         </div>
         {% endfor %}

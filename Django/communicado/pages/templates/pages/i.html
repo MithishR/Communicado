@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,37 +10,44 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #000;
         }
 
         .container {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #060606;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            margin-top: 40px;
+            margin-bottom: 80px;
         }
 
         h1 {
-            color: #333;
+            color: #ffffff;
             text-align: center;
         }
 
         .event-details {
             padding: 20px;
+            color: #ffffff;
         }
 
         .event-name {
             font-size: 24px;
             margin-bottom: 10px;
+            color: #ffffff;
         }
 
         .event-info {
             margin-bottom: 15px;
+            color: #ffffff;
         }
         .event-desc{
             margin-bottom: 20px;
+            color: #ffffff;
         }
 
         .label {
@@ -52,34 +60,77 @@
 
         .back-link, .book-btn {
             display: inline-block;
-            background-color: #5d00ff;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: transparent; 
+            color: #fff; 
             text-decoration: none;
-            margin-top: 10px;
-            transition: background-color 0.3s;
+            border: 2px solid #fff; 
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
+            text-align: center;
         }
 
         .back-link:hover, .book-btn:hover {
-            background-color: #18b022;
+            background-color: #fff; 
+            border-color: #fff; 
+            color: #000; 
         }
 
         .back-link {
             margin-right: 10px;
+
+        }
+        .event-image {
+            margin-left: 20px; 
+            max-width: 100%; /* Limit the maximum width of the image */
+            height: auto; /* Maintain aspect ratio */
+            padding: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .event-image img {
+                max-width: calc(100% - 40px); /* Adjust the max-width of the image based on container width and margin */
+            }
+        }
+        header {
+            background-color: rgba(0, 0, 0, 0.7); 
+            color: #fff;
+            padding: 10px;
+            text-align: right;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; 
+        }
+        header a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <header>
+        <a href="login">Login</a>
+        <a href="signup">Signup</a>
+        <a href="#">View Cart</a>
+        <a href="admin">Admin Panel</a>
+    </header>
     <div class="container">
         <h1>{{ event.name }} Details</h1>
-        {% if event.imageURL %}
-                            <div class="event-image">
-                                <img src="{{ event.imageURL }}" alt="Event Image">
-                            </div>{% endif %}
+       
         <div class="event-details">
+            {% if event.imageURL %}
+            <div class="event-image">
+                <img src="{% static event.imageURL %}" alt="Event Image">
+            </div>{% endif %}
             <div class="event-info">
                 <span class="label">Name:</span>
                 <span class="value">{{ event.name }}</span>
