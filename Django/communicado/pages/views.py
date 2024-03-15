@@ -74,4 +74,9 @@ def test_page(request):
 def eventinfo(request,event_ID):
     event = get_object_or_404(Events,eventID=event_ID)
     return render(request, 'pages/i.html', {'event': event})
+def xyz(request):
+    data = users.objects.all()
+    context = {"xyz": data}
+    return render (request,"pages/xyz.html",context)
+    
 
