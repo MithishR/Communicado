@@ -137,3 +137,34 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    'site_title': 'E-TICKETING Admin',
+    'site_header': 'E-TICKETING',
+    'site_brand': '<i class="fa fa-ticket"></i> E-TICKETING',
+    'site_footer': '© 2024 communicado.com',
+    'navigation_expanded': False,
+    'sidebar_collapsed': False,
+    'sidebar_icons': True,
+    'navbar_icons': True,
+    "language_chooser": True,
+    "welcome_sign": "Welcome to the Communicado",
+        "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Admin-Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Welcome Page", "url": "http://localhost:8000", "new_window": True},
+        
+        {"name": "Support", "url": "https://github.com/MithishR/Communicado", "new_window": True},
+
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "pages"},
+    ],
+}
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    
+}
