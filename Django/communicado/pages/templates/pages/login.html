@@ -7,61 +7,88 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #0c0808; /* Match background color with Events page */
             margin: 0;
             padding: 0;
         }
-        .header {
-            background-color: #333;
-            color: #fff;
+
+        .container {
+            margin: 20px auto;
             padding: 20px;
-            text-align: center;
-        }
-        .login-container {
-            background-color: #fff;
-            padding: 20px;
+            background-color: #0e0101; /* Match background color with Events page */
+            border: 2px solid #fff; /* Set white border */
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            width: 300px;
+            width: 300px; /* Match width with Events page container */
         }
+
         input[type="text"],
         input[type="password"] {
             width: 100%;
             padding: 10px;
             margin: 8px 0;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd; /* Match border with Events page */
             border-radius: 5px;
             box-sizing: border-box;
+            color: #000; /* Set text color to black */
+            font-size: 16px; /* Increase font size for better visibility */
         }
+
         input[type="submit"] {
             width: 100%;
-            background-color: #4caf50;
-            color: white;
+            background-color: transparent; /* Match background color with Events page button */
+            color: #fff; /* Match text color with Events page button */
             padding: 14px 20px;
             margin: 8px 0;
-            border: none;
+            border: 2px solid #fff; /* Match border with Events page button */
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+            font-size: 16px; /* Match font size with input fields */
         }
+
         input[type="submit"]:hover {
-            background-color: #45a049;
+            background-color: #fff; /* Change background color on hover */
+            border-color: #fff; /* Change border color on hover */
+            color: #000; /* Change text color on hover */
         }
+
         .signup-link {
             text-align: center;
             margin-top: 10px;
         }
+
         .signup-link a {
-            color: #333;
+            color: #fff; /* Match text color with Events page header links */
             text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            color: #fff; /* Match text color with Events page */
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px; /* Increase font size for better visibility */
+        }
+
+        label {
+            color: #fff; /* Match text color with Events page */
+            font-size: 16px; /* Match font size with input fields */
+        }
+
+        /* Adjustments for visibility when typing */
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            color: #000; /* Change text color to black when focused */
+            border-color: #fff; /* Change border color to white when focused */
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Communicado</h1>
-    </div>
-    <div class="login-container">
+    <div class="container">
         <h2>Login</h2>
 
         {% if error_message %}
@@ -80,9 +107,8 @@
             <input type="submit" value="Login">
         </form>
         <div class="signup-link">
-            <p>Don't have an account yet? <a href="http://localhost:8000/signup/">Sign up</a></p>
+            <p style="color: #fff;">Don't have an account yet? <a href="http://localhost:8000/signup/">Sign up</a></p>
         </div>
     </div>
 </body>
 </html>
-
