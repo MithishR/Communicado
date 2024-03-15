@@ -1,14 +1,7 @@
 from django.shortcuts import render,redirect
-<<<<<<< HEAD
 from .models import *
 from django.contrib.auth import authenticate, login as auth_login
 from django.views.decorators.csrf import csrf_exempt
-=======
-from .models import users
-from .models import events
-# from django.contrib.auth import messages
-from django.views.decorators.csrf import csrf_exempt 
->>>>>>> main
 from django.db import connection
 
 def home(request):
