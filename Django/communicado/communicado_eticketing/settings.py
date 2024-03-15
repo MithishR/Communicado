@@ -149,7 +149,6 @@ JAZZMIN_SETTINGS = {
     'sidebar_collapsed': False,
     'sidebar_icons': True,
     'navbar_icons': True,
-    "language_chooser": True,
     "welcome_sign": "Welcome to the Communicado",
         "topmenu_links": [
 
