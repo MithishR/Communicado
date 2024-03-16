@@ -1,20 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup Page</title>
     <style>
-        body{font-family:Arial,sans-serif;background-color:#f4f4f4;color:#333;margin:0;padding:0;display:flex;align-items:center;justify-content:center;height:100vh}.container{text-align:center;padding:20px;border-radius:10px;background-color:#fff;box-shadow:0 0 10px rgba(0,0,0,.1)}.container p{font-size:18px;line-height:1.6;margin-bottom:10px}.container input[type="text"],.container input[type="password"],.container input[type="email"],.container select{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:5px;box-sizing:border-box}.container input[type="submit"]{background-color:#3498db;color:#fff;padding:10px 20px;border:none;border-radius:5px;cursor:pointer}.container input[type="submit"]:hover{background-color:#2980b9}.container a{color:#3498db;text-decoration:none}.container a:hover{text-decoration:underline}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0c0808; /* Match background color with Login page */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #0e0101; /* Match background color with Login page */
+            border: 2px solid #fff; /* Set white border */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 300px; /* Match width with Login page container */
+        }
+
+        h1 {
+            color: #fff; /* Match text color with Login page */
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: #fff; /* Match text color with Login page */
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd; /* Match border with Login page */
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #000; /* Set text color to black */
+            font-size: 16px; /* Match font size with Login page */
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: transparent; /* Match background color with Login page button */
+            color: #fff; /* Match text color with Login page button */
+            padding: 10px 20px;
+            border: 2px solid #fff; /* Match border with Login page button */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+            font-size: 16px; /* Match font size with input fields */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #fff; /* Change background color on hover */
+            border-color: #fff; /* Change border color on hover */
+            color: #000; /* Change text color on hover */
+        }
+
+        a {
+            color: #fff; /* Match text color with Login page header links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1>Signup</h1>
-        <form  action='/signup/' method="post">
-            {% csrf_token %} 
+        <form action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
             <p><label for="username">Username:</label><br><input type="text" id="username" name="username" required></p>
             <p><label for="password">Password:</label><br><input type="password" id="password" name="password" required></p>
             <p><label for="name">Name:</label><br><input type="text" id="name" name="name" required></p>
@@ -26,5 +95,4 @@
         <p>Already have an account? <a href="http://localhost:8000/login/">Login</a></p>
     </div>
 </body>
-
 </html>
