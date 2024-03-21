@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Event</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0c0808;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh; /* Make body fill entire viewport height */
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        form {
+            padding: 20px;
+            background-color: #0e0101;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        label {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="datetime-local"],
+        input[type="checkbox"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #000;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: transparent;
+            color: #fff;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #fff;
+            border-color: #fff;
+            color: #000;
+        }
+
+        input[type="submit"]:focus {
+            background-color: #fff;
+            border-color: #0e0101;
+            color: #000;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 10px;
+            text-align: right;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        header a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="login">Login</a>
+        <a href="signup">Signup</a>
+        <a href="#">View Cart</a>
+        <a href="admin">Admin Panel</a>
+    </header>
+    
+    <h1>Add Event</h1>
+    <form action="{% url 'add_event' %}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <label for="eventDateTime">Event Date and Time:</label>
+        <input type="datetime-local" id="eventDateTime" name="eventDateTime" required><br>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location"><br>
+        <label for="capacity">Capacity:</label>
+        <input type="number" id="capacity" name="capacity"><br>
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category"><br>
+        <label for="artist">Artist:</label>
+        <input type="text" id="artist" name="artist"><br>
+        <label for="isVerified">Verified:</label>
+        <input type="checkbox" id="isVerified" name="isVerified" value="true"><br>
+        <input type="submit" value="Add Event">
+    </form>
+</body>
+</html>

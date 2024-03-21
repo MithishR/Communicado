@@ -78,5 +78,15 @@ def xyz(request):
     data = users.objects.all()
     context = {"xyz": data}
     return render (request,"pages/xyz.html",context)
+
+def organizer_actions(request):
+    userData = users.objects.all()
+    context = {"userData": userData, }
+    return render (request,"pages/organizer_actions.html",context)
     
+def add_event(request):
+    return render(request, 'pages/add_event.html')
+
+def edit_event(request):
+    return render(request, 'pages/edit_event.html')
 
