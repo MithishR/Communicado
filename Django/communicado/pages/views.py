@@ -5,23 +5,6 @@ from .models import *
 
 def home(request):
     return render(request, "pages/home.html", {})
-# def login(request):
-
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         with connection.cursor() as cursor:
-#             cursor.execute("SELECT COUNT(*) FROM users where username = %s and password = %s",[username,password],)
-#             row = cursor.fetchone()
-#             count = row[0]
-#             if(count==1):
-#                 return redirect('home')
-#             else: 
-#                 error_message = "Invalid username or password."
-#                 return render(request, 'pages/login.html', {'error_message': error_message})
-            
-#     else:
-#         return render(request,'pages/login.html')
 
 def login(request):
     if request.method == 'POST':
@@ -34,8 +17,12 @@ def login(request):
             # Check if the entered password matches the hashed password in the database
             if check_password(password, user.password):
                 # Authentication successful
-                success_message = "Welcome " + user.name  # Accessing name from the user object
-                return render(request, 'pages/home.html', {'success_message': success_message})
+                if user.role == 'organiser':
+                    success_message = "Welcome " + user.name
+                    return render(request, 'pages/organizer_actions.html', {'success_message': success_message})
+                else:
+                    success_message = "Welcome " + user.name  # Accessing name from the user object
+                    return render(request, 'pages/home.html', {'success_message': success_message})
             else:
                 error_message = "Invalid username or password."
                 return render(request, 'pages/login.html', {'error_message': error_message})
