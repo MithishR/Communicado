@@ -67,7 +67,17 @@ def useracc(request):
     return render (request,"pages/useraccount.html",context)
 def event(request):
     data = Events.objects.all()
-    context = {"events": data}
+    unique_categories = Events.objects.values_list('category', flat=True).distinct()
+    category = request.GET.get('category')
+    if category and category != 'All Categories':
+        data=Events.objects.filter(category=category)
+        context = {"events": data ,
+                'unique_categories': unique_categories}
+        
+    else:
+    
+        context = {"events": data ,
+                'unique_categories': unique_categories}
     return render (request , "pages/events.html",context)
 def test_page(request):
     return render(request, "pages/test_page.html")
