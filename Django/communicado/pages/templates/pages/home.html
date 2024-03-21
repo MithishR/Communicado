@@ -95,8 +95,8 @@
 <body>
     
 <header>
-    <a href="login">Login</a>
-    <a href="signup">Signup</a>
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'signup' %}">Signup</a>
     <a href="#">View Cart</a>
     <a href="admin">Admin Panel</a>
 </header>
@@ -104,10 +104,13 @@
 <div class="main-container">
     <h1>Welcome to Communicado</h1>
     <p>Your go-to platform for discovering and booking exciting events.</p>
-    {% if success_message %}
-        <p style="color: white;">{{ success_message }}</p>
+    <!-- Display success message if it exists -->
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: white;">{{ message }}</p>
+        {% endfor %}
     {% endif %}
-    <a href="events" class="cta-button">Explore Events</a>
+    <a href="{% url 'events' %}" class="cta-button">Explore Events</a>
     <a href="xyz" class="cta-button">About us</a>
 </div>
 

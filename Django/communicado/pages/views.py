@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.hashers import make_password,check_password
 from .models import *
+from django.contrib import messages
 
 
 def home(request):
@@ -26,12 +27,11 @@ def login(request):
             else:
                 error_message = "Invalid username or password."
                 return render(request, 'pages/login.html', {'error_message': error_message})
-        except users.DoesNotExist:
+        except user.DoesNotExist:
             error_message = "Invalid username or password."
             return render(request, 'pages/login.html', {'error_message': error_message})
     else:
         return render(request, 'pages/login.html')
-
 
 
 def signup(request):
