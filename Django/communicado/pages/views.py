@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.hashers import make_password,check_password
 from .models import *
+from django.contrib import messages
 
 
 def home(request):
-    return render(request, "pages/home.html", {})
+    return render(request, "pages/home.html")
 # def login(request):
 
 #     if request.method == 'POST':
@@ -34,17 +35,18 @@ def login(request):
             # Check if the entered password matches the hashed password in the database
             if check_password(password, user.password):
                 # Authentication successful
-                success_message = "Welcome " + user.name  # Accessing name from the user object
-                return render(request, 'pages/home.html', {'success_message': success_message})
+                success_message = "Welcome, " + user.name  # Accessing name from the user object
+                # Redirect to the home page with the success message as a query parameter
+                messages.success(request, success_message)
+                return redirect('home')
             else:
                 error_message = "Invalid username or password."
                 return render(request, 'pages/login.html', {'error_message': error_message})
-        except users.DoesNotExist:
+        except user.DoesNotExist:
             error_message = "Invalid username or password."
             return render(request, 'pages/login.html', {'error_message': error_message})
     else:
         return render(request, 'pages/login.html')
-
 
 
 def signup(request):
