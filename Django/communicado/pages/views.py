@@ -5,7 +5,8 @@ from django.contrib import messages
 
 
 def home(request):
-    return render(request, "pages/home.html", {})
+    return render(request, "pages/home.html")
+
 
 def login(request):
     if request.method == 'POST':
@@ -18,12 +19,17 @@ def login(request):
             # Check if the entered password matches the hashed password in the database
             if check_password(password, user.password):
                 # Authentication successful
+
                 if user.role == 'organiser':
                     success_message = "Welcome " + user.name
-                    return render(request, 'pages/organizer_actions.html', {'success_message': success_message})
+                    messages.success(request, success_message)
+                    return redirect('organizer_actions')
+                    #return render(request, 'pages/organizer_actions.html', {'success_message': success_message})
                 else:
                     success_message = "Welcome " + user.name  # Accessing name from the user object
-                    return render(request, 'pages/home.html', {'success_message': success_message})
+                    messages.success(request, success_message)
+                    return redirect('home')
+                 #   return render(request, 'pages/home.html', {'success_message': success_message})
             else:
                 error_message = "Invalid username or password."
                 return render(request, 'pages/login.html', {'error_message': error_message})
