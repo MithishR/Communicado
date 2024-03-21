@@ -114,6 +114,39 @@
         header a:hover {
             text-decoration: underline;
         }
+        .custom-form {
+            max-width: 400px; /* Adjust as needed */
+            margin: 0 auto; /* Center the form horizontally */
+            display: flex; /* Align items in a row */
+            justify-content: space-between; /* Space elements evenly */
+        }
+        
+        /* Style for dropdown */
+        .category-dropdown {
+            flex: 1; /* Take up remaining space */
+        }
+        
+        /* Style for submit button */
+        .custom-button {
+            display: inline-block;
+            padding: 8px 16px; /* Adjust button padding */
+            font-size: 14px; /* Adjust button font size */
+            background-color: transparent; 
+            color: #fff; 
+            text-decoration: none;
+            border: 2px solid #fff; 
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
+            text-align: center;
+        }
+        
+        /* Hover effect for button */
+        .custom-button:hover {
+            background-color: #fff; 
+            border-color: #fff; 
+            color: #000; 
+        }
     </style>
 </head>
 <body>
@@ -125,6 +158,18 @@
 </header>
     <div class="container">
         <h1>Events</h1>
+        <form id="filter-form" method="GET" action="{% url 'events' %}" class="custom-form">
+            <div class="category-dropdown">
+                <label for="category-select">Select Category:</label>
+                <select name="category" id="category-select">
+                    <option value="" selected>All Categories</option>
+                    {% for category in unique_categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="custom-button">Search</button>
+        </form>
         {% for event in events %}
         <div class="event-container">
             <div class="event">
