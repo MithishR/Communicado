@@ -105,8 +105,14 @@ def event(request):
             Q(name__icontains=search_query) |
             Q(category__icontains=search_query))
             if(data.count() == 0):
+                error_message = "No Matches for "+ search_query+" :( Currently available Events: "
                 data = Events.objects.all()
-        
+                context = {"events": data ,
+                'unique_categories': unique_categories,
+                'error_message': error_message
+                }
+                return render (request , "pages/events.html",context)
+                
         else:
             data=Events.objects.filter(category=category)
             context = {"events": data ,
@@ -117,7 +123,13 @@ def event(request):
             Q(artist__icontains=search_query) |
             Q(name__icontains=search_query) )
             if(data.count() == 0):
+                error_message = "No Matches for "+ search_query+" :( Currently available Events: "
                 data = Events.objects.all()
+                context = {"events": data ,
+                'unique_categories': unique_categories,
+                'error_message': error_message
+                }
+                return render (request , "pages/events.html",context)
         else:
             data=Events.objects.all()
            

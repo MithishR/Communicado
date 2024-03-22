@@ -177,6 +177,9 @@
             <button type="submit" class="custom-button">Search</button>
         </form>
     </div>
+        {% if error_message %}
+        <p style="color: white;">{{ error_message }}</p>
+        {% endif %}
             
         </form>
         {% for event in events %}
