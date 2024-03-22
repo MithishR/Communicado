@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +14,42 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
+        }
+
+        .ribbon {
+            background-image: url('{% static "bg4.webp" %}');
+            background-size: cover; /* Cover the entire ribbon with the background image */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Prevent the background image from repeating */
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            font-weight: bold;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .ribbon h1 {
+            margin: 0;
+            font-size: 24px;
+            color: black; /* Change text color to black */
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add text shadow */
+        }
+        
+        .ribbon p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: black; /* Change text color to black */
+            font-style: italic;
+            font-style: bold;
         }
 
         .container {
@@ -23,7 +59,12 @@
             background-color: #0e0101; /* Match background color with Login page */
             border: 2px solid #fff; /* Set white border */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 300px; /* Match width with Login page container */
+            width: 90%; /* Adjusted width */
+            position: fixed; /* Position fixed */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Center horizontally and vertically */
+            max-width: 600px; /* Limit maximum width */
         }
 
         h1 {
@@ -37,13 +78,31 @@
             color: #fff; /* Match text color with Login page */
         }
 
+        /* Added CSS for form layout */
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        form p {
+            flex-basis: calc(50% - 10px);
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #fff;
+        }
+
         input[type="text"],
         input[type="password"],
         input[type="email"],
         select {
             width: 100%;
             padding: 10px;
-            margin: 5px 0;
+            margin-top: 5px;
             border: 1px solid #ddd; /* Match border with Login page */
             border-radius: 5px;
             box-sizing: border-box;
@@ -80,16 +139,21 @@
     </style>
 </head>
 <body>
+     <!-- Header ribbon -->
+     <div class="ribbon">
+        <h1>Communicado</h1>
+        <p>Your go-to platform for discovering and booking exciting events</p>
+     </div>
     <div class="container">
         <h1>Signup</h1>
         <form action="{% url 'signup' %}" method="post">
             {% csrf_token %}
-            <p><label for="username">Username:</label><br><input type="text" id="username" name="username" required></p>
-            <p><label for="password">Password:</label><br><input type="password" id="password" name="password" required></p>
-            <p><label for="name">Name:</label><br><input type="text" id="name" name="name" required></p>
-            <p><label for="email">Email:</label><br><input type="email" id="email" name="email" required></p>
-            <p><label for="address">Address:</label><br><input type="text" id="address" name="address" required></p>
-            <p><label for="role">Role:</label><br><select id="role" name="role"><option value="customer">Customer</option><option value="organiser">Organiser</option></select></p>
+            <p><label for="username">Username:</label><input type="text" id="username" name="username" required></p>
+            <p><label for="password">Password:</label><input type="password" id="password" name="password" required></p>
+            <p><label for="name">Name:</label><input type="text" id="name" name="name" required></p>
+            <p><label for="email">Email:</label><input type="email" id="email" name="email" required></p>
+            <p><label for="address">Address:</label><input type="text" id="address" name="address" required></p>
+            <p><label for="role">Role:</label><select id="role" name="role"><option value="customer">Customer</option><option value="organiser">Organiser</option></select></p>
             <p><input type="submit" value="Sign Up"></p>
         </form>
         <p>Already have an account? <a href="http://localhost:8000/login/">Login</a></p>
