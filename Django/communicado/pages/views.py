@@ -127,10 +127,30 @@ def edit_event(request):
     events = Events.objects.all()  
     return render(request, 'pages/edit_event.html', {'events': events})
 
-def edit_event_details(request, event_ID):
+from django.http import HttpResponseBadRequest
+
+# def change_event(request, event_ID):
+#     event = get_object_or_404(Events, eventID=event_ID)
+#     if request.method == 'POST':
+#         event.name = request.POST.get('name')
+#         event.eventDateTime = request.POST.get('eventDateTime')
+#     return render(request, 'pages/change_event.html', {'event': event})
+    
+def change_event(request, event_ID):
     event = get_object_or_404(Events, eventID=event_ID)
     if request.method == 'POST':
         event.name = request.POST.get('name')
         event.eventDateTime = request.POST.get('eventDateTime')
-    return render(request, 'pages/edit_event_details.html', {'event': event})
+        event.location = request.POST.get('location')
+        event.capacity = request.POST.get('capacity')
+        event.category = request.POST.get('category')
+        event.artist = request.POST.get('artist')
+        # event.imageURL = request.POST.get('image')
+        event.save()
 
+        success_message = "Event updated successfully."
+        messages.success(request, success_message)
+        return redirect('home')  
+    else:
+        # Render the form template with the event data for editing
+        return render(request, 'pages/change_event.html', {'event': event})

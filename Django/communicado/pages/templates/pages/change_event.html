@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Event</title>
+    <title>Edit Event - {{ event.name }}</title>
     <style>
         /* CSS for screen view */
         body {
@@ -145,47 +145,49 @@
 </head>
 <body>
     <header>
-        <a href="login">Login</a>
-        <a href="signup">Signup</a>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Signup</a>
         <a href="#">View Cart</a>
-        <a href="admin">Admin Panel</a>
     </header>
     <div class="container">
-        <h1>Events</h1>
+        <h1>Update Event</h1>
 
-        {% for event in events %}
         <div class="event-container">
-            <div class="event">
-                {% if event.imageURL %}
-                <div class="event-image">
-                    <img src="{% static event.imageURL %}" alt="Event Image">
-                </div>
-                {% endif %}
-                <div class="event-details">
-                    <div class="event-name">{{ event.name }}</div>
-                    <div class="event-date">{{ event.eventDateTime }}</div>
-                    {% if event.location %}
-                    <div class="event-location">Location: {{ event.location }}</div>
-                    {% endif %}
-                    {% if event.capacity %}
-                    <div class="event-capacity">Capacity: {{ event.capacity }}</div>
-                    {% endif %}
-                    {% if event.category %}
-                    <div class="event-category">Category: {{ event.category }}</div>
-                    {% endif %}
-                    {% if event.artist %}
-                    <div class="event-artist">Artist: {{ event.artist }}</div>
-                    {% endif %}
-                    <a href="{% url 'eventinfo' event_ID=event.eventID %}" class="btn btn-outline-secondary">View</a>
-                    <button data-product="{{ event.eventID }}" class="btn btn-outline-secondary">Book</button>
-                    {% comment %} <a href="{% url 'change_event' event_ID=event.eventID %}" class="btn btn-outline-secondary">Edit</a> {% endcomment %}
-                    <a href="{% url 'change_event' event_ID=event.eventID %}" class="btn btn-outline-secondary">Edit</a>
-
-
-                </div>
+            <div class="event-details">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="event-info">
+                        <label for="name" class="label">Update:</label>
+                        <input type="text" id="name" name="name" class="value" value="{{ event.name }}">
+                    </div>
+                    <div class="event-info">
+                        <label for="eventDateTime" class="label">Updated date and time:</label>
+                        <input type="datetime-local" id="eventDateTime" name="eventDateTime" class="value" value="{{ event.eventDateTime|date:'Y-m-d\TH:i' }}">
+                    </div>
+                    <div class="event-info">
+                        <label for="location" class="label">Updated Location:</label>
+                        <input type="text" id="location" name="location" class="value" value="{{ event.location }}">
+                    </div>
+                    <div class="event-info">
+                        <label for="capacity" class="label">Updated Capacity:</label>
+                        <input type="number" id="capacity" name="capacity" class="value" value="{{ event.capacity }}">
+                    </div>
+                    <div class="event-info">
+                        <label for="category" class="label">Updated Category:</label>
+                        <input type="text" id="category" name="category" class="value" value="{{ event.category }}">
+                    </div>
+                    <div class="event-info">
+                        <label for="artist" class="label">Updated Artist:</label>
+                        <input type="text" id="artist" name="artist" class="value" value="{{ event.artist }}">
+                    </div>
+                    <div class="event-info">
+                        <label for="imageURL" class="label">Updated Image:</label>
+                        <input type="file" id="imageURL" name="imageURL" class="value" value="{{ event.imageURL }}">
+                    </div>
+                    <button type="submit" class="btn">Save Changes</button>
+                </form>
             </div>
         </div>
-        {% endfor %}
     </div>
 </body>
 </html>
