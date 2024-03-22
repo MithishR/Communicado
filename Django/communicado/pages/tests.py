@@ -1,11 +1,11 @@
+import datetime
 from django.test import TestCase
-from .models import *  
+from .models import *
 
 class UsersTestCase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-       
         cls.user = users.objects.create(
             username='testuser123',
             password='password123',
@@ -15,6 +15,13 @@ class UsersTestCase(TestCase):
             address='123 Main St, City, Country'
         )
         cls.user.save()
+
+        cls.admin = Admin.objects.create(
+            user=cls.user,
+            officeNo='A123'
+        )
+        cls.admin.save()
+
         cls.event_organizer = EventOrganizer.objects.create(
             user=users.objects.create(
                 username='testorganizer123',
@@ -28,7 +35,6 @@ class UsersTestCase(TestCase):
         )
         cls.event_organizer.save()
 
-        
         cls.customer = Customer.objects.create(
             user=users.objects.create(
                 username='testcustomer123',
@@ -41,6 +47,28 @@ class UsersTestCase(TestCase):
             phoneNumber='987654321'
         )
         cls.customer.save()
+
+        cls.event = Events.objects.create(
+            name='Test Event',
+            eventDateTime=datetime.datetime.now(),
+            location='Test Location',
+            capacity=100,
+            category='Test Category',
+            artist='Test Artist',
+            isVerified=True,
+            adminID=cls.admin,
+            eventOrganizerID=cls.event_organizer,
+            imageURL='test_image.jpg'
+        )
+        cls.event.save()
+
+        cls.booked_event = BookedEvent.objects.create(
+            eventID=cls.event,
+            quantity=2,
+            isPaid=True,
+            user=cls.user,
+            referenceNumber="REF123"
+        )
 
     def test_user_creation(self):
         user = self.user
@@ -74,12 +102,105 @@ class UsersTestCase(TestCase):
 
         with self.assertRaises(users.DoesNotExist):
             users.objects.get(username='testuser123')
+
+    def test_booked_event_creation(self):
+        booked_event = self.booked_event
+        self.assertEqual(booked_event.quantity, 2)
+
+    def test_booked_event_update(self):
+        updated_quantity = 3
+        booked_event = self.booked_event
+        booked_event.quantity = updated_quantity
+
+        booked_event.save()
+        booked_event.refresh_from_db()
+        self.assertEqual(booked_event.quantity, updated_quantity)
+
+    def test_booked_event_deletion(self):
+        booked_event = self.booked_event
+        booked_event.delete()
+
+        with self.assertRaises(BookedEvent.DoesNotExist):
+            BookedEvent.objects.get(eventID=self.event)
+
+    def test_admin_creation(self):
+        admin = self.admin
+        self.assertEqual(admin.user.name, 'TestUser')
+        self.assertEqual(admin.user.role, 'Admin')
+        self.assertEqual(admin.user.email, 'email@example.com')
+        self.assertEqual(admin.officeNo, 'A123')
+
+    def test_admin_update(self):
+        updated_data = {
+            'name': 'Updated Admin Name',
+            'role': 'Updated Admin Role',
+            'email': 'updated_admin@example.com',
+            'address': 'Updated Admin Address',
+            'officeNo': 'B456'
+        }
+        admin = self.admin
+        admin.user.name = updated_data['name']
+        admin.user.role = updated_data['role']
+        admin.user.email = updated_data['email']
+        admin.user.address = updated_data['address']
+        admin.officeNo = updated_data['officeNo']
+        admin.user.save()
+        admin.save()
+
+        admin.refresh_from_db()
+
+        self.assertEqual(admin.user.name, updated_data['name'])
+        self.assertEqual(admin.user.role, updated_data['role'])
+        self.assertEqual(admin.user.email, updated_data['email'])
+        self.assertEqual(admin.user.address, updated_data['address'])
+        self.assertEqual(admin.officeNo, updated_data['officeNo'])
+
+    def test_admin_deletion(self):
+        admin = self.admin
+        admin.user.delete()
+
+        with self.assertRaises(Admin.DoesNotExist):
+            Admin.objects.get(user__username='admin123')
+
     def test_event_organizer_creation(self):
         event_organizer = self.event_organizer
         self.assertEqual(event_organizer.user.name, 'TestOrganizer')
         self.assertEqual(event_organizer.user.role, 'Organizer')
         self.assertEqual(event_organizer.user.email, 'organizer@example.com')
         self.assertEqual(event_organizer.phoneNumber, '123456789')
+
+    def test_event_creation(self):
+        event = self.event
+        self.assertEqual(event.name, 'Test Event')
+
+    def test_event_update(self):
+        updated_data = {
+            'name': 'Updated Event Name',
+            'location': 'Updated Location',
+            'capacity': 200,
+            'category': 'Updated Category'
+        }
+        event = self.event
+        event.name = updated_data['name']
+        event.location = updated_data['location']
+        event.capacity = updated_data['capacity']
+        event.category = updated_data['category']
+
+        event.save()
+
+        event.refresh_from_db()
+
+        self.assertEqual(event.name, updated_data['name'])
+        self.assertEqual(event.location, updated_data['location'])
+        self.assertEqual(event.capacity, updated_data['capacity'])
+        self.assertEqual(event.category, updated_data['category'])
+
+    def test_event_deletion(self):
+        event = self.event
+        event.delete()
+
+        with self.assertRaises(Events.DoesNotExist):
+            Events.objects.get(name='Test Event')
 
     def test_customer_creation(self):
         customer = self.customer
@@ -102,52 +223,4 @@ class UsersTestCase(TestCase):
         event_organizer.user.email = updated_data['email']
         event_organizer.user.address = updated_data['address']
         event_organizer.phoneNumber = updated_data['phoneNumber']
-        event_organizer.user.save()
-        event_organizer.save()
 
-        event_organizer.refresh_from_db()
-
-        self.assertEqual(event_organizer.user.name, updated_data['name'])
-        self.assertEqual(event_organizer.user.role, updated_data['role'])
-        self.assertEqual(event_organizer.user.email, updated_data['email'])
-        self.assertEqual(event_organizer.user.address, updated_data['address'])
-        self.assertEqual(event_organizer.phoneNumber, updated_data['phoneNumber'])
-
-    def test_customer_update(self):
-        updated_data = {
-            'name': 'Updated Customer Name',
-            'role': 'Updated Customer Role',
-            'email': 'updated_customer@example.com',
-            'address': 'Updated Customer Address',
-            'phoneNumber': '888888888'
-        }
-        customer = self.customer
-        customer.user.name = updated_data['name']
-        customer.user.role = updated_data['role']
-        customer.user.email = updated_data['email']
-        customer.user.address = updated_data['address']
-        customer.phoneNumber = updated_data['phoneNumber']
-        customer.user.save()
-        customer.save()
-
-        customer.refresh_from_db()
-
-        self.assertEqual(customer.user.name, updated_data['name'])
-        self.assertEqual(customer.user.role, updated_data['role'])
-        self.assertEqual(customer.user.email, updated_data['email'])
-        self.assertEqual(customer.user.address, updated_data['address'])
-        self.assertEqual(customer.phoneNumber, updated_data['phoneNumber'])
-
-    def test_event_organizer_deletion(self):
-        event_organizer = self.event_organizer
-        event_organizer.user.delete()
-
-        with self.assertRaises(EventOrganizer.DoesNotExist):
-            EventOrganizer.objects.get(user__username='testorganizer123')
-
-    def test_customer_deletion(self):
-        customer = self.customer
-        customer.user.delete()
-
-        with self.assertRaises(Customer.DoesNotExist):
-            Customer.objects.get(user__username='testcustomer123')
