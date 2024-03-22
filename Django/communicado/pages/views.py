@@ -123,8 +123,14 @@ def organizer_actions(request):
     return render (request,"pages/organizer_actions.html",context)
     
 
-
-
 def edit_event(request):
-    return render(request, 'pages/edit_event.html')
+    events = Events.objects.all()  
+    return render(request, 'pages/edit_event.html', {'events': events})
+
+def edit_event_details(request, event_ID):
+    event = get_object_or_404(Events, eventID=event_ID)
+    if request.method == 'POST':
+        event.name = request.POST.get('name')
+        event.eventDateTime = request.POST.get('eventDateTime')
+    return render(request, 'pages/edit_event_details.html', {'event': event})
 
