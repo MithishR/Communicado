@@ -11,56 +11,60 @@
             padding: 0;
             font-family: 'Montserrat', sans-serif;
             text-align: center;
-            background-image: url('{% static "bg2.jpg" %}');
+            background-image: url('{% static "bg5.jpeg.jpg" %}');
             background-size: cover; 
             background-repeat: no-repeat;
-            background-color: #f5f5f5; 
-            color: rgb(255, 255, 255); 
+            background-color: rgba(245, 245, 245, 0.3); /* Adjust the alpha value (0.3) for opacity */
+            color: rgb(255, 255, 255);
         }
-
-        header {
-            background-color: rgba(0, 0, 0, 0.7); 
-            color: #fff;
-            padding: 10px;
-            text-align: right;
+    
+        .ribbon {
+            background-color: black;
+            padding: 20px;
+            text-align: center;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 1000; 
+            z-index: 1000;
+            font-weight: bold;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
         }
-
-        header a {
-            color: #fff;
-            margin: 0 10px;
-            text-decoration: none;
+        .ribbon h1 {
+            margin: 0;
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
-
-        header a:hover {
-            text-decoration: underline;
+        .ribbon p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: white;
+            font-style: italic;
+            font-style: bold;
         }
-
         .bg-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
-
         .content {
             max-width: 600px;
         }
-
         .content h1 {
             color: #fff; 
             font-size: xx-large;
         }
-
         .content p {
             color: #fff; 
+            font-style: bold;
+            font-size: 20px;
             text-align: center;
         }
-
         .cta-button {
             display: inline-block;
             padding: 10px 20px;
@@ -73,13 +77,11 @@
             margin-top: 20px;
             transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
         }
-
         .cta-button:hover {
             background-color: #fff; 
             border-color: #fff; 
             color: #000; 
         }
-
         body:before {
             content: "";
             position: fixed;
@@ -87,25 +89,33 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('{% static "bg2.jpg" %}');
+            background-image: url('{% static "bg5.jpeg" %}'); /* Change to bg5.jpeg */
             background-size: cover;
             background-position: center;
             z-index: -1;
+            opacity: 0.5; /* Adjust opacity value as needed */
         }
     </style>
 </head>
 <body>
+     <!-- Header ribbon -->
+     <div class="ribbon">
+        <h1>Welcome to Communicado!</h1>
+        <p>Your go-to platform for discovering and booking exciting events</p>
+     </div>
     <header>
         <a href="login">Login</a>
         <a href="signup">Signup</a>
         <a href="#">View Cart</a>
         <a href="admin">Admin Panel</a>
-
     </header>
     <div class="bg-container">
         <div class="content">
-            <h1>Welcome to Communicado</h1>
-            <p>Welcome to Communicado, where innovation meets passion! We are a dynamic team of five university students - Sparsh, Ojus, Mithish, Mahi, and Pratham - driven by our shared enthusiasm for revolutionizing the event ticketing experience. With diverse backgrounds and skill sets, we united under the common goal of creating an intuitive and seamless platform for event enthusiasts like ourselves. Our journey began with a spark of creativity and a vision to simplify event discovery and booking processes. Through relentless dedication and collaborative effort, we've crafted Communicado into a vibrant hub for discovering and securing tickets to the most exciting events. From concerts to conferences, sports matches to workshops, our platform endeavors to connect people with their passions effortlessly. Join us in this exhilarating adventure as we redefine the way events are experienced and enjoyed. Welcome aboard!</p>
+           
+            <p>Welcome to Communicado, where innovation meets passion! We are a dynamic team of five university students - Sparsh, Ojus, Mithish, Mahi, and Pratham - driven by our shared enthusiasm for revolutionizing the event ticketing experience.</p>
+            <p>With diverse backgrounds and skill sets, we united under the common goal of creating an intuitive and seamless platform for event enthusiasts like ourselves. Our journey began with a spark of creativity and a vision to simplify event discovery and booking processes.</p>
+            <p>Through relentless dedication and collaborative effort, we've crafted Communicado into a vibrant hub for discovering and securing tickets to the most exciting events. From concerts to conferences, sports matches to workshops, our platform endeavors to connect people with their passions effortlessly.</p>
+            <p>Join us in this exhilarating adventure as we redefine the way events are experienced and enjoyed. Welcome aboard!</p>
             <a href="http://localhost:8000" class="cta-button">Back</a>
         </div>
     </div>
