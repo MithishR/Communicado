@@ -95,6 +95,7 @@
     </style>
 </head>
 <body>
+    <h1>Add Event</h1>
     <header>
         <a href="login">Login</a>
         <a href="signup">Signup</a>
@@ -102,9 +103,11 @@
         <a href="admin">Admin Panel</a>
     </header>
     
-    <h1>Add Event</h1>
     <form action="{% url 'add_event' %}" method="post">
-        <label for="name">Name:</label>
+        {% csrf_token %}
+        {% comment %} <label for="event_organizer">Organizer Name:</label>
+        <input type="text" id="event_organizer" name="event_organizer" required><br> {% endcomment %}
+        <label for="name">Event Name:</label>
         <input type="text" id="name" name="name" required><br>
         <label for="eventDateTime">Event Date and Time:</label>
         <input type="datetime-local" id="eventDateTime" name="eventDateTime" required><br>
@@ -116,8 +119,10 @@
         <input type="text" id="category" name="category"><br>
         <label for="artist">Artist:</label>
         <input type="text" id="artist" name="artist"><br>
-        <label for="isVerified">Verified:</label>
-        <input type="checkbox" id="isVerified" name="isVerified" value="true"><br>
+        <label for="image">Event Image:</label>
+        <input type="file" id="image" name="image"><br>
+        {% comment %} <label for="isVerified">Verified:</label>
+        <input type="checkbox" id="isVerified" name="isVerified" value="true"><br> {% endcomment %}
         <input type="submit" value="Add Event">
     </form>
 </body>
