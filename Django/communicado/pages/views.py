@@ -61,13 +61,51 @@ def signup(request):
         return render(request, "pages/signup.html", {})
 
     # return render(request, "pages/signup.html", {})
+    
+def add_event(request):
+    if request.method == 'POST':
+        try:
+            # organizer_name = request.POST.get('event_organizer')
+            # event_organizer = EventOrganizer.objects.get(user__name=organizer_name)
+
+            name = request.POST.get('name')
+            # event_organizer_id = users.userID
+            eventDateTime = request.POST.get('eventDateTime')
+            location = request.POST.get('location')
+            capacity = request.POST.get('capacity')
+            category = request.POST.get('category')
+            artist = request.POST.get('artist')
+            image=request.POST.get('image')
+            new_event = Events(name=name, eventDateTime=eventDateTime, location=location, capacity=capacity,
+                            category=category, artist=artist, isVerified=False, imageURL=image)
+            new_event.save()
+            success_message = "Event added successfully. It is pending approval."
+            messages.success(request, success_message)
+            return redirect('home')  # Redirect to home page or any other appropriate page after adding event
+        except Exception as e:
+            error_message = "An error occurred while adding the event: {}".format(str(e))
+            messages.error(request, error_message)
+            return redirect('add_event')
+    else:
+        return render(request, 'pages/add_event.html')
+
 def useracc(request):
     data = users.objects.all()
     context = {"users": data}
     return render (request,"pages/useraccount.html",context)
 def event(request):
     data = Events.objects.all()
-    context = {"events": data}
+    unique_categories = Events.objects.values_list('category', flat=True).distinct()
+    category = request.GET.get('category')
+    if category and category != 'All Categories':
+        data=Events.objects.filter(category=category)
+        context = {"events": data ,
+                'unique_categories': unique_categories}
+        
+    else:
+    
+        context = {"events": data ,
+                'unique_categories': unique_categories}
     return render (request , "pages/events.html",context)
 def test_page(request):
     return render(request, "pages/test_page.html")
@@ -84,8 +122,8 @@ def organizer_actions(request):
     context = {"userData": userData, }
     return render (request,"pages/organizer_actions.html",context)
     
-def add_event(request):
-    return render(request, 'pages/add_event.html')
+
+
 
 def edit_event(request):
     return render(request, 'pages/edit_event.html')

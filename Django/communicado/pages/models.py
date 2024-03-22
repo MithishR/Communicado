@@ -16,7 +16,7 @@ class users(models.Model):
         return self.username
 
 class EventOrganizer(models.Model):
-    user = models.OneToOneField(users, primary_key=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(users, primary_key=True, on_delete=models.CASCADE, to_field='userID')
     phoneNumber = models.CharField(max_length=30)
 
     class Meta:
@@ -57,6 +57,7 @@ class Events(models.Model):
     adminID = models.ForeignKey(Admin, on_delete=models.CASCADE, null=True, blank=True,db_column= "adminID")
     eventOrganizerID = models.ForeignKey(EventOrganizer, on_delete=models.CASCADE, null=True, blank=True,db_column="eventOrganizerID")
     imageURL = models.CharField(max_length=100, null=True, blank=True)
+    # isPendingApproval = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'events'
