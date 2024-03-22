@@ -168,7 +168,16 @@
                     {% endfor %}
                 </select>
             </div>
+            
+            <div class="search-bar">
+                <label for="search-input">Search:</label>
+                <input type="text" id="search-input" name="search" placeholder="Artist/Event name">
+            </div>
+            
             <button type="submit" class="custom-button">Search</button>
+        </form>
+    </div>
+            
         </form>
         {% for event in events %}
         <div class="event-container">
