@@ -3,17 +3,13 @@ name: Pull on Push
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
+      - main  # Change this to your main branch name if it's different
 
 jobs:
   pull:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
       - name: SSH and Pull Changes
         uses: appleboy/ssh-action@master
         with:
@@ -21,4 +17,4 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            ./pull_changes.sh
+            /root/pull_changes.sh
