@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.hashers import make_password,check_password
 from .models import *
 from django.contrib import messages
-
+from django.db.models import Q
 
 def home(request):
     return render(request, "pages/home.html")
@@ -97,14 +97,43 @@ def event(request):
     data = Events.objects.all()
     unique_categories = Events.objects.values_list('category', flat=True).distinct()
     category = request.GET.get('category')
-    if category and category != 'All Categories':
-        data=Events.objects.filter(category=category)
-        context = {"events": data ,
+    search_query = request.GET.get('search')
+    if (category and category != 'All Categories'):
+        if search_query and search_query != " ":
+            data = Events.objects.filter(
+            Q(artist__icontains=search_query) |
+            Q(name__icontains=search_query) |
+            Q(category__icontains=search_query))
+            if(data.count() == 0):
+                error_message = "No Matches for "+ search_query+" :( Currently available Events: "
+                data = Events.objects.all()
+                context = {"events": data ,
+                'unique_categories': unique_categories,
+                'error_message': error_message
+                }
+                return render (request , "pages/events.html",context)
+                
+        else:
+            data=Events.objects.filter(category=category)
+            context = {"events": data ,
                 'unique_categories': unique_categories}
-        
     else:
-    
-        context = {"events": data ,
+        if search_query and search_query != " ":
+            data = Events.objects.filter(
+            Q(artist__icontains=search_query) |
+            Q(name__icontains=search_query) )
+            if(data.count() == 0):
+                error_message = "No Matches for "+ search_query+" :( Currently available Events: "
+                data = Events.objects.all()
+                context = {"events": data ,
+                'unique_categories': unique_categories,
+                'error_message': error_message
+                }
+                return render (request , "pages/events.html",context)
+        else:
+            data=Events.objects.all()
+           
+    context = {"events": data ,
                 'unique_categories': unique_categories}
     return render (request , "pages/events.html",context)
 def test_page(request):
