@@ -18,5 +18,5 @@ jobs:
     - name: Test selenium
       run: |
         cd Django/communicado
-        docker-compose web run python manage.py test
+        docker-compose run web python manage.py test
     
