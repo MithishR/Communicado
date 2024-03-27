@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          .\mac_docker_build_and_run.sh
+          ./mac_docker_build_and_run.sh
 
   test:
     needs: build
