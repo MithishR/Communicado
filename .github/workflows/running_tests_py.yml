@@ -1,0 +1,24 @@
+name: Running Tests.py
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+  
+      - name: Build Docker image
+        run: |
+          .\win_docker_build_and_run.bat
+
+      - name: Build Docker imagea
+        run: |
+          docker compose run web python manage.py test
+
