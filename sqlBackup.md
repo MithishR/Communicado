@@ -1,4 +1,4 @@
-# Database Backup Process
+# SQL Database Backup Process
 
 This README file explains the process for backing up the SQL database used in the Django project. \
 The SQL server is hosted on DigitalOcean, and the Ubuntu server running the Django project is also hosted on DigitalOcean. \

@@ -63,6 +63,7 @@ class Events(models.Model):
     eventOrganizerID = models.ForeignKey(EventOrganizer, on_delete=models.CASCADE, null=True, blank=True,db_column="eventOrganizerID")
     imageURL = models.CharField(max_length=100, null=True, blank=True)
     # isPendingApproval = models.BooleanField(default=True)
+    
 
     class Meta:
         db_table = 'events'
