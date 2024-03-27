@@ -17,8 +17,7 @@ jobs:
       - name: Build Docker Image
         run: |
           cd ./Django/communicado
-          chmod +x mac_docker_build_and_run.sh
-          ./mac_docker_build_and_run.sh
+          docker-compose build
 
   test:
     needs: build
