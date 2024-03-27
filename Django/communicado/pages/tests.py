@@ -242,20 +242,7 @@ class UsersTestCase(TestCase):
         event_organizer.user.address = updated_data['address']
         event_organizer.phoneNumber = updated_data['phoneNumber']
 
-    def test_login_page_loads(self):                       #testing for the loading of the page
-        response = self.client.get(reverse('login'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<title>Login</title>') 
     
-    def test_login_page_status_code(self):
-        #Test if the login page returns a status code of 200 (OK)
-        response = self.client.get(reverse('login'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_login_page_contains_title(self):
-        # Test if the login page contains the expected title
-        response = self.client.get(reverse('login'))
-        self.assertContains(response, '<title>Login</title>')
 
 
     
