@@ -224,3 +224,7 @@ class UsersTestCase(TestCase):
         event_organizer.user.address = updated_data['address']
         event_organizer.phoneNumber = updated_data['phoneNumber']
 
+    def test_always_false(self):
+    # Add an assertion that always evaluates to False
+        self.assertFalse(True)
+
