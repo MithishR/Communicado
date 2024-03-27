@@ -1,5 +1,7 @@
 import datetime
 from django.test import TestCase
+from django.contrib.auth.models import User
+from django.urls import reverse 
 from .models import *
 
 class UsersTestCase(TestCase):
@@ -21,6 +23,22 @@ class UsersTestCase(TestCase):
             officeNo='A123'
         )
         cls.admin.save()
+
+        cls.organizer_user = users.objects.create(
+        username='organizer123',
+        password='organizerpass',
+        name='Organizer User',
+        role='Organizer',
+        email='organizer@example.com',
+        address='456 Organizer St, City, Country'
+        )
+        cls.organizer_user.save()
+
+        cls.event_organizer = EventOrganizer.objects.create(
+        user=cls.organizer_user,
+        phoneNumber='123456789'
+    )
+        cls.event_organizer.save()
 
         cls.event_organizer = EventOrganizer.objects.create(
             user=users.objects.create(
@@ -223,4 +241,22 @@ class UsersTestCase(TestCase):
         event_organizer.user.email = updated_data['email']
         event_organizer.user.address = updated_data['address']
         event_organizer.phoneNumber = updated_data['phoneNumber']
+
+    def test_login_page_loads(self):                       #testing for the loading of the page
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<title>Login</title>') 
+    
+    def test_login_page_status_code(self):
+        #Test if the login page returns a status code of 200 (OK)
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_page_contains_title(self):
+        # Test if the login page contains the expected title
+        response = self.client.get(reverse('login'))
+        self.assertContains(response, '<title>Login</title>')
+
+
+    
 
