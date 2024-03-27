@@ -1,7 +1,24 @@
 import datetime
 from django.test import TestCase
 from .models import *
+from django.test import LiveServerTestCase
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+import time
 
+# Example 1
+
+class Hosttest(LiveServerTestCase):
+  	
+	def testhomepage(self):
+		options = Options()
+		options.headless = True
+		driver = webdriver.Chrome(options=options)
+		driver.get(self.live_server_url)
+				# try driver.get(self.live_server_url) if driver.get('http://127.0.0.1:8000/') does not work	
+		assert "Hello, world!" in driver.title
+            
 class UsersTestCase(TestCase):
 
     @classmethod
