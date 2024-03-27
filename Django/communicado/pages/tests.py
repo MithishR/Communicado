@@ -1,5 +1,7 @@
 import datetime
 from django.test import TestCase
+from django.contrib.auth.models import User
+from django.urls import reverse 
 from .models import *
 from django.test import LiveServerTestCase
 from selenium import webdriver
@@ -38,6 +40,22 @@ class UsersTestCase(TestCase):
             officeNo='A123'
         )
         cls.admin.save()
+
+        cls.organizer_user = users.objects.create(
+        username='organizer123',
+        password='organizerpass',
+        name='Organizer User',
+        role='Organizer',
+        email='organizer@example.com',
+        address='456 Organizer St, City, Country'
+        )
+        cls.organizer_user.save()
+
+        cls.event_organizer = EventOrganizer.objects.create(
+        user=cls.organizer_user,
+        phoneNumber='123456789'
+    )
+        cls.event_organizer.save()
 
         cls.event_organizer = EventOrganizer.objects.create(
             user=users.objects.create(
@@ -240,4 +258,9 @@ class UsersTestCase(TestCase):
         event_organizer.user.email = updated_data['email']
         event_organizer.user.address = updated_data['address']
         event_organizer.phoneNumber = updated_data['phoneNumber']
+
+    
+
+
+    
 

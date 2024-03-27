@@ -2,7 +2,10 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.hashers import make_password,check_password
 from .models import *
 from django.contrib import messages
+
+from django.contrib.auth.models import User
 from django.db.models import Q
+
 
 def home(request):
     return render(request, "pages/home.html")
@@ -33,7 +36,7 @@ def login(request):
             else:
                 error_message = "Invalid username or password."
                 return render(request, 'pages/login.html', {'error_message': error_message})
-        except user.DoesNotExist:
+        except users.DoesNotExist:
             error_message = "Invalid username or password."
             return render(request, 'pages/login.html', {'error_message': error_message})
     else:
