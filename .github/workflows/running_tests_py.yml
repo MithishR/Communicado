@@ -14,9 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Give Permissions to run a script
+        run: |
+          chmod +x mac_docker_build_and_run.sh
+
       - name: Build Docker image
         run: |
-          .\win_docker_build_and_run.bat
+          .\mac_docker_build_and_run.sh
 
   test:
     needs: build
