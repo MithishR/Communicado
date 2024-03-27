@@ -19,6 +19,9 @@ jobs:
           cd ./Django/communicado
           chmod +x mac_docker_build_and_run.sh
 
+      - name: Print current directory
+        run: ls
+
       - name: Build Docker image
         run: |
           ./mac_docker_build_and_run.sh
