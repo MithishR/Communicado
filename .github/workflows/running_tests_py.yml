@@ -14,16 +14,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Give Permissions to run a script
+      - name: Build Docker Image
         run: |
           cd ./Django/communicado
           chmod +x mac_docker_build_and_run.sh
-
-      - name: Print current directory
-        run: ls
-
-      - name: Build Docker image
-        run: |
           ./mac_docker_build_and_run.sh
 
   test:
@@ -36,4 +30,5 @@ jobs:
 
       - name: Run tests
         run: |
+          cd ./Django/communicado
           docker-compose run web python manage.py test
