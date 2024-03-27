@@ -16,6 +16,7 @@ jobs:
 
       - name: Give Permissions to run a script
         run: |
+          cd ./Django/communicado
           chmod +x mac_docker_build_and_run.sh
 
       - name: Build Docker image
