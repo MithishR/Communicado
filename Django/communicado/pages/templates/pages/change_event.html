@@ -154,7 +154,7 @@
 
         <div class="event-container">
             <div class="event-details">
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="event-info">
                         <label for="name" class="label">Update:</label>
@@ -183,6 +183,10 @@
                     <div class="event-info">
                         <label for="imageURL" class="label">Updated Image:</label>
                         <input type="file" id="imageURL" name="imageURL" class="value" value="{{ event.imageURL }}">
+                    </div>
+                    <div class="event-info">
+                        <label for="price" class="label">Updated Price:</label>
+                        <input type="number" id="price" name="price" class="value" value="{{ event.price }}">
                     </div>
                     <button type="submit" class="btn">Save Changes</button>
                 </form>
