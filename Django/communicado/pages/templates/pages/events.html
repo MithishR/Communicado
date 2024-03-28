@@ -14,7 +14,6 @@
         }
 
         .container {
-            
             margin: 20px auto;
             padding: 20px;
             background-color: #0e0101;
@@ -53,7 +52,6 @@
             margin-bottom: 10px;
             margin-top: 20px;
             height: 500px;
-            
         }
 
         .event-image img {
@@ -97,7 +95,6 @@
             font-weight: bold;
             font-size: medium;
             color: #fff;
-            
         }
         header {
             background-color: rgba(0, 0, 0, 0.7); 
@@ -121,15 +118,34 @@
             text-decoration: underline;
         }
         .custom-form {
-            max-width: 400px; /* Adjust as needed */
+            max-width: 800px; /* Adjust as needed */
             margin: 0 auto; /* Center the form horizontally */
             display: flex; /* Align items in a row */
+            flex-wrap: wrap; /* Allow items to wrap to the next line if necessary */
             justify-content: space-between; /* Space elements evenly */
+            width: 500%;
         }
         
-        /* Style for dropdown */
         .category-dropdown {
             flex: 1; /* Take up remaining space */
+            width: 500%; /* Make the dropdown menu wider */
+            padding: 8px; /* Adjust padding */
+            font-size: 20px; /* Adjust font size */
+            margin-top: 17px;
+            margin-left: px;
+        }
+
+        .search-bar {
+            flex: 1; /* Take up remaining space */
+        }
+
+        .search-bar input[type="text"] {
+            width: 70%; /* Make the input field fill the available space */
+            padding: 8px; /* Adjust input field padding */
+            font-size: 14px; /* Adjust input field font size */
+            border: 1px solid #ddd; /* Add border to input field */
+            border-radius: 5px; /* Add rounded corners */
+            margin-top: 20px;
         }
         
         /* Style for submit button */
@@ -145,6 +161,7 @@
             margin-top: 20px;
             transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
             text-align: center;
+            flex-shrink: 0;
         }
         
         /* Hover effect for button */
@@ -224,4 +241,4 @@
         {% endfor %}
     </div>
 </body>
-</html>
+</html> 
