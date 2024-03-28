@@ -17,7 +17,7 @@ jobs:
       - name: Build Docker Image
         run: |
           cd ./Django/communicado
-          docker-compose build
+          docker-compose -f docker-compose-test.yml build
 
   test:
     needs: build
@@ -30,4 +30,4 @@ jobs:
       - name: Run tests
         run: |
           cd ./Django/communicado
-          docker-compose run web python manage.py test
+          docker-compose docker-compose-test.yml run web python manage.py test
