@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from .models import *
 from django.contrib import messages
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import *
 from django.db.models import Q
 
 
@@ -23,7 +23,7 @@ def login(request):
             if check_password(password, user.password):
                 # Authentication successful
 
-                if user.role == 'organiser':
+                if user.role == 'EventOrganizer':
                     success_message = "Welcome " + user.name
                     messages.success(request, success_message)
                     return redirect('organizer_actions')
@@ -51,13 +51,14 @@ def signup(request):
         email = request.POST.get('email')
         role=request.POST.get('role')
         address=request.POST.get('address')
-        
-        # Encrypt the password
         encrypted_password = make_password(password)
-        
+        phoneNumber=request.POST.get('phoneNumber')
         user = users(role=role, name = name, username=username, email=email, address=address, password=encrypted_password)
         user.save()
-        success_message = "User Account Created for: " + user.name  # Accessing name from the user object
+        if role.__eq__('EventOrganizer'):
+            event_organizer = EventOrganizer(user=user, phoneNumber=phoneNumber)
+            event_organizer.save()
+        success_message = "User Account Created for: " + user.name
         return render(request, 'pages/login.html', {'success_message': success_message})
         
     else:
@@ -79,6 +80,7 @@ def add_event(request):
             category = request.POST.get('category')
             artist = request.POST.get('artist')
             image=request.POST.get('image')
+        
             new_event = Events(name=name, eventDateTime=eventDateTime, location=location, capacity=capacity,
                             category=category, artist=artist, isVerified=False, imageURL=image)
             new_event.save()
