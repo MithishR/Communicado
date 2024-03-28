@@ -103,10 +103,8 @@
         <a href="admin">Admin Panel</a>
     </header>
     
-    <form action="{% url 'add_event' %}" method="post">
+    <form action="{% url 'add_event' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% comment %} <label for="event_organizer">Organizer Name:</label>
-        <input type="text" id="event_organizer" name="event_organizer" required><br> {% endcomment %}
         <label for="name">Event Name:</label>
         <input type="text" id="name" name="name" required><br>
         <label for="eventDateTime">Event Date and Time:</label>
@@ -119,10 +117,10 @@
         <input type="text" id="category" name="category"><br>
         <label for="artist">Artist:</label>
         <input type="text" id="artist" name="artist"><br>
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" min="0.00" max="99999.99" required><br>
         <label for="image">Event Image:</label>
         <input type="file" id="image" name="image"><br>
-        {% comment %} <label for="isVerified">Verified:</label>
-        <input type="checkbox" id="isVerified" name="isVerified" value="true"><br> {% endcomment %}
         <input type="submit" value="Add Event">
     </form>
 </body>
