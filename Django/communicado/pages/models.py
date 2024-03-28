@@ -84,6 +84,3 @@ class BookedEvent(models.Model):
 
     def __str__(self):
         return f"{self.eventID.name} - {self.referenceNumber}"
-    
-    
-
