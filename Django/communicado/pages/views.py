@@ -75,17 +75,31 @@ def add_event(request):
     if request.method == 'POST':
         event_organizer = None
         try:
-            uid=request.session.get('user_id')
+            # uid=request.session.get('user_id')
             name = request.POST.get('name')
             # eventorg = EventOrganizer.objects.get(user__userID=user_id)
-            with connection.cursor() as cursor:
-                cursor.execute("SELECT userID FROM EventOrganizer WHERE userID = %s", [uid])
-                row = cursor.fetchone()
-                if row:
-                    uid = row[0]
-                    event_organizer = get_object_or_404(EventOrganizer, user_id=uid)
-                else:
-                    raise Exception("User is not an Event Organizer or user_id is invalid")
+            # with connection.cursor() as cursor:
+            #     cursor.execute("SELECT userID FROM EventOrganizer WHERE userID = %s", [uid])
+            #     row = cursor.fetchone()
+            #     if row:
+            #         uid = row[0]
+            #         event_organizer = get_object_or_404(EventOrganizer, user_id=uid)
+            #     else:
+            #         raise Exception("User is not an Event Organizer or user_id is invalid")
+            user_id = request.session.get('user_id')
+            user = users.objects.get(userID=user_id)
+            
+            # Check if the user is an Event Organizer
+            # if user.role == 'EventOrganizer':
+            #     # Fetch the EventOrganizer based on the user
+            #     event_organizer = EventOrganizer.objects.get(user=user)
+            # else:
+            #     raise Exception("User is not an Event Organizer")
+            
+            if user.role.__eq__('EventOrganizer'):
+                event_organizer = EventOrganizer.objects.get(user=user)
+            else:
+                raise Exception("User is not an Event Organizer")
 
             # event_organizer = get_object_or_404(EventOrganizer, user=request.user)
             print(event_organizer)
@@ -105,7 +119,7 @@ def add_event(request):
             messages.success(request, success_message)
             return redirect('home')  # Redirect to home page or any other appropriate page after adding event
         except Exception as e:
-            error_message = f"An error occurred while adding the event. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
+            error_message = f"An error occurred while adding the event. Role of user: {users.objects.get(userID=request.session.get('user_id')).role}. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
             messages.error(request, error_message)
             return redirect('add_event')
     else:
