@@ -22,17 +22,18 @@ def login(request):
             # Check if the entered password matches the hashed password in the database
             if check_password(password, user.password):
                 # Authentication successful
-
+                request.session['user_id'] = user.userID
+                request.session.set_test_cookie() 
+                
                 if user.role == 'EventOrganizer':
-                    success_message = "Welcome " + user.name
+                    success_message = "Welcome " + user.name + ", userid:"+ str(request.session.get('user_id')) # Accessing name from the user object
                     messages.success(request, success_message)
                     return redirect('organizer_actions')
-                    #return render(request, 'pages/organizer_actions.html', {'success_message': success_message})
+                
                 else:
-                    success_message = "Welcome " + user.name  # Accessing name from the user object
+                    success_message = "Welcome " + user.name + ", userid:"+ str(request.session.get('user_id')) # Accessing name from the user object
                     messages.success(request, success_message)
                     return redirect('home')
-                 #   return render(request, 'pages/home.html', {'success_message': success_message})
             else:
                 error_message = "Invalid username or password."
                 return render(request, 'pages/login.html', {'error_message': error_message})
@@ -69,11 +70,12 @@ def signup(request):
 def add_event(request):
     if request.method == 'POST':
         try:
-            # organizer_name = request.POST.get('event_organizer')
-            # event_organizer = EventOrganizer.objects.get(user__name=organizer_name)
-
+            user_id=request.session.get('user_id')
             name = request.POST.get('name')
-            # event_organizer_id = users.userID
+            # event_organizer = get_object_or_404(EventOrganizer, user=request.user)
+            event_organizer = get_object_or_404(EventOrganizer, user_id=user_id)
+            print(event_organizer)
+            name = request.POST.get('name')
             eventDateTime = request.POST.get('eventDateTime')
             location = request.POST.get('location')
             capacity = request.POST.get('capacity')
@@ -81,8 +83,9 @@ def add_event(request):
             artist = request.POST.get('artist')
             image=request.POST.get('image')
         
+
             new_event = Events(name=name, eventDateTime=eventDateTime, location=location, capacity=capacity,
-                            category=category, artist=artist, isVerified=False, imageURL=image)
+                            category=category, artist=artist, isVerified=False, eventOrganizerID=event_organizer, imageURL=image)
             new_event.save()
             success_message = "Event added successfully. It is pending approval."
             messages.success(request, success_message)
@@ -98,6 +101,7 @@ def useracc(request):
     data = users.objects.all()
     context = {"users": data}
     return render (request,"pages/useraccount.html",context)
+
 def event(request):
     data = Events.objects.all()
     unique_categories = Events.objects.values_list('category', flat=True).distinct()
@@ -141,6 +145,7 @@ def event(request):
     context = {"events": data ,
                 'unique_categories': unique_categories}
     return render (request , "pages/events.html",context)
+
 def test_page(request):
     return render(request, "pages/test_page.html")
 def eventinfo(request,event_ID):
@@ -163,12 +168,6 @@ def edit_event(request):
 
 from django.http import HttpResponseBadRequest
 
-# def change_event(request, event_ID):
-#     event = get_object_or_404(Events, eventID=event_ID)
-#     if request.method == 'POST':
-#         event.name = request.POST.get('name')
-#         event.eventDateTime = request.POST.get('eventDateTime')
-#     return render(request, 'pages/change_event.html', {'event': event})
     
 def change_event(request, event_ID):
     event = get_object_or_404(Events, eventID=event_ID)
