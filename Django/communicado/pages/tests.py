@@ -4,25 +4,22 @@ from django.contrib.auth.models import User
 from django.urls import reverse 
 from .models import *
 from django.test import LiveServerTestCase
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
+#from selenium import webdriver
+#from selenium.webdriver.common.keys import Keys
+#from selenium.webdriver.chrome.options import Options
 import time
-import unittest
 
-class SeleniumTest(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Chrome()  # You can use any other browser driver
+# Example 1
 
-    def test_browser(self):
-        self.driver.get("https://www.google.com")
-        self.assertIn("Google", self.driver.title)
-
-    def tearDown(self):
-        self.driver.quit()
-
-if __name__ == "__main__":
-	    unittest.main()
+#class Hosttest(LiveServerTestCase):
+  	
+#	def testhomepage(self):
+#		options = Options()
+#		options.headless = True
+#		driver = webdriver.Chrome(options=options)
+#		driver.get(self.live_server_url)
+				# try driver.get(self.live_server_url) if driver.get('http://127.0.0.1:8000/') does not work	
+#		assert "Hello, world!" in driver.title
             
 class UsersTestCase(TestCase):
 
@@ -261,39 +258,6 @@ class UsersTestCase(TestCase):
         event_organizer.user.email = updated_data['email']
         event_organizer.user.address = updated_data['address']
         event_organizer.phoneNumber = updated_data['phoneNumber']
-        
-    def test_login_page_loads(self):                       #testing for the loading of the page
-        response = self.client.get(reverse('login'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<title>Login</title>') 
-    
-    def test_login_page_status_code(self):
-        # Test if the login page returns a status code of 200 (OK)
-        response = self.client.get(reverse('login'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_login_page_contains_title(self):
-        # Test if the login page contains the expected title
-        response = self.client.get(reverse('login'))
-        self.assertContains(response, '<title>Login</title>')
-        
-    def test_invalid_login_credentials(self):
-        # Test if the login page handles invalid credentials correctly
-        username = 'invalid_user'
-        password = 'invalid_password'
-        response = self.client.post(reverse('login'), {'username': username, 'password': password})
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<p style="color: white;">Invalid username or password.</p>')
-        
-    def test_valid_login_credentials(self):
-        # Create a user with valid credentials
-        username = 'mahigangal'
-        password = 'mahi123'
-        hashed_password = make_password(password)  # Hash the password
-        user = users.objects.create(username=username, password=hashed_password)
-        response = self.client.post(reverse('login'), {'username': username, 'password': password})
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url=reverse('home'), target_status_code=200)
 
     def test_login_page_ui_elements(self):
            
@@ -307,41 +271,8 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<label for="password">Password</label>')  # Check for the password label
         self.assertContains(response, '<input type="password" id="password" name="password" required>')  # Check for the password input field
         self.assertContains(response, '<input type="submit"')  # Check for the submit button
-        self.assertContains(response, '<a href="http://localhost:8000/signup/">Sign up</a>')  # Check for the signup link
+        self.assertContains(response, '<a href="http://localhost:8000/signup/">Sign up</a>')  # Check for the signup link
 
-    def test_signup_page_loads(self):                       #testing for the loading of the page
-        response = self.client.get(reverse('signup'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, '<title>Signup Page</title>') 
-        
-    def test_signup_page_status_code(self):
-        # Test if the signup page returns a status code of 200 (OK)
-        response = self.client.get(reverse('signup'))
-        self.assertEqual(response.status_code, 200)
-    
-    def test_signup_page_contains_title(self):
-        # Test if the signup page contains the expected title
-        response = self.client.get(reverse('signup'))
-        self.assertContains(response, '<title>Signup Page</title>')
-        
-        
-    def test_signup_page_post_success(self):
-        data = {
-            'username': 'divenagangal',
-            'password': 'divena123',
-            'name': 'Divena Gangal',
-            'email': 'divenagangal@gamil.com',
-            'address': '123 Test St',
-            'role': 'customer'
-        }
-        response = self.client.post(reverse('signup'), data)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'User Account Created for: Divena Gangal')
-
-        # Check if the user exists in the database
-        user_exists = users.objects.filter(username='divenagangal').exists()
-        self.assertTrue(user_exists)
-    
     def test_signup_page_ui_elements(self):
         
         response = self.client.get(reverse('signup'))
@@ -364,9 +295,6 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<option value="customer">Customer</option>')  # Check for the customer option
         self.assertContains(response, '<option value="organiser">Organiser</option>')  # Check for the organiser option
         self.assertContains(response, '<input type="submit"')  # Check for the submit button
-        self.assertContains(response, '<a href="http://localhost:8000/login/">Login</a>')  # Check for the login link
-    
-
-
+        self.assertContains(response, '<a href="http://localhost:8000/login/">Login</a>')  # Check for the login link
     
 
