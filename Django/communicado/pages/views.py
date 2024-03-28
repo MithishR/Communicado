@@ -21,14 +21,9 @@ def login(request):
         
         try:
             user = users.objects.get(username=username)
-
-            # Check if the entered password ma  tches the hashed password in the database
             if check_password(password, user.password):
-    
-
                 request.session['user_id'] = user.userID
                 request.session.set_test_cookie() 
-                
                 if user.role == 'EventOrganizer':
                     success_message = "Welcome " + user.name + ", userid:"+ str(request.session.get('user_id')) # Accessing name from the user object
                     messages.success(request, success_message)
@@ -75,33 +70,13 @@ def add_event(request):
     if request.method == 'POST':
         event_organizer = None
         try:
-            # uid=request.session.get('user_id')
             name = request.POST.get('name')
-            # eventorg = EventOrganizer.objects.get(user__userID=user_id)
-            # with connection.cursor() as cursor:
-            #     cursor.execute("SELECT userID FROM EventOrganizer WHERE userID = %s", [uid])
-            #     row = cursor.fetchone()
-            #     if row:
-            #         uid = row[0]
-            #         event_organizer = get_object_or_404(EventOrganizer, user_id=uid)
-            #     else:
-            #         raise Exception("User is not an Event Organizer or user_id is invalid")
             user_id = request.session.get('user_id')
             user = users.objects.get(userID=user_id)
-            
-            # Check if the user is an Event Organizer
-            # if user.role == 'EventOrganizer':
-            #     # Fetch the EventOrganizer based on the user
-            #     event_organizer = EventOrganizer.objects.get(user=user)
-            # else:
-            #     raise Exception("User is not an Event Organizer")
-            
             if user.role.__eq__('EventOrganizer'):
                 event_organizer = EventOrganizer.objects.get(user=user)
             else:
                 raise Exception("User is not an Event Organizer")
-
-            # event_organizer = get_object_or_404(EventOrganizer, user=request.user)
             print(event_organizer)
             name = request.POST.get('name')
             eventDateTime = request.POST.get('eventDateTime')
@@ -111,13 +86,12 @@ def add_event(request):
             artist = request.POST.get('artist')
             image=request.POST.get('image')
         
-
             new_event = Events(name=name, eventDateTime=eventDateTime, location=location, capacity=capacity,
                             category=category, artist=artist, isVerified=False, eventOrganizerID=event_organizer, imageURL=image)
             new_event.save()
             success_message = "Event added successfully. It is pending approval."
             messages.success(request, success_message)
-            return redirect('home')  # Redirect to home page or any other appropriate page after adding event
+            return redirect('home') 
         except Exception as e:
             error_message = f"An error occurred while adding the event. Role of user: {users.objects.get(userID=request.session.get('user_id')).role}. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
             messages.error(request, error_message)
