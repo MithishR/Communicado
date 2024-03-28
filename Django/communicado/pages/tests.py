@@ -4,22 +4,22 @@ from django.contrib.auth.models import User
 from django.urls import reverse 
 from .models import *
 from django.test import LiveServerTestCase
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
-#from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 import time
 
 # Example 1
 
-#class Hosttest(LiveServerTestCase):
+class Hosttest(LiveServerTestCase):
   	
-#	def testhomepage(self):
-#		options = Options()
-#		options.headless = True
-#		driver = webdriver.Chrome(options=options)
-#		driver.get(self.live_server_url)
+	def testhomepage(self):
+		options = Options()
+		options.headless = True
+		driver = webdriver.Chrome(options=options)
+		driver.get(self.live_server_url)
 				# try driver.get(self.live_server_url) if driver.get('http://127.0.0.1:8000/') does not work	
-#		assert "Hello, world!" in driver.title
+		assert "Hello, world!" in driver.title
             
 class UsersTestCase(TestCase):
 
