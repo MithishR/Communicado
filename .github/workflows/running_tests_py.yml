@@ -30,4 +30,4 @@ jobs:
       - name: Run tests
         run: |
           cd ./Django/communicado
-          docker-compose docker-compose-test.yml run web python manage.py test
+          docker-compose -f docker-compose-test.yml run web python manage.py test
