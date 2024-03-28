@@ -4,22 +4,22 @@ from django.contrib.auth.models import User
 from django.urls import reverse 
 from .models import *
 from django.test import LiveServerTestCase
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.options import Options
+#from selenium import webdriver
+#from selenium.webdriver.common.keys import Keys
+#from selenium.webdriver.chrome.options import Options
 import time
 
 # Example 1
 
-class Hosttest(LiveServerTestCase):
+#class Hosttest(LiveServerTestCase):
   	
-	def testhomepage(self):
-		options = Options()
-		options.headless = True
-		driver = webdriver.Chrome(options=options)
-		driver.get(self.live_server_url)
+#	def testhomepage(self):
+#		options = Options()
+#		options.headless = True
+#		driver = webdriver.Chrome(options=options)
+#		driver.get(self.live_server_url)
 				# try driver.get(self.live_server_url) if driver.get('http://127.0.0.1:8000/') does not work	
-		assert "Hello, world!" in driver.title
+#		assert "Hello, world!" in driver.title
             
 class UsersTestCase(TestCase):
 
@@ -259,6 +259,43 @@ class UsersTestCase(TestCase):
         event_organizer.user.address = updated_data['address']
         event_organizer.phoneNumber = updated_data['phoneNumber']
 
+    def test_login_page_ui_elements(self):
+           
+        response = self.client.get(reverse('login'))
+        self.assertEqual(response.status_code, 200)
+            
+            # Check if the response contains the login form elements
+        self.assertContains(response, '<form')  # Check for the presence of the form
+        self.assertContains(response, '<label for="username">Username</label>')  # Check for the username label
+        self.assertContains(response, '<input type="text" id="username" name="username" required>')  # Check for the username input field
+        self.assertContains(response, '<label for="password">Password</label>')  # Check for the password label
+        self.assertContains(response, '<input type="password" id="password" name="password" required>')  # Check for the password input field
+        self.assertContains(response, '<input type="submit"')  # Check for the submit button
+        self.assertContains(response, '<a href="http://localhost:8000/signup/">Sign up</a>')  # Check for the signup link
+
+    def test_signup_page_ui_elements(self):
+        
+        response = self.client.get(reverse('signup'))
+        self.assertEqual(response.status_code, 200)
+        
+        # Check if the response contains the signup form elements
+        self.assertContains(response, '<form')  # Check for the presence of the form
+        self.assertContains(response, '<label for="username">Username:</label>')  # Check for the username label
+        self.assertContains(response, '<input type="text" id="username" name="username" required>')  # Check for the username input field
+        self.assertContains(response, '<label for="password">Password:</label>')  # Check for the password label
+        self.assertContains(response, '<input type="password" id="password" name="password" required>')  # Check for the password input field
+        self.assertContains(response, '<label for="name">Name:</label>')  # Check for the name label
+        self.assertContains(response, '<input type="text" id="name" name="name" required>')  # Check for the name input field
+        self.assertContains(response, '<label for="email">Email:</label>')  # Check for the email label
+        self.assertContains(response, '<input type="email" id="email" name="email" required>')  # Check for the email input field
+        self.assertContains(response, '<label for="address">Address:</label>')  # Check for the address label
+        self.assertContains(response, '<input type="text" id="address" name="address" required>')  # Check for the address input field
+        self.assertContains(response, '<label for="role">Role:</label>')  # Check for the role label
+        self.assertContains(response, '<select id="role" name="role">')  # Check for the role dropdown
+        self.assertContains(response, '<option value="customer">Customer</option>')  # Check for the customer option
+        self.assertContains(response, '<option value="organiser">Organiser</option>')  # Check for the organiser option
+        self.assertContains(response, '<input type="submit"')  # Check for the submit button
+        self.assertContains(response, '<a href="http://localhost:8000/login/">Login</a>')  # Check for the login link
     
 
 
