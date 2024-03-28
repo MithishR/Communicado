@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to Cart</title>
+</head>
+<body>
+    <h1>Add to Cart</h1>
+    <div class="container">
+        <h2>{{ event.name }} Details</h2>
+        <div class="event-details">
+            {% if event.imageURL %}
+            <div class="event-image">
+                <img src="{% static event.imageURL %}" alt="Event Image">
+            </div>
+            {% endif %}
+            <div class="event-info">
+                <span class="label">Name:</span>
+                <span class="value">{{ event.name }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Date and Time:</span>
+                <span class="value">{{ event.eventDateTime }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Location:</span>
+                <span class="value">{{ event.location }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Capacity:</span>
+                <span class="value">{{ event.capacity }}</span>
+            </div>
+            <!-- Add more event details here -->
+            <form method="POST" action="{% url 'add_to_cart' event_ID=event.eventID %}">
+                {% csrf_token %}
+                <!-- Add form fields for selecting quantity, options, etc. -->
+                <button type="submit">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

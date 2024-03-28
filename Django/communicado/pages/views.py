@@ -1,8 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.hashers import make_password,check_password
-from .models import *
+from .models import users, EventOrganizer, Events
 from django.contrib import messages
-
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Events 
+from django.db import connection
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import *
 from django.db.models import Q
 
@@ -18,10 +21,11 @@ def login(request):
         
         try:
             user = users.objects.get(username=username)
-            
-            # Check if the entered password matches the hashed password in the database
+
+            # Check if the entered password ma  tches the hashed password in the database
             if check_password(password, user.password):
-                # Authentication successful
+    
+
                 request.session['user_id'] = user.userID
                 request.session.set_test_cookie() 
                 
@@ -69,11 +73,21 @@ def signup(request):
     
 def add_event(request):
     if request.method == 'POST':
+        event_organizer = None
         try:
-            user_id=request.session.get('user_id')
+            uid=request.session.get('user_id')
             name = request.POST.get('name')
+            # eventorg = EventOrganizer.objects.get(user__userID=user_id)
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT userID FROM EventOrganizer WHERE userID = %s", [uid])
+                row = cursor.fetchone()
+                if row:
+                    uid = row[0]
+                    event_organizer = get_object_or_404(EventOrganizer, user_id=uid)
+                else:
+                    raise Exception("User is not an Event Organizer or user_id is invalid")
+
             # event_organizer = get_object_or_404(EventOrganizer, user=request.user)
-            event_organizer = get_object_or_404(EventOrganizer, user_id=user_id)
             print(event_organizer)
             name = request.POST.get('name')
             eventDateTime = request.POST.get('eventDateTime')
@@ -91,7 +105,7 @@ def add_event(request):
             messages.success(request, success_message)
             return redirect('home')  # Redirect to home page or any other appropriate page after adding event
         except Exception as e:
-            error_message = "An error occurred while adding the event: {}".format(str(e))
+            error_message = f"An error occurred while adding the event. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
             messages.error(request, error_message)
             return redirect('add_event')
     else:
@@ -187,3 +201,16 @@ def change_event(request, event_ID):
     else:
         # Render the form template with the event data for editing
         return render(request, 'pages/change_event.html', {'event': event})
+    
+    
+
+def add_to_cart(request, event_ID):
+    event = get_object_or_404(Events, eventID=event_ID)
+    # Logic for adding item to cart
+    if request.method == 'POST':
+        # Handle form submission here
+        # For example, you can create a CartItem object and save it to the database
+        # cart_item = CartItem.objects.create(event=event, quantity=request.POST['quantity'])
+        # Redirect the user after adding to cart
+        return redirect('cart')
+    return render(request, 'pages/add_to_cart.html', {'event': event})

@@ -95,7 +95,7 @@
 <body>
     
 <header>
-    <p style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); color: white;">Logged in as {{ request.user }}</p>
+    <p style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); color: white;">Logged in as {{ request.session.user_id }}</p>
     <a href="{% url 'login' %}">Login</a>
     <a href="{% url 'signup' %}">Signup</a>
     <a href="#">View Cart</a>

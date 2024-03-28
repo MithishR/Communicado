@@ -212,8 +212,12 @@
                     {% if event.artist %}
                     <div class="event-artist">Artist: {{ event.artist }}</div>
                     {% endif %}
+                    {% if event.price %}
+                    <div class="event-price">Price: {{ event.price }}</div>
+                    {% endif %}
                     <a href="{% url 'eventinfo' event_ID=event.eventID %}" class="btn btn-outline-secondary">View</a>
-                    <button data-product="{{ event.eventID }}" class="btn btn-outline-secondary">Book</button>
+                    <a href="{% url 'add_to_cart' event_ID=event.eventID %}" class="btn btn-outline-secondary">Book</a>
+                </div>
                 </div>
             </div>
         </div>
