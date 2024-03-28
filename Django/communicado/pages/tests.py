@@ -8,18 +8,21 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 import time
+import unittest
 
-# Example 1
+class SeleniumTest(unittest.TestCase):
+    def setUp(self):
+        self.driver = webdriver.Chrome()  # You can use any other browser driver
 
-class Hosttest(LiveServerTestCase):
-  	
-	def testhomepage(self):
-		options = Options()
-		options.headless = True
-		driver = webdriver.Chrome(chrome_options=options)
-		driver.get(self.live_server_url)
-				# try driver.get(self.live_server_url) if driver.get('http://127.0.0.1:8000/') does not work	
-		assert "Hello, world!" in driver.title
+    def test_browser(self):
+        self.driver.get("https://www.google.com")
+        self.assertIn("Google", self.driver.title)
+
+    def tearDown(self):
+        self.driver.quit()
+
+if __name__ == "__main__":
+	    unittest.main()
             
 class UsersTestCase(TestCase):
 
