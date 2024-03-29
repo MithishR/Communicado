@@ -11,23 +11,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Build Docker Image
-        run: |
-          cd ./Django/communicado
-          docker-compose build
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
+    - name: Install dependencies
+      run: |
+        cd ./Django/communicado
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Install Chrome browser
+      run: |
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo dpkg -i google-chrome-stable_current_amd64.deb
+        sudo apt-get install -f
 
-      - name: Run tests
-        run: |
-          cd ./Django/communicado
-          docker-compose run web python manage.py test
+    - name: Install ChromeDriver
+      run: |
+        LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE_123)
+        wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+        unzip chromedriver_linux64.zip
+        chmod +x chromedriver
+        sudo mv chromedriver /usr/local/bin/
+
+    - name: Run Selenium test
+      run: |
+        cd ./Django/communicado
+        python manage.py makemigrations
+        python manage.py migrate
+        python manage.py test
