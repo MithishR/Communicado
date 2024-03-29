@@ -163,12 +163,24 @@ def organizer_actions(request):
     context = {"userData": userData, }
     return render (request,"pages/organizer_actions.html",context)
     
-
 def edit_event(request):
-    events = Events.objects.all()  
-    return render(request, 'pages/edit_event.html', {'events': events})
+    user_id = request.session.get('user_id')
+    user = users.objects.get(userID=user_id)
+    
+    if user.role.__eq__('EventOrganizer'):
+        try:
+            event_organizer = EventOrganizer.objects.get(user=user)
+            events = Events.objects.filter(eventOrganizerID=event_organizer)
+            return render(request, 'pages/edit_event.html', {'events': events})
+        except EventOrganizer.DoesNotExist:
+            error_message = "You are not authorized to access this page."
+            return render(request, 'error.html', {'error_message': error_message})
 
-from django.http import HttpResponseBadRequest
+
+    else:
+        error_message = f"An error occurred while retrieving the event. Role of user: {users.objects.get(userID=request.session.get('user_id')).role}. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
+        messages.error(request, error_message)
+        return redirect('edit_event')
 
     
 def change_event(request, event_ID):
