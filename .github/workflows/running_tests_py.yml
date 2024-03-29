@@ -14,39 +14,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.x
-
-    - name: Install dependencies
-      run: |
-        cd ./Django/communicado
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
-    - name: Install Chrome browser
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget gnupg
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo apt install ./google-chrome-stable_current_amd64.deb
-
-    - name: Install ChromeDriver
-      run: |
-        LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
-        wget "http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip"
-        unzip chromedriver_linux64.zip
-        sudo mv chromedriver /usr/local/bin/
-        sudo chmod +x /usr/local/bin/chromedriver
-
     - name: Run Django migrations
       run: |
         cd ./Django/communicado
         python manage.py makemigrations
         python manage.py migrate || true
-
-    - name: Run Selenium tests
+        
+    - name: Docker Build Image
       run: |
         cd ./Django/communicado
-        python manage.py test
+        chmod +x mac_docker_build_and_run.sh
+
+    - name: Run Tests
+      run: |
+        cd ./Django/communicado
+        docker-compose run web python manage.py test
