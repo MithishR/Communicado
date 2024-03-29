@@ -203,18 +203,21 @@ def change_event(request, event_ID):
         return render(request, 'pages/change_event.html', {'event': event})
 
 def userbookeventinfo(request):
-    user = request.session.get('user_id')
-    if not user:
+    
+    userID = request.session.get('user_id')
+    if not userID:
+        
         error_message = "You aren't logged in. Kindly log in and try again."
         return render(request, 'pages/userbookinghistory.html', {'error_message': error_message, 'show_login_button': True})
     else:
-            bookedevents = BookedEvent.objects.filter(user = user)
-            if(bookedevents.count() == 0):
-                no_events_message = "You don't have any booked events. Book now!"
-                return render(request, 'pages/userbookinghistory.html', {'error_message': no_events_message, 'show_events_button': True})
-            else:
-                return render(request, 'pages/userbookinghistory.html', {'show_events_button': True})
-                
+        
+        booked_events = BookedEvent.objects.filter(userID=userID)
+        if booked_events.count() == 0:
+            
+            no_events_message = "You don't have any booked events. Book now!"
+            return render(request, 'pages/userbookinghistory.html', {'error_message': no_events_message, 'show_events_button': True})
+        else:
+            
+            return render(request, 'pages/userbookinghistory.html', {'booked_events':booked_events})
         
        
-  
