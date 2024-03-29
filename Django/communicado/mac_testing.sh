@@ -4,10 +4,10 @@
 docker-compose down
 
 # Build the Docker images
-docker-compose build
+docker-compose -f docker-compose-test.yml build
 
 # Start the development server
-docker-compose up -d
+docker-compose -f docker-compose-test.yml up -d
 
 # Make migrations
 docker exec communicado_container python manage.py makemigrations

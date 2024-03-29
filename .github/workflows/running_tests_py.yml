@@ -17,16 +17,16 @@ jobs:
     - name: Docker Build Image
       run: |
         cd ./Django/communicado
-        chmod +x mac_docker_build_and_run.sh
-        ./mac_docker_build_and_run.sh
+        chmod +x mac_testing.sh
+        ./mac_testing.sh
 
     - name: Run Django migrations
       run: |
         cd ./Django/communicado
-        docker exec communicado_container python manage.py makemigrations
-        docker exec communicado_container python manage.py migrate || true
+        docker exec communicado_container_test python manage.py makemigrations
+        docker exec communicado_container_test python manage.py migrate || true
         
     - name: Run Tests
       run: |
         cd ./Django/communicado
-        docker exec communicado_container python manage.py test
+        docker exec communicado_container_test python manage.py test
