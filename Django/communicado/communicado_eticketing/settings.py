@@ -171,3 +171,6 @@ JAZZMIN_UI_TWEAKS = {
     "theme": "darkly",
     
 }
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_DB_ALIAS = 'default'

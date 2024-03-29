@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,6 +98,7 @@
 <body>
     <h1>Add Event</h1>
     <header>
+        <p style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); color: white;">Logged in as {{ request.session.user_id }}</p>
         <a href="login">Login</a>
         <a href="signup">Signup</a>
         <a href="#">View Cart</a>
@@ -105,6 +107,13 @@
     
     <form action="{% url 'add_event' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {% comment %} <label for="event_organizer">Organizer Name:</label>
+        <input type="text" id="event_organizer" name="event_organizer" required><br> {% endcomment %}
+        {% if messages %}
+        {% for message in messages %}
+            <p style="color: white;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
         <label for="name">Event Name:</label>
         <input type="text" id="name" name="name" required><br>
         <label for="eventDateTime">Event Date and Time:</label>

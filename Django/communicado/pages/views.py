@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.hashers import make_password,check_password
-from .models import *
+from .models import users, EventOrganizer, Events
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Events 
-
+from django.db import connection
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import *
 from django.db.models import Q
 
@@ -20,21 +21,18 @@ def login(request):
         
         try:
             user = users.objects.get(username=username)
-            
-            # Check if the entered password matches the hashed password in the database
             if check_password(password, user.password):
-                # Authentication successful
-
+                request.session['user_id'] = user.userID
+                request.session.set_test_cookie() 
                 if user.role == 'EventOrganizer':
-                    success_message = "Welcome " + user.name
+                    success_message = "Welcome " + user.name + ", userid:"+ str(request.session.get('user_id')) # Accessing name from the user object
                     messages.success(request, success_message)
                     return redirect('organizer_actions')
-                    #return render(request, 'pages/organizer_actions.html', {'success_message': success_message})
+                
                 else:
-                    success_message = "Welcome " + user.name  # Accessing name from the user object
+                    success_message = "Welcome " + user.name + ", userid:"+ str(request.session.get('user_id')) # Accessing name from the user object
                     messages.success(request, success_message)
                     return redirect('home')
-                 #   return render(request, 'pages/home.html', {'success_message': success_message})
             else:
                 error_message = "Invalid username or password."
                 return render(request, 'pages/login.html', {'error_message': error_message})
@@ -70,12 +68,17 @@ def signup(request):
     
 def add_event(request):
     if request.method == 'POST':
+        event_organizer = None
         try:
-            # organizer_name = request.POST.get('event_organizer')
-            # event_organizer = EventOrganizer.objects.get(user__name=organizer_name)
-
             name = request.POST.get('name')
-            # event_organizer_id = users.userID
+            user_id = request.session.get('user_id')
+            user = users.objects.get(userID=user_id)
+            if user.role.__eq__('EventOrganizer'):
+                event_organizer = EventOrganizer.objects.get(user=user)
+            else:
+                raise Exception("User is not an Event Organizer")
+            print(event_organizer)
+            name = request.POST.get('name')
             eventDateTime = request.POST.get('eventDateTime')
             location = request.POST.get('location')
             capacity = request.POST.get('capacity')
@@ -84,13 +87,13 @@ def add_event(request):
             image=request.POST.get('image')
         
             new_event = Events(name=name, eventDateTime=eventDateTime, location=location, capacity=capacity,
-                            category=category, artist=artist, isVerified=False, imageURL=image)
+                            category=category, artist=artist, isVerified=False, eventOrganizerID=event_organizer, imageURL=image)
             new_event.save()
             success_message = "Event added successfully. It is pending approval."
             messages.success(request, success_message)
-            return redirect('home')  # Redirect to home page or any other appropriate page after adding event
+            return redirect('home') 
         except Exception as e:
-            error_message = "An error occurred while adding the event: {}".format(str(e))
+            error_message = f"An error occurred while adding the event. Role of user: {users.objects.get(userID=request.session.get('user_id')).role}. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
             messages.error(request, error_message)
             return redirect('add_event')
     else:
@@ -100,6 +103,7 @@ def useracc(request):
     data = users.objects.all()
     context = {"users": data}
     return render (request,"pages/useraccount.html",context)
+
 def event(request):
     data = Events.objects.all()
     unique_categories = Events.objects.values_list('category', flat=True).distinct()
@@ -143,6 +147,7 @@ def event(request):
     context = {"events": data ,
                 'unique_categories': unique_categories}
     return render (request , "pages/events.html",context)
+
 def test_page(request):
     return render(request, "pages/test_page.html")
 def eventinfo(request,event_ID):
@@ -165,12 +170,6 @@ def edit_event(request):
 
 from django.http import HttpResponseBadRequest
 
-# def change_event(request, event_ID):
-#     event = get_object_or_404(Events, eventID=event_ID)
-#     if request.method == 'POST':
-#         event.name = request.POST.get('name')
-#         event.eventDateTime = request.POST.get('eventDateTime')
-#     return render(request, 'pages/change_event.html', {'event': event})
     
 def change_event(request, event_ID):
     event = get_object_or_404(Events, eventID=event_ID)
@@ -190,16 +189,3 @@ def change_event(request, event_ID):
     else:
         # Render the form template with the event data for editing
         return render(request, 'pages/change_event.html', {'event': event})
-    
-    
-
-def add_to_cart(request, event_ID):
-    event = get_object_or_404(Events, eventID=event_ID)
-    # Logic for adding item to cart
-    if request.method == 'POST':
-        # Handle form submission here
-        # For example, you can create a CartItem object and save it to the database
-        # cart_item = CartItem.objects.create(event=event, quantity=request.POST['quantity'])
-        # Redirect the user after adding to cart
-        return redirect('cart')
-    return render(request, 'pages/add_to_cart.html', {'event': event})

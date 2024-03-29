@@ -12,11 +12,11 @@ class users(models.Model):
     class Meta:
         db_table = 'users'
 
-    def _str_(self):
+    def __str__(self):
         return self.username
 class EventOrganizerManager(models.Manager):
     def get_queryset(self):
-        return super().get_queryset().filter(user__role__in=['Event Organizer', 'organiser'])
+        return super().get_queryset().filter(user__role__in=['Event Organizer', 'organiser', 'EventOrganizer'])
 
 class EventOrganizer(models.Model):
     user = models.OneToOneField(users, primary_key=True, db_column='userID',on_delete=models.CASCADE, to_field='userID')
@@ -26,7 +26,7 @@ class EventOrganizer(models.Model):
     class Meta:
         db_table = 'EventOrganizer'
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.user.username} ({self.phoneNumber})"
     
 
@@ -37,7 +37,7 @@ class Customer(models.Model):
     class Meta:
         db_table = 'Customer'
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.user.username} ({self.phoneNumber})"
 
 class Admin(models.Model):
@@ -47,7 +47,7 @@ class Admin(models.Model):
     class Meta:
         db_table = 'Admin'
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.user.username} ({self.officeNo})"
 
 class Events(models.Model):
@@ -69,7 +69,7 @@ class Events(models.Model):
     class Meta:
         db_table = 'events'
 
-    def _str_(self):
+    def __str__(self):
         return self.name
 
 class BookedEvent(models.Model):
@@ -82,8 +82,5 @@ class BookedEvent(models.Model):
     class Meta:
         db_table = 'bookedEvent'
 
-    def _str_(self):
+    def __str__(self):
         return f"{self.eventID.name} - {self.referenceNumber}"
-    
-    
-
