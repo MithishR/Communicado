@@ -364,5 +364,68 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<option value="EventOrganizer">Event Organizer</option>')  # Check for the organiser option
         self.assertContains(response, '<input type="submit"')  # Check for the submit button
         self.assertContains(response, '<a href="http://localhost:8000/login/">Login</a>')  # Check for the login link
+        
+        
+    def test_events_page_ui_elements(self):
     
+        response = self.client.get(reverse('events'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<form')  
+        self.assertContains(response, '<label for="category-select">Select Category:</label>')  
+        self.assertContains(response, '<select name="category" id="category-select">') 
+        uniq =Events.objects.values_list('category', flat=True).distinct()
+        for category in uniq:
+            self.assertContains(response, '<option value="{0}">{0}</option>'.format(category))
+        self.assertContains(response, '<label for="search-input">Search:</label>')  
+        self.assertContains(response, '<input type="text" id="search-input" name="search" placeholder="Artist/Event name">')  
+        self.assertContains(response, '<button type="submit" class="custom-button">Search</button>')  
+        
+        all = Events.objects.all()
+        for event in all:
+            self.assertContains(response, '<div class="event-container">') 
+            self.assertContains(response, '<div class="event">') 
+            self.assertContains(response, '<div class="event-name">{}</div>'.format(event.name))
+           # self.assertContains(response, '<div class="event-date">{}</div>'.format(event.eventDateTime.strftime('%Y-%m-%d %H:%M:%S.%f%z').encode('utf-8')))
+            if event.location:
+                self.assertContains(response, '<div class="event-location">Location: {}</div>'.format(event.location))
+            if event.capacity:
+                self.assertContains(response, '<div class="event-capacity">Capacity: {}</div>'.format(event.capacity))
+            if event.category:
+                self.assertContains(response, '<div class="event-category">Category: {}</div>'.format(event.category))
+            if event.artist:
+                self.assertContains(response, '<div class="event-artist">Artist: {}</div>'.format(event.artist))
+                event_id = event.eventID
+                url = f'http://localhost:8000/eventinfo/{event_id}'
+                #self.assertContains(response, f'<a href="{url}" class="btn btn-outline-secondary">View</a>')
+    def test_event_info_pages(self):
+   
+        all_events = Events.objects.all()
+    
+    
+        for event in all_events:
+            url = reverse('eventinfo', kwargs={'event_ID': event.eventID})
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<h1>Communicado</h1>')
+        self.assertContains(response, '<h2>{} Details</h2>'.format(event.name))
+        self.assertContains(response, '<span class="label">Name:</span>')
+        self.assertContains(response, '<span class="value">{}</span>'.format(event.name))
+        self.assertContains(response, '<span class="label">Date and Time:</span>')
+        #self.assertContains(response, '<span class="value">{}</span>'.format(event.eventDateTime))
+        self.assertContains(response, '<span class="label">Location:</span>')
+        self.assertContains(response, '<span class="value">{}</span>'.format(event.location))
+        self.assertContains(response, '<span class="label">Capacity:</span>')
+        self.assertContains(response, '<span class="value">{}</span>'.format(event.capacity))
+        self.assertContains(response, '<span class="label">Category:</span>')
+        self.assertContains(response, '<span class="value">{}</span>'.format(event.category))
+        self.assertContains(response, '<span class="label">Artist:</span>')
+        self.assertContains(response, '<span class="value">{}</span>'.format(event.artist))
+        self.assertContains(response, '<span class="label">About:</span>')
+        self.assertContains(response, '<span class="value">Here we will display the paragraph details about the event</span>')
+        self.assertContains(response, '<a href="http://localhost:8000/events" class="back-link">Back to Events</a>')
+
+
+
+
+
 
