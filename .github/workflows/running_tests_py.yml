@@ -22,10 +22,10 @@ jobs:
     - name: Run Django migrations
       run: |
         cd ./Django/communicado
-        docker exec python manage.py makemigrations
-        docker exec python manage.py migrate || true
+        docker exec web python manage.py makemigrations
+        docker exec web python manage.py migrate || true
         
     - name: Run Tests
       run: |
         cd ./Django/communicado
-        docker exec run web python manage.py test
+        docker exec web python manage.py test
