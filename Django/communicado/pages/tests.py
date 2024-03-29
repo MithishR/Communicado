@@ -46,7 +46,7 @@ class UsersTestCase(TestCase):
         username='organizer123',
         password='organizerpass',
         name='Organizer User',
-        role='Organizer',
+        role='EventOrganizer',
         email='organizer@example.com',
         address='456 Organizer St, City, Country'
         )
@@ -70,6 +70,7 @@ class UsersTestCase(TestCase):
             phoneNumber='123456789'
         )
         cls.event_organizer.save()
+        
 
         cls.customer = Customer.objects.create(
             user=users.objects.create(
@@ -365,4 +366,58 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<input type="submit"')  # Check for the submit button
         self.assertContains(response, '<a href="http://localhost:8000/login/">Login</a>')  # Check for the login link
     
+    def test_add_event_page_ui_elements(self):
+        response = self.client.get(reverse('add_event'))
 
+        # Check if the response status code is 200 (OK)
+        self.assertEqual(response.status_code, 200)
+
+        # Check if the response contains the expected HTML elements
+        self.assertContains(response, '<form')  # Check for the presence of the form
+        self.assertContains(response, '<label for="name">Event Name:</label>')  # Check for the event name label
+        self.assertContains(response, '<input type="text" id="name" name="name" required>')  # Check for the event name input field
+        self.assertContains(response, '<label for="eventDateTime">Event Date and Time:</label>')  # Check for the event date and time label
+        self.assertContains(response, '<input type="datetime-local" id="eventDateTime" name="eventDateTime" required>')  # Check for the event date and time input field
+        self.assertContains(response, '<label for="location">Location:</label>')  # Check for the location label
+        self.assertContains(response, '<input type="text" id="location" name="location">')  # Check for the location input field
+        self.assertContains(response, '<label for="capacity">Capacity:</label>')  # Check for the capacity label
+        self.assertContains(response, '<input type="number" id="capacity" name="capacity">')  # Check for the capacity input field
+        self.assertContains(response, '<label for="category">Category:</label>')  # Check for the category label
+        self.assertContains(response, '<input type="text" id="category" name="category">')  # Check for the category input field
+        self.assertContains(response, '<label for="artist">Artist:</label>')  # Check for the artist label
+        self.assertContains(response, '<input type="text" id="artist" name="artist">')  # Check for the artist input field
+        self.assertContains(response, '<label for="price">Price:</label>')  # Check for the price label
+        self.assertContains(response, '<input type="number" id="price" name="price" step="0.01" min="0.00" max="99999.99" required>')  # Check for the price input field
+        self.assertContains(response, '<label for="image">Event Image:</label>')  # Check for the event image label
+        self.assertContains(response, '<input type="file" id="image" name="image">')  # Check for the event image input field
+        self.assertContains(response, '<input type="submit" value="Add Event">')  # Check for the submit button
+        
+
+
+    # def test_change_event_page_ui_elements(self):
+    #     # Assuming event is passed as context data in the URL
+    #     event_id = 1  # Replace with the event ID you want to test
+    #     response = self.client.get(reverse('edit_event', kwargs={'event_id': event_id}))
+
+    #     # Check if the response status code is 200 (OK)
+    #     self.assertEqual(response.status_code, 200)
+
+    #     # Check for the presence of HTML elements
+    #     self.assertContains(response, '<form')  # Check for the presence of the form
+    #     self.assertContains(response, '<label for="name" class="label">Update:</label>')  # Check for the event name label
+    #     self.assertContains(response, '<input type="text" id="name" name="name" class="value"')  # Check for the event name input field
+    #     self.assertContains(response, '<label for="eventDateTime" class="label">Updated date and time:</label>')  # Check for the event date and time label
+    #     self.assertContains(response, '<input type="datetime-local" id="eventDateTime" name="eventDateTime" class="value"')  # Check for the event date and time input field
+    #     self.assertContains(response, '<label for="location" class="label">Updated Location:</label>')  # Check for the location label
+    #     self.assertContains(response, '<input type="text" id="location" name="location" class="value"')  # Check for the location input field
+    #     self.assertContains(response, '<label for="capacity" class="label">Updated Capacity:</label>')  # Check for the capacity label
+    #     self.assertContains(response, '<input type="number" id="capacity" name="capacity" class="value"')  # Check for the capacity input field
+    #     self.assertContains(response, '<label for="category" class="label">Updated Category:</label>')  # Check for the category label
+    #     self.assertContains(response, '<input type="text" id="category" name="category" class="value"')  # Check for the category input field
+    #     self.assertContains(response, '<label for="artist" class="label">Updated Artist:</label>')  # Check for the artist label
+    #     self.assertContains(response, '<input type="text" id="artist" name="artist" class="value"')  # Check for the artist input field
+    #     self.assertContains(response, '<label for="imageURL" class="label">Updated Image:</label>')  # Check for the event image label
+    #     self.assertContains(response, '<input type="file" id="imageURL" name="imageURL" class="value"')  # Check for the event image input field
+    #     self.assertContains(response, '<label for="price" class="label">Updated Price:</label>')  # Check for the price label
+    #     self.assertContains(response, '<input type="number" id="price" name="price" class="value"')  # Check for the price input field
+    #     self.assertContains(response, '<button type="submit" class="btn">Save Changes</button>')  # Check for the submit button
