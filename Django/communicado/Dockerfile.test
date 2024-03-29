@@ -1,0 +1,35 @@
+FROM python:3.11.4-slim-buster
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        default-libmysqlclient-dev \
+        build-essential \
+        mariadb-client \
+        wget \
+        gnupg \
+        unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Chrome and ChromeDriver
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable \
+    && LATEST_CHROMEDRIVER_VERSION=$(wget -q -O - https://chromedriver.storage.googleapis.com/LATEST_RELEASE) \
+    && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/${LATEST_CHROMEDRIVER_VERSION}/chromedriver_linux64.zip \
+    && unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/ \
+    && rm /tmp/chromedriver.zip \
+    && chmod +x /usr/local/bin/chromedriver
+
+# Install Python dependencies
+RUN pip install --upgrade pip
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+# Copy project
+COPY . .

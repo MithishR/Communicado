@@ -62,7 +62,7 @@ class Events(models.Model):
     adminID = models.ForeignKey(Admin, on_delete=models.CASCADE, null=True, blank=True,db_column= "adminID")
     eventOrganizerID = models.ForeignKey(EventOrganizer, on_delete=models.CASCADE, null=True, blank=True,db_column="eventOrganizerID")
     imageURL = models.CharField(max_length=100, null=True, blank=True)
-    price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    price = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True) 
     # isPendingApproval = models.BooleanField(default=True)
     
 
