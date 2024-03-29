@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from .models import users, EventOrganizer, Events
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Events 
+from .models import Events , BookedEvent
 from django.db import connection
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import *
@@ -201,3 +201,20 @@ def change_event(request, event_ID):
     else:
         # Render the form template with the event data for editing
         return render(request, 'pages/change_event.html', {'event': event})
+
+def userbookeventinfo(request):
+    user = request.session.get('user_id')
+    if not user:
+        error_message = "You aren't logged in. Kindly log in and try again."
+        return render(request, 'pages/userbookinghistory.html', {'error_message': error_message, 'show_login_button': True})
+    else:
+            bookedevents = BookedEvent.objects.filter(user = user)
+            if(bookedevents.count() == 0):
+                no_events_message = "You don't have any booked events. Book now!"
+                return render(request, 'pages/userbookinghistory.html', {'error_message': no_events_message, 'show_events_button': True})
+            else:
+                return render(request, 'pages/userbookinghistory.html', {'show_events_button': True})
+                
+        
+       
+  
