@@ -13,6 +13,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+        
+    - name: Docker Build Image
+      run: |
+        cd ./Django/communicado
+        chmod +x mac_docker_build_and_run.sh
 
     - name: Run Django migrations
       run: |
@@ -20,11 +25,6 @@ jobs:
         python manage.py makemigrations
         python manage.py migrate || true
         
-    - name: Docker Build Image
-      run: |
-        cd ./Django/communicado
-        chmod +x mac_docker_build_and_run.sh
-
     - name: Run Tests
       run: |
         cd ./Django/communicado
