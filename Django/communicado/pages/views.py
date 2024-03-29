@@ -22,8 +22,8 @@ def login(request):
         try:
             user = users.objects.get(username=username)
             if check_password(password, user.password):
-                request.session['user_id'] = user.userID
-                request.session.set_test_cookie() 
+                #request.session['user_id'] = user.userID
+                #request.session.set_test_cookie() 
                 if user.role == 'EventOrganizer':
                     success_message = "Welcome " + user.name + ", userid:"+ str(request.session.get('user_id')) # Accessing name from the user object
                     messages.success(request, success_message)
@@ -201,3 +201,14 @@ def change_event(request, event_ID):
     else:
         # Render the form template with the event data for editing
         return render(request, 'pages/change_event.html', {'event': event})
+    
+def add_to_cart(request, event_ID):
+    event = get_object_or_404(Events, eventID=event_ID)
+    # Logic for adding item to cart
+    if request.method == 'POST':
+        # Handle form submission here
+        # For example, you can create a CartItem object and save it to the database
+        # cart_item = CartItem.objects.create(event=event, quantity=request.POST['quantity'])
+        # Redirect the user after adding to cart
+        return redirect('cart')
+    return render(request, 'pages/add_to_cart.html', {'event': event})
