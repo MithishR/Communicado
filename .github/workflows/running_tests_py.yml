@@ -18,6 +18,7 @@ jobs:
       run: |
         cd ./Django/communicado
         chmod +x mac_docker_build_and_run.sh
+        ./mac_docker_build_and_run.sh
 
     - name: Run Django migrations
       run: |
