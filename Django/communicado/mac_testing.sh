@@ -10,8 +10,8 @@ docker-compose -f docker-compose-test.yml build
 docker-compose -f docker-compose-test.yml up -d
 
 # Make migrations
-docker exec communicado_container python manage.py makemigrations
-docker exec communicado_container python manage.py migrate || true
+docker exec communicado_container_test python manage.py makemigrations
+docker exec communicado_container_test python manage.py migrate || true
 
 # Running Test
-docker exec communicado_container python manage.py test
+docker exec communicado_container_test python manage.py test
