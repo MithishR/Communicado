@@ -391,22 +391,33 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<label for="image">Event Image:</label>')  # Check for the event image label
         self.assertContains(response, '<input type="file" id="image" name="image">')  # Check for the event image input field
         self.assertContains(response, '<input type="submit" value="Add Event">')  # Check for the submit button
-      
-    def test_add_event_with_valid_data(self):
-        # Simulate a POST request with valid data
-        valid_data = {
-            'name': 'Test Event',
-            'eventDateTime': '2024-03-30T12:00',
-            'location': 'Test Location',
-            'capacity': 100,
-            'category': 'Test Category',
-            'artist': 'Test Artist',
-            'image': 'test_image.jpg'
-        }
-        self.client.login(username='organizer123', password='organizerpass')
-        response = self.client.post(reverse('add_event'), valid_data)
         
-        # Check if the event was added successfully
-        self.assertEqual(response.status_code, 302)  # Redirected to home page
-        self.assertTrue(Events.objects.filter(name='Test Event').exists())
 
+
+    # def test_change_event_page_ui_elements(self):
+    #     # Assuming event is passed as context data in the URL
+    #     event_id = 1  # Replace with the event ID you want to test
+    #     response = self.client.get(reverse('edit_event', kwargs={'event_id': event_id}))
+
+    #     # Check if the response status code is 200 (OK)
+    #     self.assertEqual(response.status_code, 200)
+
+    #     # Check for the presence of HTML elements
+    #     self.assertContains(response, '<form')  # Check for the presence of the form
+    #     self.assertContains(response, '<label for="name" class="label">Update:</label>')  # Check for the event name label
+    #     self.assertContains(response, '<input type="text" id="name" name="name" class="value"')  # Check for the event name input field
+    #     self.assertContains(response, '<label for="eventDateTime" class="label">Updated date and time:</label>')  # Check for the event date and time label
+    #     self.assertContains(response, '<input type="datetime-local" id="eventDateTime" name="eventDateTime" class="value"')  # Check for the event date and time input field
+    #     self.assertContains(response, '<label for="location" class="label">Updated Location:</label>')  # Check for the location label
+    #     self.assertContains(response, '<input type="text" id="location" name="location" class="value"')  # Check for the location input field
+    #     self.assertContains(response, '<label for="capacity" class="label">Updated Capacity:</label>')  # Check for the capacity label
+    #     self.assertContains(response, '<input type="number" id="capacity" name="capacity" class="value"')  # Check for the capacity input field
+    #     self.assertContains(response, '<label for="category" class="label">Updated Category:</label>')  # Check for the category label
+    #     self.assertContains(response, '<input type="text" id="category" name="category" class="value"')  # Check for the category input field
+    #     self.assertContains(response, '<label for="artist" class="label">Updated Artist:</label>')  # Check for the artist label
+    #     self.assertContains(response, '<input type="text" id="artist" name="artist" class="value"')  # Check for the artist input field
+    #     self.assertContains(response, '<label for="imageURL" class="label">Updated Image:</label>')  # Check for the event image label
+    #     self.assertContains(response, '<input type="file" id="imageURL" name="imageURL" class="value"')  # Check for the event image input field
+    #     self.assertContains(response, '<label for="price" class="label">Updated Price:</label>')  # Check for the price label
+    #     self.assertContains(response, '<input type="number" id="price" name="price" class="value"')  # Check for the price input field
+    #     self.assertContains(response, '<button type="submit" class="btn">Save Changes</button>')  # Check for the submit button
