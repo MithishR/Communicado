@@ -3,6 +3,7 @@ version: '3.8'
 services:
   web:
     build:
+      container_name: communicado_container
       context: ./
       dockerfile: ./Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
