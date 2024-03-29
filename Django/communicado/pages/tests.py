@@ -13,7 +13,6 @@ class SeleniumTests(LiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.chrome_options = Options()
-        cls.chrome_options.add_argument("--headless")  # Run Chrome in headless mode
         cls.driver = webdriver.Chrome(options=cls.chrome_options)
 
     @classmethod
