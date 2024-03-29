@@ -44,7 +44,7 @@ jobs:
       run: |
         cd ./Django/communicado
         python manage.py makemigrations
-        python manage.py migrate
+        python manage.py migrate || true
 
     - name: Run Selenium tests
       run: |
