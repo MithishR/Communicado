@@ -385,7 +385,6 @@ class UsersTestCase(TestCase):
             self.assertContains(response, '<div class="event-container">') 
             self.assertContains(response, '<div class="event">') 
             self.assertContains(response, '<div class="event-name">{}</div>'.format(event.name))
-           # self.assertContains(response, '<div class="event-date">{}</div>'.format(event.eventDateTime.strftime('%Y-%m-%d %H:%M:%S.%f%z').encode('utf-8')))
             if event.location:
                 self.assertContains(response, '<div class="event-location">Location: {}</div>'.format(event.location))
             if event.capacity:
@@ -396,7 +395,7 @@ class UsersTestCase(TestCase):
                 self.assertContains(response, '<div class="event-artist">Artist: {}</div>'.format(event.artist))
                 event_id = event.eventID
                 url = f'http://localhost:8000/eventinfo/{event_id}'
-                #self.assertContains(response, f'<a href="{url}" class="btn btn-outline-secondary">View</a>')
+                self.assertContains(response, f'<a href="{url}" class="btn btn-outline-secondary">View</a>')
     def test_event_info_pages(self):
    
         all_events = Events.objects.all()
@@ -411,7 +410,6 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<span class="label">Name:</span>')
         self.assertContains(response, '<span class="value">{}</span>'.format(event.name))
         self.assertContains(response, '<span class="label">Date and Time:</span>')
-        #self.assertContains(response, '<span class="value">{}</span>'.format(event.eventDateTime))
         self.assertContains(response, '<span class="label">Location:</span>')
         self.assertContains(response, '<span class="value">{}</span>'.format(event.location))
         self.assertContains(response, '<span class="label">Capacity:</span>')
