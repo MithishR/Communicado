@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from .models import users, EventOrganizer, Events
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Events 
+from .models import Events , BookedEvent
 from django.db import connection
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import *
@@ -201,6 +201,28 @@ def change_event(request, event_ID):
     else:
         # Render the form template with the event data for editing
         return render(request, 'pages/change_event.html', {'event': event})
+
+
+def userbookeventinfo(request):
+    
+    userID = request.session.get('user_id')
+    if not userID:
+        
+        error_message = "You aren't logged in. Kindly log in and try again."
+        return render(request, 'pages/userbookinghistory.html', {'error_message': error_message, 'show_login_button': True})
+    else:
+        
+        booked_events = BookedEvent.objects.filter(userID=userID)
+        if booked_events.count() == 0:
+            
+            no_events_message = "You don't have any booked events. Book now!"
+            return render(request, 'pages/userbookinghistory.html', {'error_message': no_events_message, 'show_events_button': True})
+        else:
+            
+            return render(request, 'pages/userbookinghistory.html', {'booked_events':booked_events})
+        
+       
+
     
     
 def add_to_cart(request, event_ID):
@@ -212,6 +234,7 @@ def add_to_cart(request, event_ID):
     event = get_object_or_404(Events, eventID=event_ID)
 
     if request.method == 'POST':
+
         # Here, you would normally add the event to the user's cart.
         # Since you don't have a Cart model yet, let's simulate it with session (temporary solution)
 
