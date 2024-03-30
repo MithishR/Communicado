@@ -8,7 +8,7 @@ from django.db import connection
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import *
 from django.db.models import Q
-
+from django.shortcuts import redirect
 
 def home(request):
     return render(request, "pages/home.html")
@@ -22,15 +22,15 @@ def login(request):
         try:
             user = users.objects.get(username=username)
             if check_password(password, user.password):
-                #request.session['user_id'] = user.userID
+                request.session['userID'] = user.userID
                 #request.session.set_test_cookie() 
                 if user.role == 'EventOrganizer':
-                    success_message = "Welcome " + user.name + ", userid:"+ str(request.session.get('user_id')) # Accessing name from the user object
+                    success_message = "Welcome " + user.name + ", userid:"+ str(user.userID) # Accessing name from the user object
                     messages.success(request, success_message)
                     return redirect('organizer_actions')
                 
                 else:
-                    success_message = "Welcome " + user.name + ", userid:"+ str(request.session.get('user_id')) # Accessing name from the user object
+                    success_message = "Welcome " + user.name + ", userid:"+ str(user.userID) # Accessing name from the user object
                     messages.success(request, success_message)
                     return redirect('home')
             else:
@@ -224,14 +224,31 @@ def userbookeventinfo(request):
        
 
     
+    
 def add_to_cart(request, event_ID):
-    event = get_object_or_404(Events, eventID=event_ID)
-    # Logic for adding item to cart
-    if request.method == 'POST':
-        # Handle form submission here
-        # For example, you can create a CartItem object and save it to the database
-        # cart_item = CartItem.objects.create(event=event, quantity=request.POST['quantity'])
-        # Redirect the user after adding to cart
-        return redirect('cart')
-    return render(request, 'pages/add_to_cart.html', {'event': event})
+    # Check if the user is logged in (assuming you're storing user_id in the session)
+    if not request.session.get('userID'):
+        messages.add_message(request, messages.INFO, 'Please log in to continue.')
+        return redirect('login')  # Update 'login_url_name' with your login route's name
 
+    event = get_object_or_404(Events, eventID=event_ID)
+
+    if request.method == 'POST':
+
+        # Here, you would normally add the event to the user's cart.
+        # Since you don't have a Cart model yet, let's simulate it with session (temporary solution)
+
+        # Check if a cart exists in session, if not, create one
+        if 'cart' not in request.session or not request.session['cart']:
+            request.session['cart'] = []
+
+        # Add the event ID to the session cart
+        request.session['cart'].append(event_ID)
+        # Important: mark the session as modified to make sure it gets saved
+        request.session.modified = True
+
+        messages.success(request, 'Event added to cart successfully!')
+        return redirect('cart')  # Update 'cart' with your cart route's name or wherever you want to redirect the user
+
+    # If it's not a POST request, just render the add_to_cart page
+    return render(request, 'pages/add_to_cart.html', {'event': event})
