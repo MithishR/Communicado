@@ -393,14 +393,9 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<input type="submit" value="Add Event">')  # Check for the submit button
         
     def test_add_event_page_success(self):
-        #self.user = User.objects.create_user(username='organizer123', password='organizerpass')
-        
-        #resp=self.client.post(reverse('login'), {'username': 'organizer123', 'password': 'organizerpass'})
-       # self.assertEqual(resp.status_code, 200)
-       # usr = User.objects.get(username='organizer123')
         username = 'mithsEventOrg'
         password = 'mithish'
-        hashed_password = make_password(password)  # Hash the password
+        hashed_password = make_password(password)  
         user = users.objects.create(username=username, password=hashed_password)
         response = self.client.post(reverse('login'), {'username': username, 'password': password})
         self.assertEqual(response.status_code, 302)
