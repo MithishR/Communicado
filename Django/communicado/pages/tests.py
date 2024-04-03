@@ -392,8 +392,43 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<input type="file" id="image" name="image">')  # Check for the event image input field
         self.assertContains(response, '<input type="submit" value="Add Event">')  # Check for the submit button
         
+    def test_add_event_page_success(self):
+        #self.user = User.objects.create_user(username='organizer123', password='organizerpass')
+        
+        #resp=self.client.post(reverse('login'), {'username': 'organizer123', 'password': 'organizerpass'})
+       # self.assertEqual(resp.status_code, 200)
+       # usr = User.objects.get(username='organizer123')
+        username = 'mithsEventOrg'
+        password = 'mithish'
+        hashed_password = make_password(password)  # Hash the password
+        user = users.objects.create(username=username, password=hashed_password)
+        response = self.client.post(reverse('login'), {'username': username, 'password': password})
+        self.assertEqual(response.status_code, 302)
+        user_id = self.user.userID
+        data = {
+            'name': 'Test Event',
+            'userID': user_id,
+            'eventDateTime': '2024-04-04T12:00',
+            'location': 'Test Location',
+            'capacity': 100,
+            'category': 'Test Category',
+            'artist': 'Test Artist',
+            'price':100,
+            'image': 'test_image.jpg'
+            
+        }
+        response = self.client.post(reverse('add_event'), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Events.objects.filter(name='Test Event').exists())
 
 
+
+
+        
+        
+
+        
+        
     # def test_change_event_page_ui_elements(self):
     #     # Assuming event is passed as context data in the URL
     #     event_id = 1  # Replace with the event ID you want to test
