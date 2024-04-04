@@ -1,4 +1,4 @@
-# Communicado - A Full Stack E-ticketing Web App
+# Communicado - Full Stack E-ticketing Web App
 
 Welcome to the Communicado repository! This project is a powerful full-stack e-ticketing web application built using a cutting-edge technology stack. The key technologies include:
 
