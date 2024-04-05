@@ -219,13 +219,17 @@ def userbookeventinfo(request):
         error_message = "You aren't logged in. Kindly log in and try again."
         return render(request, 'pages/userbookinghistory.html', {'error_message': error_message, 'show_login_button': True})
     else:
-        booked_events = BookedEvent.objects.filter(user_id=user_id)
-        
-        if booked_events.count() == 0:
+
+        booked_events = BookedEvent.objects.filter(user=userId)
+        if booked_events.count() == 0 :
             no_events_message = "You currently have no booked events. Book now!"
             return render(request, 'pages/userbookinghistory.html', {'no_events_message': no_events_message, 'show_events_button': True})
         else:
-            return render(request, 'pages/userbookinghistory.html', {'booked_events': booked_events})
+            eventslist =   booked_events.values_list('eventID',flat = True)
+            events = Events.objects.filter(eventID__in=eventslist)
+            return render(request, 'pages/userbookinghistory.html', {'events': events})
+
+        
        
 def add_to_cart(request, event_ID):
     # Check if the user is logged in (assuming you're storing user_id in the session)
