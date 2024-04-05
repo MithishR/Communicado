@@ -3,67 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List</title>
+    <title>useraccount</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #0f0101;
         }
 
-        .container {
+        .center {
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #080000;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 2px solid #000; /* Changed border color to white */
+            text-align: center;
         }
 
         h1 {
-            color: #333;
+            color: #fff; /* Changed text color to white */
             text-align: center;
+            margin-bottom: 20px; /* Add margin below the header */
+            font-size: 24px; /* Adjust font size */
         }
 
         ul {
             list-style-type: none;
             padding: 0;
+            text-align: left; /* Align the text left */
+            margin-left: 40px; /* Add margin for spacing */
+            margin-bottom: 0; /* Remove bottom margin */
         }
 
         li {
             border-bottom: 1px solid #ddd;
             padding: 20px 0;
             position: relative;
+            color: #fff; /* Changed text color to white */
         }
 
         strong {
-            color: #007bff;
+            color: #fff;
         }
 
-        .edit-link {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: #007bff;
+
+        /* Apply custom styles */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: transparent; 
+            color: #fff; 
             text-decoration: none;
+            border: 2px solid #f4f5f7; 
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #fff; 
+            border-color: #fff; 
+            color: #000; 
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7); 
+            color: #fff;
+            padding: 10px;
+            text-align: center; /* Center align the text */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; 
+        }
+
+        header a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            
+            font-size: 30px; /* Adjust font size */
+            display: inline-block; /* Display as block element for padding */
+        }
+
+       
+
+        /* Add style for the image */
+        .user-image {
+            width: 100px; /* Set image width */
+            height: 100px; /* Set image height */
+            border-radius: 50%; /* Make it round */
+            background-color: #fff; /* Add background color */
+            display: block; /* Center the image */
+            margin: 20px auto; /* Add margin for spacing */
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>User List</h1>
-        <ul>
-            {% for user in users %}
+    <header>
+        <a href="http://localhost:8000">Communicado</a>
+    </header>
+    {% if error_message %}
+        <p style="color: rgb(238, 225, 225);">{{ error_message }}</p>
+    {% else %}
+    <div class="center">
+        
+        {% if user %}
+            <h1>Your Account Information</h1>
+            <img src="../../static/icon.png" alt="User Image" class="user-image">
+            
+            <ul>
                 <li>
                     <strong>Role:</strong> {{ user.role }}<br>
                     <strong>Username:</strong> {{ user.username }}<br>
                     <strong>Email:</strong> {{ user.email }}<br>
                     <strong>Address:</strong> {{ user.address }}<br>
-                    <a href="#" class="edit-link">Edit</a>
                 </li>
-            {% endfor %}
-        </ul>
+            </ul>
+            <a href="#" class="btn">Edit Account Details</a>
+            <a href="userbookinfo" class="btn">Booking History</a>
+        {% endif %}
     </div>
+    {% endif %}
 </body>
 </html>

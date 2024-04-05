@@ -76,9 +76,8 @@ class BookedEvent(models.Model):
     eventID = models.OneToOneField(Events, primary_key=True, db_column='eventID',on_delete=models.CASCADE)
     quantity = models.IntegerField()
     isPaid = models.BooleanField()
-    user = models.ForeignKey(users,db_column='userID', on_delete=models.CASCADE)
+    user = models.OneToOneField(users,db_column='userID', on_delete=models.CASCADE)
     referenceNumber = models.CharField(max_length=40)
-
     class Meta:
         db_table = 'bookedEvent'
 
