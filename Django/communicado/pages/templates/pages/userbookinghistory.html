@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,6 +37,29 @@
             border-color: #fff;
             color: #000;
         }
+
+        .event-container {
+            margin-top: 20px;
+        }
+
+        .event {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .event-image img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+
+        .event-details {
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -55,5 +79,44 @@
             {% endif %}
         {% endif %}
     </div>
+
+    {% if events %}
+        <div class="event-container">
+            {% for event in events %}
+                <div class="event">
+                    {% if event.imageURL %}
+                        <div class="event-image">
+                            <img src="{% static event.imageURL %}" alt="Event Image">
+                        </div>
+                    {% endif %}
+                    <div class="event-details">
+                        <div class="event-name">{{ event.name }}</div>
+                        <div class="event-date">{{ event.eventDateTime }}</div>
+                        {% if event.location %}
+                            <div class="event-location">Location: {{ event.location }}</div>
+                        {% endif %}
+                        {% if event.capacity %}
+                            <div class="event-capacity">Capacity: {{ event.capacity }}</div>
+                        {% endif %}
+                        {% if event.category %}
+                            <div class="event-category">Category: {{ event.category }}</div>
+                        {% endif %}
+                        {% if event.artist %}
+                            <div class="event-artist">Artist: {{ event.artist }}</div>
+                        {% endif %}
+                        {% if event.price %}
+                            <div class="event-price">Price: {{ event.price }}</div>
+                        {% endif %}
+                        <a href="{% url 'eventinfo' event_ID=event.eventID %}" class="btn btn-outline-secondary">View</a>
+                        <a href="" class="btn btn-outline-secondary">Manage</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="error-message">
+            <p>No events found.</p>
+        </div>
+    {% endif %}
 </body>
 </html>
