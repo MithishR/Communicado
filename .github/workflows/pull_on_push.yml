@@ -5,13 +5,13 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+    
 jobs:
   pull:
     runs-on: ubuntu-latest
+    needs: running_tests_py.notify-success
 
     steps:
-
       - name: SSH and Pull Changes
         uses: appleboy/ssh-action@master
         with:
