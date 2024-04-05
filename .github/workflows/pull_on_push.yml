@@ -21,9 +21,3 @@ jobs:
           script: |
             ./pull_changes.sh
 
-  dummy-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dummy Step
-        run: echo "This is a dummy step"
-
