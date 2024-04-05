@@ -27,7 +27,7 @@ jobs:
         pip install -r requirements.txt
         pip install coverage
         python manage.py makemigrations
-        python manage.py migrate || True
+        python manage.py migrate || true
         coverage run manage.py test
         coverage report
         coverage html -d coverage_report
