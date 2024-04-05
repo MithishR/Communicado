@@ -287,3 +287,5 @@ def payment(request):
             return redirect('payment')
 
     return render(request, 'pages/payment.html')
+
+
