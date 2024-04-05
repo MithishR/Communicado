@@ -5,6 +5,7 @@ from django.urls import reverse
 from .models import *
 from django.test import LiveServerTestCase
 from django.contrib.auth.hashers import make_password
+from django.shortcuts import render
 #from selenium import webdriver
 #from selenium.webdriver.common.keys import Keys
 #from selenium.webdriver.chrome.options import Options
@@ -555,3 +556,66 @@ class UsersTestCase(TestCase):
         self.assertIsNotNone(event_organizer)
         events = Events.objects.filter(eventOrganizerID=event_organizer)
         self.assertIn(event, events)
+        
+    def test_user_account_page(self):
+
+            user = users.objects.create(
+            role="Admin",
+            username="testuser",
+            email="test@example.com",
+            address="123 Test St"
+                )
+
+
+
+            response = render(None, "pages/useraccount.html", {'user': user})  
+
+
+            self.assertEqual(response.status_code, 200)
+
+
+            self.assertContains(response, '<h1>Your Account Information</h1>')
+            self.assertContains(response, '<strong>Role:</strong> {}'.format(user.role))
+            self.assertContains(response, '<strong>Username:</strong> {}'.format(user.username))
+            self.assertContains(response, '<strong>Email:</strong> {}'.format(user.email))
+            self.assertContains(response, '<strong>Address:</strong> {}'.format(user.address))
+            self.assertContains(response, '<a href="#" class="btn">Edit Account Details</a>')
+            self.assertContains(response, '<a href="userbookinfo" class="btn">Booking History</a>') 
+            
+    def test_payment_view_get(self):
+        response = self.client.get(reverse('payment'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pages/payment.html')
+        
+    def test_payment_view_post_success(self):
+        data = {
+            'card_number': '1234567890123456',
+            'expiration_date': '12/25',
+            'cvv': '123',
+            'cardholder_name': 'John Doe'
+        }
+        response = self.client.post(reverse('payment'), data)
+        self.assertEqual(response.status_code, 302) 
+    
+    def test_payment_view_post_invalid_card_number(self):
+        data = {
+            'card_number': '123456',  # Invalid card number
+            'expiration_date': '12/25',
+            'cvv': '123',
+            'cardholder_name': 'John Doe'
+        }
+        response = self.client.post(reverse('payment'), data)
+        self.assertEqual(response.status_code, 302)
+        
+    def test_payment_page_contains_elements(self):
+        response = self.client.get(reverse('payment'))
+
+        # Check if the page contains the payment form elements
+        self.assertContains(response, '<form', count=1)
+        self.assertContains(response, '<input type="text" id="card_number" name="card_number" required>', count=1)
+        self.assertContains(response, '<input type="text" id="expiration_date" name="expiration_date" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" placeholder="MM/YY" required>', count=1)
+        self.assertContains(response, '<input type="password" id="cvv" name="cvv" required>', count=1)
+        self.assertContains(response, '<input type="text" id="cardholder_name" name="cardholder_name" required>', count=1)
+        self.assertContains(response, '<input type="submit" value="Pay">', count=1)
+
+   
