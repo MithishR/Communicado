@@ -14,123 +14,132 @@
         }
 
         .container {
-            max-width: 600px;
-            margin: 200px auto 20px; /* Adjusted margin-top for better positioning */
+            max-width: 900px;
+            margin: 50px auto;
             padding: 20px;
-            background-color: #060606; /* Set consistent background color */
+            background-color: #060606;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border: 2px solid #ddd; /* Adjusted border color and width */
-            margin-top: 130 px;
-            margin-bottom: 80px;
+            border: 2px solid #ddd;
         }
 
         header {
-            background-color: rgba(0, 0, 0, 0.7); 
+            background-color: rgba(0, 0, 0, 0.7);
             color: #fff;
-            padding: 10px;
-            text-align: center; /* Center align the header content */
+            padding: 10px 0;
+            text-align: center;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            z-index: 1000; 
+            z-index: 1000;
         }
 
-        header h1 {
-            font-size: 24px;
-            margin-bottom: 10px; /* Add space below Communicado header */
+        header h1, header h2 {
+            margin: 5px 0;
         }
 
-        header h2 {
-            font-size: 24px;
-            margin-top: 0; /* Ensure no margin above Cart */
-            margin-bottom: 20px; /* Add space below Cart header */
-        }
-
-        .event-details {
-            padding: 20px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
             color: #ffffff;
         }
 
-        .event-info {
-            margin-bottom: 15px;
-            color: #ffffff;
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
         }
 
-        .label {
-            font-weight: bold;
-        }
-        
-        @media (min-width: 600px) {
-            .event-image img {
-                max-width: calc(100% - 40px); /* Adjust the max-width of the image based on container width and margin */
-            }
-
-        .value {
-            margin-left: 10px;
+        th {
+            background-color: #333;
         }
 
-        /* Style for quantity input */
-        .quantity-input {
+        .event-image {
+            width: 80px; /* Set a fixed width for the image container */
+            height: 80px; /* Set a fixed height for the image container */
+            overflow: hidden; /* Ensures the image does not overflow its container */
             display: flex;
-            align-items: center; /* Align quantity input with other details */
-            margin-bottom: 15px; /* Add space below the quantity input */
+            justify-content: center;
+            align-items: center;
         }
 
-        .quantity-label {
-            margin-right: 10px;
+        .event-image img {
+            max-width: 100%; /* Ensure the image max-width is 100% of its container */
+            max-height: 100%; /* Ensure the image max-height is 100% of its container */
+            object-fit: cover; /* Cover the area without losing aspect ratio */
         }
 
         .quantity-field {
-            width: 60px; /* Adjust width as needed */
+            width: 50px;
             padding: 5px;
             border: 1px solid #ccc;
             border-radius: 3px;
+            color: #000;
         }
 
-        button[type="submit"] {
-            margin-top: 10px; /* Add space between quantity input and Add to Cart button */
+        .total-row {
+            font-weight: bold;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .total-price {
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .cart-footer {
+            margin-top: 20px;
+            text-align: right;
         }
     </style>
 </head>
 <body>
-    <!-- Header with "Communicado" and "Cart" links -->
     <header>
-        <h1>Communicado</h1>
         <h2>Cart</h2>
     </header>
 
-    <!-- Main content -->
-    
     <div class="container">
-        <div class="event-details">
-            {% if event.imageURL %}
-            <div class="event-image">
-                <img src="{% static event.imageURL %}" alt="Event Image">
-            </div>{% endif %}
-            <div class="event-info">
-                <span class="label">Name:</span>
-                <span class="value">{{ event.name }}</span>
-            </div>
-            <div class="event-info">
-                <span class="label">Date and Time:</span>
-                <span class="value">{{ event.eventDateTime }}</span>
-            </div>
-            <div class="event-info">
-                <span class="label">Location:</span>
-                <span class="value">{{ event.location }}</span>
-            </div>
-            <!-- Quantity input -->
-            <div class="event-info quantity-input">
-                <label for="quantity" class="quantity-label">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" class="quantity-field" value="1" min="1">
-            </div>
-            <!-- Add more event details here -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Event Image</th>
+                    <th>Name</th>
+                    <th>Date and Time</th>
+                    <th>Location</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="event-image">
+                            <img src="{% static event.imageURL %}" alt="Event Image">
+                        </div>
+                    </td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.eventDateTime }}</td>
+                    <td>{{ event.location }}</td>
+                    <td>
+                        <input type="number" id="quantity" name="quantity" class="quantity-field" value="1" min="1">
+                    </td>
+                    <td>$0.00</td>
+                </tr>
+                <!-- Additional events would be added here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" class="total-row">Total:</td>
+                    <td class="total-price">$0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="cart-footer">
             <form method="POST" action="{% url 'add_to_cart' event_ID=event.eventID %}">
                 {% csrf_token %}
-                <!-- Add form fields for selecting quantity, options, etc. -->
-                <button type="submit">Add to Cart</button>
+                <button type="submit">Book</button>
             </form>
         </div>
     </div>
