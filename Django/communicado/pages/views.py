@@ -1,3 +1,5 @@
+import datetime
+from unicodedata import numeric
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.hashers import make_password,check_password
 from .models import users, EventOrganizer, Events
@@ -212,11 +214,12 @@ def change_event(request, event_ID):
 
 
 def userbookeventinfo(request):
-    userId = request.session.get('userID')
-    if not userId:
+    user_id = request.session.get('userID')
+    if not user_id:
         error_message = "You aren't logged in. Kindly log in and try again."
         return render(request, 'pages/userbookinghistory.html', {'error_message': error_message, 'show_login_button': True})
     else:
+
         booked_events = BookedEvent.objects.filter(user=userId)
         if booked_events.count() == 0 :
             no_events_message = "You currently have no booked events. Book now!"
@@ -228,9 +231,6 @@ def userbookeventinfo(request):
 
         
        
-
-    
-    
 def add_to_cart(request, event_ID):
     # Check if the user is logged in (assuming you're storing user_id in the session)
     if not request.session.get('userID'):
@@ -258,3 +258,36 @@ def add_to_cart(request, event_ID):
 
     # If it's not a POST request, just render the add_to_cart page
     return render(request, 'pages/add_to_cart.html', {'event': event})
+
+def payment(request):
+    
+    if request.method == 'POST':
+        # Extract card details from the form
+        card_number = request.POST.get('card_number')
+        expiration_date = request.POST.get('expiration_date')
+        cvv = request.POST.get('cvv')
+        cardholder_name = request.POST.get('cardholder_name')
+        
+        try:
+            # Basic validation for card number
+            if len(card_number) != 16 or not card_number.isdigit():
+                raise ValueError('Invalid card number')
+            
+                
+            # Basic validation for CVV
+            if len(cvv) != 3 or not cvv.isdigit():
+                raise ValueError('Invalid CVV')
+
+            # Basic validation for cardholder name
+            if not cardholder_name.strip():
+                raise ValueError('Cardholder name cannot be empty')
+
+            # If all validations pass, simulate a successful payment
+            messages.success(request, 'Payment successful!')
+            return redirect('#')
+        except Exception as e:
+            # Payment failed, display an error message
+            messages.error(request, f'Payment failed: {str(e)}')
+            return redirect('payment')
+
+    return render(request, 'pages/payment.html')
