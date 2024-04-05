@@ -100,9 +100,17 @@ def add_event(request):
         return render(request, 'pages/add_event.html')
 
 def useracc(request):
-    data = users.objects.all()
-    context = {"users": data}
-    return render (request,"pages/useraccount.html",context)
+    userID = request.session.get('userID')
+    
+    
+    if not userID:
+        error_message = "You aren't logged in. Kindly log in and try again."
+        return render(request, "pages/useraccount.html", {'error_message': error_message})
+    else:
+        usercurrentlyloggedin = users.objects.filter(userID=userID).first()
+        
+        return render(request, "pages/useraccount.html", {'user': usercurrentlyloggedin})
+
 
 def event(request):
     data = Events.objects.all()
@@ -164,7 +172,7 @@ def organizer_actions(request):
     return render (request,"pages/organizer_actions.html",context)
     
 def edit_event(request):
-    user_id = request.session.get('user_id')
+    user_id = request.session.get('userID')
     user = users.objects.get(userID=user_id)
     
     if user.role.__eq__('EventOrganizer'):
@@ -204,22 +212,18 @@ def change_event(request, event_ID):
 
 
 def userbookeventinfo(request):
-    
-    userID = request.session.get('user_id')
-    if not userID:
-        
+    userId = request.session.get('userID')
+    if not userId:
         error_message = "You aren't logged in. Kindly log in and try again."
         return render(request, 'pages/userbookinghistory.html', {'error_message': error_message, 'show_login_button': True})
     else:
-        
-        booked_events = BookedEvent.objects.filter(userID=userID)
-        if booked_events.count() == 0:
-            
-            no_events_message = "You don't have any booked events. Book now!"
-            return render(request, 'pages/userbookinghistory.html', {'error_message': no_events_message, 'show_events_button': True})
+        booked_events = BookedEvent.objects.filter(user=userId)
+        if not booked_events:
+            no_events_message = "You currently have no booked events. Book now!"
+            return render(request, 'pages/userbookinghistory.html', {'no_events_message': no_events_message, 'show_events_button': True})
         else:
-            
-            return render(request, 'pages/userbookinghistory.html', {'booked_events':booked_events})
+            return render(request, 'pages/userbookinghistory.html', {'booked_events': booked_events})
+
         
        
 

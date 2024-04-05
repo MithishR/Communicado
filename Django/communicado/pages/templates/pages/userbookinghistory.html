@@ -40,12 +40,19 @@
 </head>
 <body>
     <div class="error-message">
-        <p>{{ error_message }}</p>
-        {% if show_login_button %}
-            <a href="{% url 'login' %}" class="button">Login</a>
-        {% endif %}
-        {% if show_events_button %}
-            <a href="{% url 'events' %}" class="button">Go to Events</a>
+        {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% if show_login_button %}
+                <a href="{% url 'login' %}" class="button">Login</a>
+            {% endif %}
+            {% if show_events_button %}
+                <a href="{% url 'events' %}" class="button">Go to Events</a>
+            {% endif %}
+        {% elif no_events_message %}
+            <p>{{ no_events_message }}</p>
+            {% if show_events_button %}
+                <a href="{% url 'events' %}" class="button">Book now</a>
+            {% endif %}
         {% endif %}
     </div>
 </body>
