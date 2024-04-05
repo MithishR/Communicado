@@ -1,15 +1,15 @@
 name: Pull on Push
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Running Tests"]
+    types:
+      - completed
   workflow_dispatch:
     
 jobs:
   pull:
     runs-on: ubuntu-latest
-    needs: running_tests_py.notify-success
 
     steps:
       - name: SSH and Pull Changes
