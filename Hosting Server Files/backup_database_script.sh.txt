@@ -1,0 +1,25 @@
+#!/bin/bash
+
+DB_HOST="db-mysql-nyc3-62851-do-user-15997349-0.c.db.ondigitalocean.com"
+DB_PORT="25060"
+DB_USER="doadmin"
+DB_PASS="AVNS_4jAw-6qt08UxZZrRQep"
+DB_NAME="communicado"
+
+BACKUP_DIR="communicado_backups"
+
+DATE=$(date +"%Y%m%d%H%M%S")
+
+BACKUP_FILE="$BACKUP_DIR/$DB_NAME-$DATE.sql"
+
+ERROR_LOG="$BACKUP_DIR/error.log"
+
+mkdir -p "$BACKUP_DIR"
+
+mysqldump -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" --ssl-mode=REQUIRED --single-transaction > "$BACKUP_FILE" 2> "$ERROR_LOG"
+
+if [ $? -eq 0 ]; then
+    echo "Backup completed successfully: $BACKUP_FILE"
+else
+    echo "Backup failed. Check $ERROR_LOG for details."
+fi

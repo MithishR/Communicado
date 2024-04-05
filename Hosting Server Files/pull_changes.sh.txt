@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ./Communicado
+git pull
+
+cd ./Django/communicado
+./mac_docker_build_and_run.sh
