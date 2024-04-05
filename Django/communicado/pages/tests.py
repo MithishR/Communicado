@@ -618,4 +618,37 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<input type="text" id="cardholder_name" name="cardholder_name" required>', count=1)
         self.assertContains(response, '<input type="submit" value="Pay">', count=1)
 
-   
+    def test_xyz_page_loads_correctly(self):
+        # Send a GET request to the xyz view
+        response = self.client.get(reverse('xyz'))
+
+        # Check if the response status code is 200
+        self.assertEqual(response.status_code, 200)
+
+        # Check if the response contains the expected content
+        self.assertContains(response, "Welcome to Communicado")
+        self.assertContains(response, "View Cart")
+        self.assertContains(response, "Admin Panel")
+
+    def test_xyz_page_contains_header_links(self):
+        # Send a GET request to the xyz view
+        response = self.client.get(reverse('xyz'))
+
+        # Check if the response contains login, signup, and admin panel links in the header
+        self.assertContains(response, "<a href=\"login\">Login</a>", html=True)
+        self.assertContains(response, "<a href=\"signup\">Signup</a>", html=True)
+        self.assertContains(response, "<a href=\"admin\">Admin Panel</a>", html=True)
+        
+    def test_xyz_page_contains_expected_paragraphs(self):
+        # Send a GET request to the xyz view
+        response = self.client.get(reverse('xyz'))
+
+        # Check if the response contains the expected paragraphs
+        expected_paragraphs = [
+            "Welcome to Communicado, where innovation meets passion! We are a dynamic team of five university students - Sparsh, Ojus, Mithish, Mahi, and Pratham - driven by our shared enthusiasm for revolutionizing the event ticketing experience.",
+            "With diverse backgrounds and skill sets, we united under the common goal of creating an intuitive and seamless platform for event enthusiasts like ourselves. Our journey began with a spark of creativity and a vision to simplify event discovery and booking processes.",
+            "Through relentless dedication and collaborative effort, we've crafted Communicado into a vibrant hub for discovering and securing tickets to the most exciting events. From concerts to conferences, sports matches to workshops, our platform endeavors to connect people with their passions effortlessly.",
+            "Join us in this exhilarating adventure as we redefine the way events are experienced and enjoyed. Welcome aboard!"
+        ]
+        for paragraph in expected_paragraphs:
+            self.assertContains(response, paragraph, html=True)
