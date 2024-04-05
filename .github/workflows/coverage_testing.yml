@@ -1,0 +1,37 @@
+name: Django Coverage Test
+
+on:
+  push:
+    branches:
+      - main
+  workflow-dispatch:
+
+jobs:
+  test:
+    name: Test with Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x' 
+
+    - name: Install dependencies
+      run: |
+        cd ./Django/communicado
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install coverage
+        coverage run manage.py test
+        coverage report
+        coverage html -d coverage_report
+
+    - name: Save coverage report artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-report
+        path: coverage_report
