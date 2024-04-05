@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0c0808; /* Match background color with Login page */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .ribbon {
+            background-image: url('{% static "bg4.webp" %}');
+            background-size: cover; /* Cover the entire ribbon with the background image */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Prevent the background image from repeating */
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            font-weight: bold;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .ribbon h1 {
+            margin: 0;
+            font-size: 24px;
+            color: black; /* Change text color to black */
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add text shadow */
+        }
+        
+        .ribbon p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: black; /* Change text color to black */
+            font-style: italic;
+            font-style: bold;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #0e0101; /* Match background color with Login page */
+            border: 2px solid #fff; /* Set white border */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 90%; /* Adjusted width */
+            position: fixed; /* Position fixed */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Center horizontally and vertically */
+            max-width: 600px; /* Limit maximum width */
+        }
+
+        h1 {
+            color: #fff; /* Match text color with Login page */
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: #fff; /* Match text color with Login page */
+        }
+
+        img {
+            max-width: 200px; /* Reduce the maximum width of the image */
+            height: auto;
+            margin-bottom: 20px; /* Adjust the margin as needed */
+        }
+
+        /* Added CSS for form layout */
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        form p {
+            flex-basis: calc(50% - 10px);
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #fff;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd; /* Match border with Login page */
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #000; /* Set text color to black */
+            font-size: 16px; /* Match font size with Login page */
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: transparent; /* Match background color with Login page button */
+            color: #fff; /* Match text color with Login page button */
+            padding: 10px 20px;
+            border: 2px solid #fff; /* Match border with Login page button */
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 500px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+            font-size: 16px; /* Match font size with input fields */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #fff; /* Change background color on hover */
+            border-color: #fff; /* Change border color on hover */
+            color: #000; /* Change text color on hover */
+            
+        }
+
+        a {
+            color: #fff; /* Match text color with Login page header links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header ribbon -->
+    <div class="ribbon">
+       <h1>Communicado</h1>
+       <p>Your go-to platform for discovering and booking exciting events</p>
+       <!-- Display success message if it exists -->
+    </div>
+   <div class="container">
+       <img src="{% static 'payment.jpeg' %}" alt="Payment Image">
+       <h1>Payment</h1>
+       {% if messages %}
+        {% for message in messages %}
+            <p style="color: white;">{{ message }}</p>
+        {% endfor %}
+       {% endif %}
+       <form action="{% url 'payment' %}" method="post">
+           {% csrf_token %}
+           <p><label for="card_number">Card Number:</label><input type="text" id="card_number" name="card_number" required></p>
+           <p>
+            <label for="expiration_date">Expiration Date (MM/YY):</label>
+            <input type="text" id="expiration_date" name="expiration_date" pattern="(0[1-9]|1[0-2])\/[0-9]{2}" placeholder="MM/YY" required>
+            <small>Format: MM/YY</small>
+        </p>
+        
+           <p><label for="cvv">CVV:</label><input type="password" id="cvv" name="cvv" required></p>
+           <p><label for="cardholder_name">Cardholder Name:</label><input type="text" id="cardholder_name" name="cardholder_name" required></p>
+           <p><input type="submit" value="Pay"></p>
+       </form>
+   </div>
+</body>
+</html>
+
