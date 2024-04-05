@@ -186,7 +186,7 @@ def edit_event(request):
 
 
     else:
-        error_message = f"An error occurred while retrieving the event. Role of user: {users.objects.get(userID=request.session.get('user_id')).role}. Type of user: {type(request.session.get('user_id'))}. "
+        error_message = f"An error occurred while retrieving the event. Role of user: {users.objects.get(userID=request.session.get('user_id')).role}. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
         messages.error(request, error_message)
         return redirect('edit_event')
 
