@@ -580,7 +580,7 @@ class UsersTestCase(TestCase):
             self.assertContains(response, '<strong>Email:</strong> {}'.format(user.email))
             self.assertContains(response, '<strong>Address:</strong> {}'.format(user.address))
             self.assertContains(response, '<a href="#" class="btn">Edit Account Details</a>')
-            self.assertContains(response, '<a href="userbookinfo" class="btn">Booking History</a>') 
+            self.assertContains(response, '<a href="userbookinfo" class="btn">Booking History</a>')  
             
     def test_payment_view_get(self):
         response = self.client.get(reverse('payment'))
@@ -617,5 +617,33 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<input type="password" id="cvv" name="cvv" required>', count=1)
         self.assertContains(response, '<input type="text" id="cardholder_name" name="cardholder_name" required>', count=1)
         self.assertContains(response, '<input type="submit" value="Pay">', count=1)
+        
+    def test_event_info_pages(self):
+        event1 = Events.objects.create(name="Event 1", eventDateTime="2024-04-10 12:00:00",
+                                        location="Location 1", capacity=100, category="Category 1",
+                                        artist="Artist 1", price=10.00)
+        event2 = Events.objects.create(name="Event 2", eventDateTime="2024-04-15 15:00:00",
+                                        location="Location 2", capacity=150, category="Category 2",
+                                        artist="Artist 2", price=20.00)
+
+       
+        events_list = [event1, event2]
+       
+        response = render(None, "pages/userbookinghistory.html", {'events': events_list})  
+        self.assertEqual(response.status_code, 200)
+        for event in events_list:
+            
+            self.assertContains(response, '<div class="event-name">{}</div>'.format(event.name))
+            self.assertContains(response, '<div class="event-date">{}</div>'.format(event.eventDateTime))
+            self.assertContains(response, '<div class="event-location">Location: {}</div>'.format(event.location))
+            self.assertContains(response, '<div class="event-capacity">Capacity: {}</div>'.format(event.capacity))
+            self.assertContains(response, '<div class="event-category">Category: {}</div>'.format(event.category))
+            self.assertContains(response, '<div class="event-artist">Artist: {}</div>'.format(event.artist))
+            self.assertContains(response, '<div class="event-price">Price: {}</div>'.format(event.price))
+            event_id = event.pk
+            url = reverse('eventinfo', kwargs={'event_ID': event_id})
+            self.assertContains(response, f'<a href="{url}" class="btn btn-outline-secondary">View</a>')
+
+    
 
    
