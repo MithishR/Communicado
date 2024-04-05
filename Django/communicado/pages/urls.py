@@ -15,7 +15,7 @@ urlpatterns = [
     path('change_event/<int:event_ID>/', views.change_event, name='change_event'),
     path('userbookinfo',views.userbookeventinfo , name = 'userbookeventinfo'),
     path('add_to_cart/<int:event_ID>/', views.add_to_cart, name='add_to_cart'),
-    
+    path('payment', views.payment, name='payment'),
 
  
 ]
