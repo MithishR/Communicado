@@ -480,3 +480,78 @@ class UsersTestCase(TestCase):
     #     self.assertContains(response, '<label for="price" class="label">Updated Price:</label>')  # Check for the price label
     #     self.assertContains(response, '<input type="number" id="price" name="price" class="value"')  # Check for the price input field
     #     self.assertContains(response, '<button type="submit" class="btn">Save Changes</button>')  # Check for the submit button
+
+    def test_add_event_page_ui_elements(self):
+        response = self.client.get(reverse('add_event'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<form')  
+        self.assertContains(response, '<label for="name">Event Name:</label>')  
+        self.assertContains(response, '<input type="text" id="name" name="name" required>') 
+        self.assertContains(response, '<label for="eventDateTime">Event Date and Time:</label>')  
+        self.assertContains(response, '<input type="datetime-local" id="eventDateTime" name="eventDateTime" required>')  
+        self.assertContains(response, '<label for="location">Location:</label>') 
+        self.assertContains(response, '<input type="text" id="location" name="location">') 
+        self.assertContains(response, '<label for="capacity">Capacity:</label>')  
+        self.assertContains(response, '<input type="number" id="capacity" name="capacity">')  
+        self.assertContains(response, '<label for="category">Category:</label>') 
+        self.assertContains(response, '<input type="text" id="category" name="category">') 
+        self.assertContains(response, '<label for="artist">Artist:</label>')
+        self.assertContains(response, '<input type="text" id="artist" name="artist">')
+        self.assertContains(response, '<label for="price">Price:</label>')
+        self.assertContains(response, '<input type="number" id="price" name="price" step="0.01" min="0.00" max="99999.99" required>') 
+        self.assertContains(response, '<label for="image">Event Image:</label>')  
+        self.assertContains(response, '<input type="file" id="image" name="image">') 
+        self.assertContains(response, '<input type="submit" value="Add Event">')
+        
+    def test_add_event_page_success(self):
+        username = 'mithsEventOrg'
+        password = 'mithish'
+        hashed_password = make_password(password)  
+        user = users.objects.create(username=username, password=hashed_password)
+        response = self.client.post(reverse('login'), {'username': username, 'password': password})
+        self.assertEqual(response.status_code, 302)
+        user_id = self.user.userID
+        data = {
+            'name': 'Test Event',
+            'userID': user_id,
+            'eventDateTime': '2024-04-04T12:00',
+            'location': 'Test Location',
+            'capacity': 100,
+            'category': 'Test Category',
+            'artist': 'Test Artist',
+            'price':100,
+            'image': 'test_image.jpg'
+            
+        }
+        response = self.client.post(reverse('add_event'), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(Events.objects.filter(name='Test Event').exists())
+
+    def test_event_info_page_loads(self):
+        event_id = 1
+        response = self.client.get(reverse('eventinfo', kwargs={'event_ID': event_id}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_edit_event_page_success(self):
+        username = 'TestOrganizer'
+        password = 'test'
+        hashed_password = make_password(password)  
+        user = users.objects.create(username=username, password=hashed_password)
+        event_organizer = EventOrganizer.objects.create(user=user, phoneNumber='2501213')
+
+        response = self.client.post(reverse('login'), {'username': username, 'password': password})
+        event = Events.objects.create(
+        name='Test Event',
+        eventDateTime=datetime.datetime.now(),
+        location='Test Location',
+        capacity=100,
+        category='Test Category',
+        artist='Test Artist',
+        isVerified=True,
+        eventOrganizerID=event_organizer,
+        imageURL='test_image.jpg'
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertIsNotNone(event_organizer)
+        events = Events.objects.filter(eventOrganizerID=event_organizer)
+        self.assertIn(event, events)
