@@ -3,7 +3,7 @@ name: Running Tests
 on:
   push:
     branches:
-      - main
+      - '*'
   workflow_dispatch:
 
 jobs:
@@ -29,12 +29,3 @@ jobs:
       run: |
         cd ./Django/communicado
         docker exec communicado_container_test python manage.py test
-
-  notify-success:
-    runs-on: ubuntu-latest
-    needs: test
-    if: ${{ success() }}
-
-    steps:
-    - name: Notify Success
-      run: echo "Tests ran successfully"
