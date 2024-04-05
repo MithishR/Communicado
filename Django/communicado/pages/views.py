@@ -71,7 +71,7 @@ def add_event(request):
         event_organizer = None
         try:
             name = request.POST.get('name')
-            user_id = request.session.get('user_id')
+            user_id = request.session.get('userID')
             user = users.objects.get(userID=user_id)
             if user.role.__eq__('EventOrganizer'):
                 event_organizer = EventOrganizer.objects.get(user=user)
@@ -93,7 +93,7 @@ def add_event(request):
             messages.success(request, success_message)
             return redirect('home') 
         except Exception as e:
-            error_message = f"An error occurred while adding the event. Role of user: {users.objects.get(userID=request.session.get('user_id')).role}. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
+            error_message = f"An error occurred while adding the event. Role of user: {users.objects.get(userID=request.session.get('userID')).role}. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
             messages.error(request, error_message)
             return redirect('add_event')
     else:
