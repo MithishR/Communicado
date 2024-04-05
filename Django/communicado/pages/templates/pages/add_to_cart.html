@@ -93,6 +93,28 @@
             margin-top: 20px;
             text-align: right;
         }
+        .back-button {
+            background-color: white; 
+            font-color: black;
+            cursor: pointer;
+            padding: 5px 10px;
+            margin-left: 10px; /* Adjust margin as needed */
+            float: left;
+            
+        }
+        
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+        .book-button {
+            background-color: white; 
+            font-color: black;
+            cursor: pointer;
+            padding: 5px 10px;
+            margin-left: 10px; /* Add left margin to match the position of the "Back to Events" button */
+        }
+       
     </style>
 </head>
 <body>
@@ -125,21 +147,23 @@
                     <td>
                         <input type="number" id="quantity" name="quantity" class="quantity-field" value="1" min="1">
                     </td>
-                    <td>$0.00</td>
+                    <td>${{event.price}}</td>
                 </tr>
-                <!-- Additional events would be added here -->
+                
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="5" class="total-row">Total:</td>
-                    <td class="total-price">$0.00</td>
+                    <td class="total-price">${{event.price}}</td>
                 </tr>
             </tfoot>
         </table>
         <div class="cart-footer">
             <form method="POST" action="{% url 'add_to_cart' event_ID=event.eventID %}">
                 {% csrf_token %}
-                <button type="submit">Book</button>
+                <a href="{% url 'events' %}" class="back-button">Back to Events</a>
+                <a href="{% url 'payment' %}" class="book-button">Book</a>
+                
             </form>
         </div>
     </div>
