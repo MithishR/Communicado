@@ -5,6 +5,7 @@ from django.urls import reverse
 from .models import *
 from django.test import LiveServerTestCase
 from django.contrib.auth.hashers import make_password
+from django.shortcuts import render
 #from selenium import webdriver
 #from selenium.webdriver.common.keys import Keys
 #from selenium.webdriver.chrome.options import Options
@@ -556,6 +557,31 @@ class UsersTestCase(TestCase):
         events = Events.objects.filter(eventOrganizerID=event_organizer)
         self.assertIn(event, events)
         
+    def test_user_account_page(self):
+
+            user = users.objects.create(
+            role="Admin",
+            username="testuser",
+            email="test@example.com",
+            address="123 Test St"
+                )
+
+
+
+            response = render(None, "pages/useraccount.html", {'user': user})  
+
+
+            self.assertEqual(response.status_code, 200)
+
+
+            self.assertContains(response, '<h1>Your Account Information</h1>')
+            self.assertContains(response, '<strong>Role:</strong> {}'.format(user.role))
+            self.assertContains(response, '<strong>Username:</strong> {}'.format(user.username))
+            self.assertContains(response, '<strong>Email:</strong> {}'.format(user.email))
+            self.assertContains(response, '<strong>Address:</strong> {}'.format(user.address))
+            self.assertContains(response, '<a href="#" class="btn">Edit Account Details</a>')
+            self.assertContains(response, '<a href="userbookinfo" class="btn">Booking History</a>') 
+            
     def test_payment_view_get(self):
         response = self.client.get(reverse('payment'))
         self.assertEqual(response.status_code, 200)
