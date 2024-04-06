@@ -30,12 +30,7 @@ jobs:
         python manage.py migrate || true
         coverage run manage.py test
         coverage report
-        coverage html -d coverage_report
-
-    - name: Delete test database
-      run: |
-        cd ./Django/communicado
-        python manage.py flush --no-input        
+        coverage html -d coverage_report    
 
     - name: Save coverage report artifact
       uses: actions/upload-artifact@v2
