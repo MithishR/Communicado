@@ -5,11 +5,14 @@ on:
     workflows: ["Running Tests"]
     types:
       - completed
+    branches:
+      - main
   workflow_dispatch:
     
 jobs:
   pull:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: SSH and Pull Changes
