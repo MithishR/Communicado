@@ -62,7 +62,7 @@ def signup(request):
         if role.__eq__('EventOrganizer'):
             event_organizer = EventOrganizer(user=user, phoneNumber=phoneNumber)
             event_organizer.save()
-    
+ 
         success_message = "User Account Created for: " + user.name
         return render(request, 'pages/login.html', {'success_message': success_message})
         
@@ -118,7 +118,7 @@ def useracc(request):
 
 
 def event(request):
-    data = Events.objects.all()
+    data = Events.objects.filter(isVerified=1)
     unique_categories = Events.objects.values_list('category', flat=True).distinct()
     category = request.GET.get('category')
     search_query = request.GET.get('search')
@@ -130,7 +130,7 @@ def event(request):
             Q(category__icontains=search_query))
             if(data.count() == 0):
                 error_message = "No Matches for "+ search_query+" :( Currently available Events: "
-                data = Events.objects.all()
+                data = Events.objects.filter(isVerified=1)
                 context = {"events": data ,
                 'unique_categories': unique_categories,
                 'error_message': error_message
@@ -138,24 +138,24 @@ def event(request):
                 return render (request , "pages/events.html",context)
                 
         else:
-            data=Events.objects.filter(category=category)
+            data=Events.objects.filter(category=category, isVerified=1)
             context = {"events": data ,
                 'unique_categories': unique_categories}
     else:
         if search_query and search_query != " ":
             data = Events.objects.filter(
             Q(artist__icontains=search_query) |
-            Q(name__icontains=search_query) )
+            Q(name__icontains=search_query))
             if(data.count() == 0):
                 error_message = "No Matches for "+ search_query+" :( Currently available Events: "
-                data = Events.objects.all()
+                data = Events.objects.filter(isVerified=1)
                 context = {"events": data ,
                 'unique_categories': unique_categories,
                 'error_message': error_message
                 }
                 return render (request , "pages/events.html",context)
         else:
-            data=Events.objects.all()
+            data=Events.objects.filter(isVerified=1)
            
     context = {"events": data ,
                 'unique_categories': unique_categories}
@@ -301,12 +301,30 @@ def admin_actions(request):
     return render (request,"pages/admin_actions.html",context)
 
 def pending(request):
-    userData = users.objects.all()
-    context = {"userData": userData, }
-    return render (request,"pages/pending.html",context)
+    pending = Events.objects.filter(isVerified=0)
+    return render(request, 'pages/pending.html', {'pending': pending})
+
     
 def rejected(request):
-    userData = users.objects.all()
-    context = {"rejected": userData, }
-    return render (request,"pages/rejected.html",context)
+    rejected = Events.objects.filter(isVerified=-1)
+    return render(request, 'pages/rejected.html', {'rejected': rejected})
+def eventaction(request,event_ID):
+    # userData = users.objects.all()
+    # context = {"eventaction": userData, }
+    # return render (request,"pages/eventaction.html",context)
+
+    event = get_object_or_404(Events,eventID=event_ID)
+    return render(request, 'pages/eventaction.html', {'event': event})
+
+
+def approve_event(request, event_ID):
+    event = get_object_or_404(Events,eventID=event_ID)
+    event.isVerified = 1 
+    event.save()
+    return redirect('pending')
     
+def reject_event(request, event_ID):
+    event = get_object_or_404(Events,eventID=event_ID)
+    event.isVerified = -1  
+    event.save()
+    return redirect('pending')

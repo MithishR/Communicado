@@ -1,9 +1,195 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pending Events</title>
+    <style>
+        /* CSS for screen view */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0c0808;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #0e0101;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 80%;
+        }
+
+        .event-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd; /* Add border to separate events */
+            border-radius: 5px; /* Add rounded corners */
+        }
+
+        .event {
+            display: flex; /* Use flexbox */
+            align-items: center; /* Center align items vertically */
+            margin-bottom: 20px;
+        }
+
+        .event-details {
+            flex: 1; /* Take up remaining space */
+            padding: 20px;
+            color: #fff;
+        }
+
+        .event-details > * {
+            margin-bottom: 10px; /* Add spacing between elements */
+            color: #fff;
+        }
+
+        .event-image {
+            margin-left: 20px; /* Add margin to separate image from text */
+            width: 800px; /* Set a fixed width for the image */
+            margin-bottom: 10px;
+            margin-top: 20px;
+            height: 500px;
+        }
+
+        .event-image img {
+            width: 100%; /* Make the image fill its container */
+            border-radius: 5px; /* Add rounded corners */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: transparent; 
+            color: #fff; 
+            text-decoration: none;
+            border: 2px solid #fff; 
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #fff; 
+            border-color: #fff; 
+            color: #000; 
+        }
+
+        h1 {
+            text-align: center; /* Center-align the title */
+            color: #fff;
+        }
+
+        .event-name {
+            text-align: left; /* Center-align the event name */
+            font-weight: bold;
+            font-size: medium;
+            color: #fff;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.7); 
+            color: #fff;
+            padding: 10px;
+            text-align: right;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000; 
+            margin-bottom: 50px;
+        }
+
+        header a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        /* CSS for print view */
+        @media print {
+            body {
+                background-color: #fff; /* Change background color for print */
+            }
+
+            .container {
+                width: 100%; /* Ensure full width for print */
+                margin: 0; /* Remove margin for print */
+                padding: 0; /* Remove padding for print */
+            }
+
+            .btn {
+                display: none; /* Hide buttons for print */
+            }
+
+            header {
+                display: none; /* Hide header for print */
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Pending Events</h1>
+    <header>
+        <p style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); color: white;">Logged in as {{ request.session.user_id }}</p>
+        <a href="login">Login</a>
+        <a href="signup">Signup</a>
+        <a href="#">View Cart</a>
+        <a href="admin">Admin Panel</a>
+    </header>
+  
+    <div>
+        <h1>Pending Events</h1>
+        {% if pending %}
+            <ul>
+                {% for event in pending %}
+                <div class="event-container">
+                    <div class="event">
+                
+                        <div class="event-image">
+                            <img src="{% static event.imageURL %}" alt="Event Image">
+                        </div>
+                        <div class="event-details">
+                            <div class="event-name">{{ event.name }}</div>
+                            <div class="event-date">{{ event.eventDateTime }}</div>
+                            <div class="event-location">Location: {{ event.location }}</div>
+                          
+                            <div class="event-capacity">Capacity: {{ event.capacity }}</div>
+                
+                            <div class="event-category">Category: {{ event.category }}</div>
+                         
+                            <div class="event-artist">Artist: {{ event.artist }}</div>
+                           
+                            <div class="event-price">Price: {{ event.price }}</div>
+                            <div class="event-id">Event ID: {{ event.eventID }}</div>
+                        
+                            <a href="{% url 'eventaction' event_ID=event.eventID %}" class="btn btn-outline-secondary">Approve/Reject Event</a>
+                          
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No pending events</p>
+        {% endif %}
+    </div>
+    
+    
 </body>
 </html>
