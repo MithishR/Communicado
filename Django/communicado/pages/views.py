@@ -118,7 +118,7 @@ def useracc(request):
 
 
 def event(request):
-    data = Events.objects.all()
+    data = Events.objects.filter(isVerified=1)
     unique_categories = Events.objects.values_list('category', flat=True).distinct()
     category = request.GET.get('category')
     search_query = request.GET.get('search')
@@ -130,7 +130,7 @@ def event(request):
             Q(category__icontains=search_query))
             if(data.count() == 0):
                 error_message = "No Matches for "+ search_query+" :( Currently available Events: "
-                data = Events.objects.all()
+                data = Events.objects.filter(isVerified=1)
                 context = {"events": data ,
                 'unique_categories': unique_categories,
                 'error_message': error_message
@@ -138,24 +138,24 @@ def event(request):
                 return render (request , "pages/events.html",context)
                 
         else:
-            data=Events.objects.filter(category=category)
+            data=Events.objects.filter(category=category, isVerified=1)
             context = {"events": data ,
                 'unique_categories': unique_categories}
     else:
         if search_query and search_query != " ":
             data = Events.objects.filter(
             Q(artist__icontains=search_query) |
-            Q(name__icontains=search_query) )
+            Q(name__icontains=search_query))
             if(data.count() == 0):
                 error_message = "No Matches for "+ search_query+" :( Currently available Events: "
-                data = Events.objects.all()
+                data = Events.objects.filter(isVerified=1)
                 context = {"events": data ,
                 'unique_categories': unique_categories,
                 'error_message': error_message
                 }
                 return render (request , "pages/events.html",context)
         else:
-            data=Events.objects.all()
+            data=Events.objects.filter(isVerified=1)
            
     context = {"events": data ,
                 'unique_categories': unique_categories}
