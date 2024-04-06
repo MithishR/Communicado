@@ -59,6 +59,14 @@ class Events(models.Model):
     category = models.CharField(max_length=50, null=True, blank=True)
     artist = models.CharField(max_length=100, null=True, blank=True)
     isVerified = models.BooleanField(default=False)
+    #isVerified=models.IntegerField(default=0)
+    # IS_VERIFIED_CHOICES = (
+    #     (0, 'Not Checked'),
+    #     (1, 'Approved'),
+    #     (-1, 'Rejected'),
+    # )
+    # isVerified = models.IntegerField(choices=IS_VERIFIED_CHOICES, default=0)
+
     adminID = models.ForeignKey(Admin, on_delete=models.CASCADE, null=True, blank=True,db_column= "adminID")
     eventOrganizerID = models.ForeignKey(EventOrganizer, on_delete=models.CASCADE, null=True, blank=True,db_column="eventOrganizerID")
     imageURL = models.CharField(max_length=100, null=True, blank=True)
