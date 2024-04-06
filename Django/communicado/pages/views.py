@@ -2,7 +2,7 @@ import datetime
 from unicodedata import numeric
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.hashers import make_password,check_password
-from .models import users, EventOrganizer, Events
+from .models import *
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Events , BookedEvent
@@ -30,6 +30,8 @@ def login(request):
                     success_message = "Welcome " + user.name + ", userid:"+ str(user.userID) # Accessing name from the user object
                     messages.success(request, success_message)
                     return redirect('organizer_actions')
+                elif user.role == 'Admin':
+                    return redirect('admin_actions')
                 
                 else:
                     success_message = "Welcome " + user.name + ", userid:"+ str(user.userID) # Accessing name from the user object
@@ -60,6 +62,7 @@ def signup(request):
         if role.__eq__('EventOrganizer'):
             event_organizer = EventOrganizer(user=user, phoneNumber=phoneNumber)
             event_organizer.save()
+    
         success_message = "User Account Created for: " + user.name
         return render(request, 'pages/login.html', {'success_message': success_message})
         
@@ -292,4 +295,18 @@ def payment(request):
 
     return render(request, 'pages/payment.html')
 
+def admin_actions(request):
+    userData = users.objects.all()
+    context = {"userData": userData, }
+    return render (request,"pages/admin_actions.html",context)
 
+def pending(request):
+    userData = users.objects.all()
+    context = {"userData": userData, }
+    return render (request,"pages/pending.html",context)
+    
+def rejected(request):
+    userData = users.objects.all()
+    context = {"rejected": userData, }
+    return render (request,"pages/rejected.html",context)
+    

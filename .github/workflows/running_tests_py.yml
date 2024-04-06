@@ -28,4 +28,4 @@ jobs:
     - name: Run Tests
       run: |
         cd ./Django/communicado
-        docker exec communicado_container_test python manage.py test
+        docker exec communicado_container_test python manage.py test --noinput

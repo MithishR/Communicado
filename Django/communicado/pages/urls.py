@@ -16,6 +16,9 @@ urlpatterns = [
     path('userbookinfo',views.userbookeventinfo , name = 'userbookeventinfo'),
     path('add_to_cart/<int:event_ID>/', views.add_to_cart, name='add_to_cart'),
     path('payment', views.payment, name='payment'),
+    path('admin_actions', views.admin_actions, name='admin_actions'),
+    path('pending', views.pending, name='pending'),
+    path('rejected', views.rejected, name='rejected'),
 
  
 ]
