@@ -302,21 +302,12 @@ def admin_actions(request):
 
 def pending(request):
     pending = Events.objects.filter(isVerified=0)
-    # if request.method == 'POST':
-    #     event_id = request.POST.get('event_id')
-    #     action = request.POST.get('action')
-    #     if action == 'approve':
-    #         event = Events.objects.get(id=event_id)
-    #         event.isVerified = 1
-    #         event.save()
-
     return render(request, 'pages/pending.html', {'pending': pending})
 
     
 def rejected(request):
-    userData = users.objects.all()
-    context = {"rejected": userData, }
-    return render (request,"pages/rejected.html",context)
+    rejected = Events.objects.filter(isVerified=-1)
+    return render(request, 'pages/rejected.html', {'rejected': rejected})
 def eventaction(request,event_ID):
     # userData = users.objects.all()
     # context = {"eventaction": userData, }
