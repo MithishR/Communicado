@@ -220,7 +220,7 @@ def userbookeventinfo(request):
         return render(request, 'pages/userbookinghistory.html', {'error_message': error_message, 'show_login_button': True})
     else:
 
-        booked_events = BookedEvent.objects.filter(user=userId)
+        booked_events = BookedEvent.objects.filter(user=user_id)
         if booked_events.count() == 0 :
             no_events_message = "You currently have no booked events. Book now!"
             return render(request, 'pages/userbookinghistory.html', {'no_events_message': no_events_message, 'show_events_button': True})
