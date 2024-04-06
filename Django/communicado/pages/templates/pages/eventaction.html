@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pending Events</title>
+    <title>Edit Event - {{ event.name }}</title>
     <style>
         /* CSS for screen view */
         body {
@@ -109,7 +109,6 @@
             left: 0;
             width: 100%;
             z-index: 1000; 
-            margin-bottom: 50px;
         }
 
         header a {
@@ -146,66 +145,77 @@
 </head>
 <body>
     <header>
-        <p style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); color: white;">Logged in as {{ request.session.user_id }}</p>
-        <a href="login">Login</a>
-        <a href="signup">Signup</a>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Signup</a>
         <a href="#">View Cart</a>
-        <a href="admin">Admin Panel</a>
     </header>
-  
-    <div>
-        <h1>Pending Events</h1>
-        {% if pending %}
-            <ul>
-                {% for event in pending %}
-                <div class="event-container">
-                    <div class="event">
-                
-                        <div class="event-image">
-                            <img src="{% static event.imageURL %}" alt="Event Image">
-                        </div>
-                        <div class="event-details">
-                            <div class="event-name">{{ event.name }}</div>
-                            <div class="event-date">{{ event.eventDateTime }}</div>
-                            <div class="event-location">Location: {{ event.location }}</div>
-                          
-                            <div class="event-capacity">Capacity: {{ event.capacity }}</div>
-                
-                            <div class="event-category">Category: {{ event.category }}</div>
-                         
-                            <div class="event-artist">Artist: {{ event.artist }}</div>
-                           
-                            <div class="event-price">Price: {{ event.price }}</div>
-                            <div class="event-id">Event ID: {{ event.eventID }}</div>
-                            {% comment %} <button onclick="confirmApproval('{{ event.eventID }}')" class="btn-approve">Approve</button>
-                            <button onclick="confirmRejection('{{ event.eventID }}')" class="btn-reject">Reject</button> {% endcomment %}
-                            <a href="{% url 'eventaction' event_ID=event.eventID %}" class="btn btn-outline-secondary">Approve/Reject Event</a>
-                          
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No pending events</p>
-        {% endif %}
+    <div class="container">
+        <h1>Update Event</h1>
+
+        <div class="event-container">
+            <h2>{{ event.name }} Details</h2>
+        <div class="event-details">
+            {% if event.imageURL %}
+            <div class="event-image">
+                <img src="{% static event.imageURL %}" alt="Event Image">
+            </div>{% endif %}
+            <div class="event-info">
+                <span class="label">Name:</span>
+                <span class="value">{{ event.name }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Date and Time:</span>
+                <span class="value">{{ event.eventDateTime }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Location:</span>
+                <span class="value">{{ event.location }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Capacity:</span>
+                <span class="value">{{ event.capacity }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Category:</span>
+                <span class="value">{{ event.category }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Artist:</span>
+                <span class="value">{{ event.artist }}</span>
+            </div>
+            <div class="event-info">
+                <span class="label">Price:</span>
+                <span class="value">{{ event.price }}</span>
+            </div>
+            <div class="event-id">
+                <span class="label">Event ID:</span>
+                <span class="value">{{ event.eventID }}</span>
+            </div>
+           
+            <div>
+                <button class="btn" onclick="confirmApproval('{{ event.eventID }}')">Approve Event</button>
+                <button class="btn" onclick="confirmRejection('{{ event.eventID }}')">Reject Event</button>
+            </div>
+            
+           
+        
+        </div>
+        </div>
     </div>
-    {% comment %} <script>
+    <script>
         function confirmApproval(eventId) {
             var confirmation = confirm("Are you sure you want to approve this event?");
             if (confirmation) {
-                window.location.href = "{% url 'approve_event' %}?event_id=" + eventId;
+               window.location.href = "{% url 'approve_event' event_ID=event.eventID %}";
             }
         }
 
         function confirmRejection(eventId) {
             var confirmation = confirm("Are you sure you want to reject this event?");
             if (confirmation) {
-                window.location.href = "{% url 'reject_event' %}?event_id=" + eventId;
+                window.location.href = "{% url 'reject_event' event_ID=event.eventID%}";
             }
         }
-    </script> {% endcomment %}
-    
-    
+    </script>
 </body>
 </html>

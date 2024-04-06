@@ -62,7 +62,7 @@ def signup(request):
         if role.__eq__('EventOrganizer'):
             event_organizer = EventOrganizer(user=user, phoneNumber=phoneNumber)
             event_organizer.save()
-    
+ 
         success_message = "User Account Created for: " + user.name
         return render(request, 'pages/login.html', {'success_message': success_message})
         
@@ -301,12 +301,39 @@ def admin_actions(request):
     return render (request,"pages/admin_actions.html",context)
 
 def pending(request):
-    userData = users.objects.all()
-    context = {"userData": userData, }
-    return render (request,"pages/pending.html",context)
+    pending = Events.objects.filter(isVerified=0)
+    # if request.method == 'POST':
+    #     event_id = request.POST.get('event_id')
+    #     action = request.POST.get('action')
+    #     if action == 'approve':
+    #         event = Events.objects.get(id=event_id)
+    #         event.isVerified = 1
+    #         event.save()
+
+    return render(request, 'pages/pending.html', {'pending': pending})
+
     
 def rejected(request):
     userData = users.objects.all()
     context = {"rejected": userData, }
     return render (request,"pages/rejected.html",context)
+def eventaction(request,event_ID):
+    # userData = users.objects.all()
+    # context = {"eventaction": userData, }
+    # return render (request,"pages/eventaction.html",context)
+
+    event = get_object_or_404(Events,eventID=event_ID)
+    return render(request, 'pages/eventaction.html', {'event': event})
+
+
+def approve_event(request, event_ID):
+    event = get_object_or_404(Events,eventID=event_ID)
+    event.isVerified = 1 
+    event.save()
+    return redirect('pending')
     
+def reject_event(request, event_ID):
+    event = get_object_or_404(Events,eventID=event_ID)
+    event.isVerified = -1  
+    event.save()
+    return redirect('pending')

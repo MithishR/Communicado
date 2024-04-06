@@ -19,6 +19,9 @@ urlpatterns = [
     path('admin_actions', views.admin_actions, name='admin_actions'),
     path('pending', views.pending, name='pending'),
     path('rejected', views.rejected, name='rejected'),
+    path('eventaction/<int:event_ID>', views.eventaction, name='eventaction'),
+    path('approve_event/<int:event_ID>', views.approve_event, name='approve_event'),
+    path('reject_event/<int:event_ID>', views.reject_event, name='reject_event'),
 
  
 ]
