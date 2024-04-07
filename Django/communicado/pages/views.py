@@ -90,9 +90,10 @@ def add_event(request):
             category = request.POST.get('category')
             artist = request.POST.get('artist')
             image=request.POST.get('image')
+            price=request.POST.get('price')
         
             new_event = Events(name=name, eventDateTime=eventDateTime, location=location, capacity=capacity,
-                            category=category, artist=artist, isVerified=False, eventOrganizerID=event_organizer, imageURL=image)
+                            category=category, artist=artist, isVerified=False, eventOrganizerID=event_organizer, imageURL=image,price=price)
             new_event.save()
             success_message = "Event added successfully. It is pending approval."
             messages.success(request, success_message)
@@ -205,6 +206,7 @@ def change_event(request, event_ID):
         event.capacity = request.POST.get('capacity')
         event.category = request.POST.get('category')
         event.artist = request.POST.get('artist')
+        event.price = request.POST.get('price')
         # event.imageURL = request.POST.get('image')
         event.save()
 
@@ -287,7 +289,7 @@ def payment(request):
 
             # If all validations pass, simulate a successful payment
             messages.success(request, 'Payment successful!')
-            return redirect('#')
+            return redirect('confirmation')
         except Exception as e:
             # Payment failed, display an error message
             messages.error(request, f'Payment failed: {str(e)}')
@@ -328,3 +330,7 @@ def reject_event(request, event_ID):
     event.isVerified = -1  
     event.save()
     return redirect('pending')
+
+def confirmation(request):
+    return render(request, "pages/confirmation.html")
+    
