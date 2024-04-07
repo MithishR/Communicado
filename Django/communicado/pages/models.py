@@ -93,3 +93,7 @@ class BookedEvent(models.Model):
 
     def __str__(self):
         return f"{self.eventID.name} - {self.referenceNumber}"
+
+class Image(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='images/')
