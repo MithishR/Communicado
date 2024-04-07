@@ -1,7 +1,10 @@
 name: Django Coverage Test
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Running Tests"]
+    types:
+      - completed
     branches:
       - '*'
   workflow_dispatch:
@@ -10,6 +13,8 @@ jobs:
   test:
     name: Test with Coverage
     runs-on: ubuntu-latest
+    retry:
+      max-runs: 3    
 
     steps:
     - name: Checkout code
@@ -26,14 +31,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install coverage
+
+    - name: Make Migrations
+      run: |
+        cd ./Django/communicado        
         python manage.py makemigrations
         python manage.py migrate || true
+
+    - name: Run Coverage Test
+      run: |
+        cd ./Django/communicado         
         coverage run manage.py test
         coverage report
-        coverage html -d coverage_report    
+        coverage html -d coverage_report
 
-    - name: Save coverage report artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage-report
-        path: coverage_report
+    - name: Print End Status
+      run: |
+        echo "Coverage tests completed."

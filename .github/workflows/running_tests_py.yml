@@ -9,6 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    
+    retry:
+      max-runs: 3    
 
     steps:
     - name: Checkout repository
@@ -25,7 +28,12 @@ jobs:
         cd ./Django/communicado
         docker exec communicado_container_test python manage.py makemigrations
         docker exec communicado_container_test python manage.py migrate || true
+
     - name: Run Tests
       run: |
         cd ./Django/communicado
-        docker exec communicado_container_test python manage.py test --noinput
+        docker exec communicado_container_test python manage.py test
+
+    - name: Print End Status
+      run: |
+        echo "Tests completed."
