@@ -8,10 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    
-    retry:
-      max-runs: 3    
+    runs-on: ubuntu-latest  
 
     steps:
     - name: Checkout repository
