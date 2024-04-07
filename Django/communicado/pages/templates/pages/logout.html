@@ -7,33 +7,37 @@
     <title>Logout Confirmation</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             background-color: #0c0808;
+            background-image: url('{% static "bg1.jpg" %}');
+            background-size: cover; 
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            align-items: center; /* Center horizontally */
+            justify-content: flex-start; /* Align content to the top */
             height: 100vh;
             color: white; 
-            background-image: url('{% static "bg1.jpg" %}');
         }
-
+    
         .content {
             text-align: center;
+            margin-top: 50px;
         }
-
+    
         .image-container {
-            margin-top: 20px;
+            margin-top: 30px;
         }
-
+    
         img {
             width: 500px; 
             height: auto; 
         }
     </style>
+    
 </head>
+{% include './header.html' %}
 <body>
     <div class="content" >
         <h1>Logout Confirmation</h1>
@@ -48,7 +52,7 @@
     <script>
         function countdownRedirect()
         {
-            var countdown = 3;
+            var countdown = 5;
             var countdownDisplay = document.getElementById('countdown');
 
             var countdownInterval = setInterval(function() 
