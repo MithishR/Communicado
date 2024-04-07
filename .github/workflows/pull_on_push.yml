@@ -24,3 +24,6 @@ jobs:
           script: |
             ./pull_changes.sh
 
+      - name: Print End Status
+        run: |
+          echo "Code Pushed to Production"
