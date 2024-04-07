@@ -24,6 +24,10 @@ urlpatterns = [
     path('reject_event/<int:event_ID>', views.reject_event, name='reject_event'),
     path('confirmation', views.confirmation, name='confirmation'),
     path('logout/', views.logout, name='logout'),
+    path('delete/<int:event_ID>/', views.delete, name='delete'),
+    path('remove',views.remove, name='remove'),
+    
+    
 
  
 ]
