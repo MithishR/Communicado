@@ -17,35 +17,6 @@
             background-color: rgba(245, 245, 245, 0.3); /* Adjust the alpha value (0.3) for opacity */
             color: rgb(255, 255, 255);
         }
-    
-        .ribbon {
-            background-color: black;
-            padding: 20px;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            font-weight: bold;
-            font-size: 24px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-        }
-        .ribbon h1 {
-            margin: 0;
-            font-size: 24px;
-            color: white;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        .ribbon p {
-            margin: 5px 0;
-            font-size: 16px;
-            color: white;
-            font-style: italic;
-            font-style: bold;
-        }
         .bg-container {
             display: flex;
             justify-content: center;
@@ -98,11 +69,7 @@
     </style>
 </head>
 <body>
-     <!-- Header ribbon -->
-     <div class="ribbon">
-        <h1>Welcome to Communicado!</h1>
-        <p>Your go-to platform for discovering and booking exciting events</p>
-     </div>
+    {% include './header.html' %}
     <header>
         <a href="login">Login</a>
         <a href="signup">Signup</a>
