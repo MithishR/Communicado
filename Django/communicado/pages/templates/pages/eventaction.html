@@ -206,7 +206,7 @@
         function confirmApproval(eventId) {
             var confirmation = confirm("Are you sure you want to approve this event?");
             if (confirmation) {
-               window.location.href = "{% url 'approve_event' event_ID=event.eventID %}";
+               window.location.href = "{% url 'approve_event' event_ID=event.eventID%}";
             }
         }
 

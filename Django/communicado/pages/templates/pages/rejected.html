@@ -177,12 +177,11 @@
                            
                             <div class="event-price">Price: {{ event.price }}</div>
                             <div class="event-id">Event ID: {{ event.eventID }}</div>
-                        
-                            {% comment %} <div>
-                                <button class="btn" onclick="confirmApproval('{{ event.eventID }}')">Approve Event</button>
-                                
-                    
-                            </div> {% endcomment %}
+                            <form action="{% url 'approve_event' event.eventID %}" method="post" onsubmit="return confirm('Are you sure you want to approve this event?')">
+                                {% csrf_token %}
+                                <button type="submit">Approve Event</button>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -192,15 +191,7 @@
             <p>No rejected events</p>
         {% endif %}
     </div>
-    {% comment %} <script>
     
-        function confirmApproval(eventId) {
-            var confirmation = confirm("Are you sure you want to approve this event?");
-            if (confirmation) {
-               window.location.href = "{% url 'approve_event' event_ID='eventID' %}".replace('eventID', eventId);
-            }
-        }
-    </script> {% endcomment %}
 
     
     
