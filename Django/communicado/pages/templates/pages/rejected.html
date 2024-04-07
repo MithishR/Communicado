@@ -155,9 +155,9 @@
   
     <div>
         <h1>Rejected Events</h1>
-        {% if pending %}
+        {% if rejected %}
             <ul>
-                {% for event in pending %}
+                {% for event in rejected %}
                 <div class="event-container">
                     <div class="event">
                 
@@ -178,8 +178,11 @@
                             <div class="event-price">Price: {{ event.price }}</div>
                             <div class="event-id">Event ID: {{ event.eventID }}</div>
                         
-                            <a href="{% url 'eventaction' event_ID=event.eventID %}" class="btn btn-outline-secondary">Approve Event</a>
-                          
+                            {% comment %} <div>
+                                <button class="btn" onclick="confirmApproval('{{ event.eventID }}')">Approve Event</button>
+                                
+                    
+                            </div> {% endcomment %}
                         </div>
                     </div>
                 </div>
@@ -189,6 +192,15 @@
             <p>No rejected events</p>
         {% endif %}
     </div>
+    {% comment %} <script>
+    
+        function confirmApproval(eventId) {
+            var confirmation = confirm("Are you sure you want to approve this event?");
+            if (confirmation) {
+               window.location.href = "{% url 'approve_event' event_ID='eventID' %}".replace('eventID', eventId);
+            }
+        }
+    </script> {% endcomment %}
 
     
     

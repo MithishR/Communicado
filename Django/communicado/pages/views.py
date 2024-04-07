@@ -311,10 +311,6 @@ def rejected(request):
     rejected = Events.objects.filter(isVerified=-1)
     return render(request, 'pages/rejected.html', {'rejected': rejected})
 def eventaction(request,event_ID):
-    # userData = users.objects.all()
-    # context = {"eventaction": userData, }
-    # return render (request,"pages/eventaction.html",context)
-
     event = get_object_or_404(Events,eventID=event_ID)
     return render(request, 'pages/eventaction.html', {'event': event})
 
