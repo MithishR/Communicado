@@ -9,6 +9,7 @@
             padding: 20px;
             text-align: center;
             position: fixed;
+            font-family: 'Montserrat', sans-serif;
             top: 0;
             left: 0;
             width: 100%;
@@ -37,6 +38,7 @@
         header a:hover {
             color: grey;
         }
+
     </style>
 </head>
 <body>
@@ -45,19 +47,23 @@
     <a href="{% url 'home' %}">
         <img src="{% static 'logo.jpg' %}" alt="Logo"> 
     </a>
+
     <nav>
         {% if not request.session.userID %}
         <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Signup</a>
         {% else %}
-        <a href="{% url 'useracc' %}">Your Account</a>
-        <a href="{% url 'logout' %}">Log Out</a>
-        <p style="color: white;">Logged in as {{ request.session.userID }}</p>
+        <a href="{% url 'useracc' %}">{{ request.session.userName}}'s Account</a>
         {% endif %}
 
         <a href="#">View Cart</a>
 
+        {% if request.session.userRole == 'Admin' %}
         <a href="admin">Admin Panel</a>
+        {% endif %}
+
+        {% if request.session.userID %}
+        <a href="{% url 'logout' %}">Log Out</a>
+        {% endif %}
     </nav>
 </header>
 

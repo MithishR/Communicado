@@ -26,6 +26,7 @@ def login(request):
             if check_password(password, user.password):
                 request.session['userID'] = user.userID
                 request.session['userRole'] = user.role
+                request.session['userName'] = user.name
                 #request.session.set_test_cookie() 
                 if user.role == 'EventOrganizer':
                     success_message = "Welcome " + user.name + ", userid:"+ str(user.userID) # Accessing name from the user object
