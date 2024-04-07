@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logout Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0c0808;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white; 
+            background-image: url('{% static "bg1.jpg" %}');
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .image-container {
+            margin-top: 20px;
+        }
+
+        img {
+            width: 500px; 
+            height: auto; 
+        }
+    </style>
+</head>
+<body>
+    <div class="content" >
+        <h1>Logout Confirmation</h1>
+        <p>You have been successfully logged out.</p>
+        <p>Redirecting to home page in <span id="countdown">5</span> seconds...</p>
+    </div>
+
+    <div class="image-container">
+        <img src="{% static 'logout.gif' %}" alt="Logout Image">
+    </div>
+
+    <script>
+        function countdownRedirect()
+        {
+            var countdown = 3;
+            var countdownDisplay = document.getElementById('countdown');
+
+            var countdownInterval = setInterval(function() 
+                {
+                    countdownDisplay.textContent = countdown;
+                    countdown--; 
+                    if (countdown < 0)
+                    {
+                        clearInterval(countdownInterval); 
+                        window.location.href = "/"; 
+                    }
+                }, 1000); 
+        }
+
+        window.onload = function()
+        {
+            countdownRedirect();
+        };
+    </script>
+</body>
+</html>

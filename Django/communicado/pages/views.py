@@ -348,3 +348,6 @@ def reject_event(request, event_ID):
 def confirmation(request):
     return render(request, "pages/confirmation.html")
     
+def logout(request):
+    request.session.flush()
+    return render(request, "pages/logout.html")
