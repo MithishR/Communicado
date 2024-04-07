@@ -321,12 +321,26 @@ def eventaction(request,event_ID):
 
 def approve_event(request, event_ID):
     event = get_object_or_404(Events,eventID=event_ID)
+    user_id = request.session.get('userID')
+    user = users.objects.get(userID=user_id)
+    if user.role.__eq__('Admin'):
+        admin = Admin.objects.get(user=user)
+    else:
+        raise Exception("User is not an Event Organizer")
+    event.adminID=admin
     event.isVerified = 1 
     event.save()
     return redirect('pending')
     
 def reject_event(request, event_ID):
     event = get_object_or_404(Events,eventID=event_ID)
+    user_id = request.session.get('userID')
+    user = users.objects.get(userID=user_id)
+    if user.role.__eq__('Admin'):
+        admin = Admin.objects.get(user=user)
+    else:
+        raise Exception("User is not an Event Organizer")
+    event.adminID=admin
     event.isVerified = -1  
     event.save()
     return redirect('pending')
