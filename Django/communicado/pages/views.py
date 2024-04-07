@@ -209,12 +209,13 @@ def change_event(request, event_ID):
         event.category = request.POST.get('category')
         event.artist = request.POST.get('artist')
         event.price = request.POST.get('price')
+        event.isVerified=False
         # event.imageURL = request.POST.get('image')
         event.save()
 
-        success_message = "Event updated successfully."
+        success_message = "Updated event details sent to admin for approval."
         messages.success(request, success_message)
-        return redirect('home')  
+        return redirect('organizer_actions')  
     else:
         # Render the form template with the event data for editing
         return render(request, 'pages/change_event.html', {'event': event})
