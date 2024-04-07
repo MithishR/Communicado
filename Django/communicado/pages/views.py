@@ -354,3 +354,15 @@ def confirmation(request):
 def logout(request):
     request.session.flush()
     return render(request, "pages/logout.html")
+
+def delete(request, event_ID):
+    event = get_object_or_404(Events, eventID=event_ID)
+    event.delete()
+    success_message = "Event deleted successfully."
+    messages.success(request, success_message)
+    return redirect('admin_actions')
+
+
+def remove(request):
+    remove = Events.objects.filter(isVerified=1)
+    return render(request, 'pages/remove.html', {'remove': remove})

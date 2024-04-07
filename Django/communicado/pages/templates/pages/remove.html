@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pending Events</title>
+    <title>Remove Events</title>
     <style>
         /* CSS for screen view */
         body {
@@ -98,8 +98,6 @@
             font-size: medium;
             color: #fff;
         }
-
-
         /* CSS for print view */
         @media print {
             body {
@@ -126,10 +124,10 @@
     {% include './header.html' %}
   
     <div style="margin-top: 90px;"> 
-        <h1>Pending Events</h1>
-        {% if pending %}
+        <h1>All Approved Events</h1>
+        {% if remove %}
             <ul>
-                {% for event in pending %}
+                {% for event in remove %}
                 <div class="event-container">
                     <div class="event">
                 
@@ -149,18 +147,22 @@
                            
                             <div class="event-price">Price: {{ event.price }}</div>
                             <div class="event-id">Event ID: {{ event.eventID }}</div>
-                        
-                            <a href="{% url 'eventaction' event_ID=event.eventID %}" class="btn btn-outline-secondary">Approve/Reject Event</a>
-                          
+                            <form action="{% url 'delete' event.eventID %}" method="post" onsubmit="return confirm('Are you sure you want to delete this event?')">
+                                {% csrf_token %}
+                                <button type="submit">Delete Event</button>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </ul>
         {% else %}
-            <p>No pending events</p>
+            <p>No rejected events</p>
         {% endif %}
     </div>
+    
+
     
     
 </body>
