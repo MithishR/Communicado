@@ -23,6 +23,7 @@ urlpatterns = [
     path('approve_event/<int:event_ID>', views.approve_event, name='approve_event'),
     path('reject_event/<int:event_ID>', views.reject_event, name='reject_event'),
     path('confirmation', views.confirmation, name='confirmation'),
+    path('logout/', views.logout, name='logout'),
 
  
 ]
