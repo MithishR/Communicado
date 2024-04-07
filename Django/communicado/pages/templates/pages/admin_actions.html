@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organizer Account</title>
+    <title>Administrator Account</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -94,6 +94,11 @@
 
     <div class="container">
         <h2>Administrator Portal</h2>
+        {% if messages %}
+        {% for message in messages %}
+            <p style="color: white;">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
 
         <form action="{% url 'pending' %}" method="get">
             <input type="submit" value="View events pending approval">

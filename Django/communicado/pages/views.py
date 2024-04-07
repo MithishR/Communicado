@@ -97,7 +97,7 @@ def add_event(request):
             new_event.save()
             success_message = "Event added successfully. It is pending approval."
             messages.success(request, success_message)
-            return redirect('home') 
+            return redirect('organizer_actions') 
         except Exception as e:
             error_message = f"An error occurred while adding the event. Role of user: {users.objects.get(userID=request.session.get('userID')).role}. Type of user: {type(request.session.get('user_id'))}. Error: {str(e)}"
             messages.error(request, error_message)
@@ -311,10 +311,6 @@ def rejected(request):
     rejected = Events.objects.filter(isVerified=-1)
     return render(request, 'pages/rejected.html', {'rejected': rejected})
 def eventaction(request,event_ID):
-    # userData = users.objects.all()
-    # context = {"eventaction": userData, }
-    # return render (request,"pages/eventaction.html",context)
-
     event = get_object_or_404(Events,eventID=event_ID)
     return render(request, 'pages/eventaction.html', {'event': event})
 
@@ -330,7 +326,10 @@ def approve_event(request, event_ID):
     event.adminID=admin
     event.isVerified = 1 
     event.save()
-    return redirect('pending')
+    success_message = "Event Approved. Added in the system."
+    messages.success(request, success_message)
+    return redirect('admin_actions')
+    
     
 def reject_event(request, event_ID):
     event = get_object_or_404(Events,eventID=event_ID)
@@ -343,7 +342,9 @@ def reject_event(request, event_ID):
     event.adminID=admin
     event.isVerified = -1  
     event.save()
-    return redirect('pending')
+    success_message = "Event Rejected. Not added in the system."
+    messages.success(request, success_message)
+    return redirect('admin_actions')
 
 def confirmation(request):
     return render(request, "pages/confirmation.html")
