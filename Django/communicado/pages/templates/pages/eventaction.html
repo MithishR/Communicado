@@ -99,28 +99,6 @@
             color: #fff;
         }
 
-        header {
-            background-color: rgba(0, 0, 0, 0.7); 
-            color: #fff;
-            padding: 10px;
-            text-align: right;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000; 
-        }
-
-        header a {
-            color: #fff;
-            margin: 0 10px;
-            text-decoration: none;
-        }
-
-        header a:hover {
-            text-decoration: underline;
-        }
-
         /* CSS for print view */
         @media print {
             body {
@@ -144,11 +122,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Signup</a>
-        <a href="#">View Cart</a>
-    </header>
+    {% include './header.html' %}
     <div class="container">
         <h1>Event Action page</h1>
         
