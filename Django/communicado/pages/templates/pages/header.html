@@ -1,38 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<style>
-header {
-    background-color: rgba(0, 0, 0, 0.7); 
-    color: #fff;
-    padding: 10px;
-    text-align: right;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000; 
-}
+{% load static %}
+<head>
+    <style>
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-header a {
-    color: #fff;
-    margin: 0 10px;
-    text-decoration: none;
-}
+        header img {
+            width: 125px; 
+            height: auto;
+            margin-left: 10px; 
+        }
 
-header a:hover {
-    text-decoration: underline;
-}</style>
+        header nav {
+            margin-right: 20px; 
+        }
+
+        header a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+
 <header>
-    {% if not request.session.userID %}
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'signup' %}">Signup</a>
-    {% else %}
-    <a href="{% url 'useracc' %}">Your Account</a>
-    <a href="{% url 'logout' %}">Log Out</a>
-    {% endif %}
+    <a href="{% url 'home' %}">
+        <img src="{% static 'logo.jpg' %}" alt="Logo"> 
+    </a>
+    <nav>
+        {% if not request.session.userID %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Signup</a>
+        {% else %}
+        <a href="{% url 'useracc' %}">Your Account</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+        <p style="color: white;">Logged in as {{ request.session.userID }}</p>
+        {% endif %}
 
-    <a href="#">View Cart</a>
+        <a href="#">View Cart</a>
 
-    <a href="admin">Admin Panel</a>
-    
+        <a href="admin">Admin Panel</a>
+    </nav>
 </header>
+
+</body>
+</html>

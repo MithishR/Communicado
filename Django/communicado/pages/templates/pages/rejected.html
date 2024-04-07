@@ -98,30 +98,6 @@
             font-size: medium;
             color: #fff;
         }
-
-        header {
-            background-color: rgba(0, 0, 0, 0.7); 
-            color: #fff;
-            padding: 10px;
-            text-align: right;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000; 
-            margin-bottom: 50px;
-        }
-
-        header a {
-            color: #fff;
-            margin: 0 10px;
-            text-decoration: none;
-        }
-
-        header a:hover {
-            text-decoration: underline;
-        }
-
         /* CSS for print view */
         @media print {
             body {
@@ -145,13 +121,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <p style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); color: white;">Logged in as {{ request.session.user_id }}</p>
-        <a href="login">Login</a>
-        <a href="signup">Signup</a>
-        <a href="#">View Cart</a>
-
-    </header>
+    {% include './header.html' %}
   
     <div>
         <h1>Rejected Events</h1>
