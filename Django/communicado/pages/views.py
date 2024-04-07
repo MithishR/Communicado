@@ -326,6 +326,8 @@ def approve_event(request, event_ID):
     event.adminID=admin
     event.isVerified = 1 
     event.save()
+    success_message = "Event Approved. Added in the system."
+    messages.success(request, success_message)
     return redirect('admin_actions')
     
     
@@ -340,6 +342,8 @@ def reject_event(request, event_ID):
     event.adminID=admin
     event.isVerified = -1  
     event.save()
+    success_message = "Event Rejected. Not added in the system."
+    messages.success(request, success_message)
     return redirect('admin_actions')
 
 def confirmation(request):
