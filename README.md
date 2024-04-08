@@ -30,7 +30,6 @@ We uphold a commitment to collaboration and excellence, driven by the following 
 
 This innovative project was crafted with ❤️ by:
 
-- Mithish Ravisankar Geetha
 - Pratham Shah
 - Mahi Gangal
 - Sparsh Khanna
