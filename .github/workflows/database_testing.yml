@@ -1,0 +1,25 @@
+name: Database Connection Testing
+
+on:
+  push:
+    branches:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+        
+    - name: Docker Build Image
+      run: |
+        cd ./Django/communicado/Testing
+        chmod +x mac_database_testing.sh
+        ./mac_database_testing.sh
+        
+    - name: Print End Status
+      run: |
+        echo "Database Tests completed."
