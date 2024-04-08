@@ -32,7 +32,6 @@ This innovative project was crafted with ❤️ by:
 
 - Pratham Shah
 - Mahi Gangal
-- Sparsh Khanna
 - Ojus Sharma
 
 Feel free to explore the project, contribute, and enhance your ticketing experience with Communicado!
