@@ -6,22 +6,10 @@ from .models import *
 from django.test import LiveServerTestCase
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
-#from selenium.webdriver.chrome.options import Options
-import time
-
-# Example 1
-
-#class Hosttest(LiveServerTestCase):
-  	
-#	def testhomepage(self):
-#		options = Options()
-#		options.headless = True
-#		driver = webdriver.Chrome(options=options)
-#		driver.get(self.live_server_url)
-				# try driver.get(self.live_server_url) if driver.get('http://127.0.0.1:8000/') does not work	
-#		assert "Hello, world!" in driver.title
+from django.test import TestCase, RequestFactory
+from django.contrib.auth.models import User
+from django.urls import reverse
+from django.contrib.sessions.middleware import SessionMiddleware
             
 class UsersTestCase(TestCase):
 
@@ -680,3 +668,11 @@ class UsersTestCase(TestCase):
         ]
         for paragraph in expected_paragraphs:
             self.assertContains(response, paragraph, html=True)
+
+    def test_header_not_logged_in(self):
+        response = self.client.get(reverse('xyz'))
+        
+        self.assertEqual(response.status_code, 200)
+        
+        self.assertContains(response, "View Cart")
+        self.assertContains(response, "Login")
