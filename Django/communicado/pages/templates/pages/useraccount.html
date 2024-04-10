@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>useraccount</title>
+    <title>User Account</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #0f0101;
+            color: #fff; /* Set text color to white */
         }
 
         .center {
@@ -19,66 +20,68 @@
             background-color: #080000;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border: 2px solid #000; /* Changed border color to white */
+            border: 2px solid #000;
             text-align: center;
         }
 
         h1 {
-            color: #fff; /* Changed text color to white */
             text-align: center;
-            margin-bottom: 20px; /* Add margin below the header */
-            font-size: 24px; /* Adjust font size */
+            margin-bottom: 20px;
+            font-size: 24px;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
-            text-align: left; /* Align the text left */
-            margin-left: 40px; /* Add margin for spacing */
-            margin-bottom: 0; /* Remove bottom margin */
+            text-align: left;
+            margin: 0 auto; /* Center the list */
+            max-width: 400px; /* Limit maximum width */
         }
 
         li {
             border-bottom: 1px solid #ddd;
             padding: 20px 0;
             position: relative;
-            color: #fff; /* Changed text color to white */
         }
 
         strong {
             color: #fff;
         }
 
-
-        /* Apply custom styles */
         .btn {
             display: inline-block;
             padding: 10px 20px;
             font-size: 18px;
-            background-color: transparent; 
-            color: #fff; 
+            background-color: transparent;
+            color: #fff;
             text-decoration: none;
-            border: 2px solid #f4f5f7; 
+            border: 2px solid #f4f5f7;
             border-radius: 5px;
             margin-top: 20px;
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
             text-align: center;
         }
 
         .btn:hover {
-            background-color: #fff; 
-            border-color: #fff; 
-            color: #000; 
-        }       
+            background-color: #fff;
+            border-color: #fff;
+            color: #000;
+        }
 
-        /* Add style for the image */
+        .user-container {
+            background-color: #1f1f1f; /* Change background color */
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
         .user-image {
-            width: 100px; /* Set image width */
-            height: 100px; /* Set image height */
-            border-radius: 50%; /* Make it round */
-            background-color: #fff; /* Add background color */
-            display: block; /* Center the image */
-            margin: 20px auto; /* Add margin for spacing */
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: block;
+            margin: 20px auto;
         }
     </style>
 </head>
@@ -86,22 +89,35 @@
     {% include './header.html' %}
 
     {% if error_message %}
-        <p style="color: rgb(238, 225, 225);">{{ error_message }}</p>
+        <p>{{ error_message }}</p>
     {% else %}
     <div class="center">
-        
         {% if user %}
             <h1>Your Account Information</h1>
-            <img src="../../static/icon.png" alt="User Image" class="user-image">
-            
-            <ul>
-                <li>
-                    <strong>Role:</strong> {{ user.role }}<br>
-                    <strong>Username:</strong> {{ user.username }}<br>
-                    <strong>Email:</strong> {{ user.email }}<br>
-                    <strong>Address:</strong> {{ user.address }}<br>
-                </li>
-            </ul>
+            <div class="user-container">
+                {% if user.username == "mithsEventOrg" %}
+                    <img src="../../static/mithish.jpeg" alt="User Image" class="user-image">
+                {% endif %}
+                {% if user.username == "sparshkhanna" %}
+                    <img src="../../static/sparsh.png" alt="User Image" class="user-image">
+                {% endif %}
+                {% if user.username == "mahigangal" %}
+                    <img src="../../static/mahi.jpeg" alt="User Image" class="user-image">
+                {% endif %}
+                {% if user.username == "ojussharma" %}
+                    <img src="../../static/ojus.jpeg" alt="User Image" class="user-image">
+                {% endif %}
+                {% if user.username == "prathamshah" %}
+                    <img src="../../static/pratham.jpeg" alt="User Image" class="user-image">
+                {% endif %}
+                
+                <ul>
+                    <li><strong>Role:</strong> {{ user.role }}</li>
+                    <li><strong>Username:</strong> {{ user.username }}</li>
+                    <li><strong>Email:</strong> {{ user.email }}</li>
+                    <li><strong>Address:</strong> {{ user.address }}</li>
+                </ul>
+            </div>
             <a href="#" class="btn">Edit Account Details</a>
             <a href="userbookinfo" class="btn">Booking History</a>
         {% endif %}
