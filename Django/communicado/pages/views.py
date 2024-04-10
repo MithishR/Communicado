@@ -291,7 +291,7 @@ def payment(request):
                 raise ValueError('Cardholder name cannot be empty')
 
             # If all validations pass, simulate a successful payment
-            messages.success(request, 'Payment successful!')
+            messages.success(request, 'Payment successful and Booking Confirmed! Please look out for a confirmation email with details of your booking.')
             return redirect('confirmation')
         except Exception as e:
             # Payment failed, display an error message
