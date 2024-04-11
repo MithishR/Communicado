@@ -735,6 +735,164 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<h2>Confirmation</h2>', html=True)
         self.assertContains(response, '<h1>Communicado</h1>', html=True)
         self.assertContains(response, '<p>Your go-to platform for discovering and booking exciting events</p>', html=True)
+
+
+
+
+    def test_admin_actions_ui_elements(self):
+        response = self.client.get(reverse('admin_actions'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<h2>Administrator Portal</h2>')
+        self.assertContains(response, '<input type="submit" value="View events pending approval">')
+        self.assertContains(response, '<input type="submit" value="View rejected events">')
+        self.assertContains(response, '<input type="submit" value="Remove an Event">')
+
+    def test_pending_events_page_ui_elements(self):
+        self.event1 = Events.objects.create(name="Test Event 1", eventDateTime="2024-04-10T12:00:00", location="Test Location 1",
+                                            capacity=100, category="Test Category 1", artist="Test Artist 1", price=10.00, eventID=100)
+        self.event2 = Events.objects.create(name="Test Event 2", eventDateTime="2024-04-11T12:00:00", location="Test Location 2",
+                                            capacity=200, category="Test Category 2", artist="Test Artist 2", price=20.00, eventID=200)
+        response = self.client.get(reverse('pending'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<h1>Pending Events</h1>')
+        self.assertContains(response, '<div class="event-container">')
+        self.assertContains(response, '<img src="')  
+        self.assertContains(response, 'Location: Test Location 1')  
+        self.assertContains(response, 'Category: Test Category 2')
+        self.assertContains(response, 'Event ID: 200')
+        self.assertContains(response, '<a href="') 
+
+    def test_pending_events_page_functionality(self):
+        self.event1 = Events.objects.create(name="Test Event 1", eventDateTime="2024-04-10T12:00:00", location="Test Location 1",
+                                        capacity=100, category="Test Category 1", artist="Test Artist 1", price=10.00, eventID=400)
+        self.event2 = Events.objects.create(name="Test Event 2", eventDateTime="2024-04-11T12:00:00", location="Test Location 2",
+                                        capacity=200, category="Test Category 2", artist="Test Artist 2", price=20.00, eventID=500)
+
+        response = self.client.get(reverse('pending'))
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, 'Test Event 1')
+        self.assertContains(response, 'Test Event 2')
+        self.assertContains(response, f'href="{reverse("eventaction", args=[self.event1.eventID])}"')
+        self.assertContains(response, f'href="{reverse("eventaction", args=[self.event2.eventID])}"')
+
+    
+    def test_rejected_events_page_ui_elements(self):
+        self.event1=Events.objects.create(
+            name="Test Event 1",
+            eventDateTime="2024-04-11 10:00:00",
+            location="Test Location 1",
+            capacity=100,
+            category="Test Category 1",
+            artist="Test Artist 1",
+            price=10.00,
+            eventID=500,
+            isVerified=-1
+        )
+        self.event2= Events.objects.create(
+            name="Test Event 2",
+            eventDateTime="2024-04-12 11:00:00",
+            location="Test Location 2",
+            capacity=200,
+            category="Test Category 2",
+            artist="Test Artist 2",
+            price=20.00,
+            eventID=550,
+            isVerified=-1
+        )
+        
+        response = self.client.get(reverse('rejected'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('rejected' in response.context)
+        self.assertContains(response, "Test Event 1")
+        self.assertContains(response, "Test Event 2")
+        self.assertContains(response, "Test Location 1")
+        self.assertContains(response, "Test Location 2")
+        self.assertContains(response, '<form action="/approve_event/500" method="post"')
+        self.assertContains(response, '<form action="/approve_event/550" method="post"')
+        self.assertNotContains(response, "No rejected events")
+
+    def test_approved_events(self):
+        self.event1 = Events.objects.create(
+            name="Test Event",
+            eventDateTime="2024-04-11 10:00:00",
+            location="Test Location",
+            capacity=100,
+            category="Test Category",
+            artist="Test Artist",
+            price=10.00,
+            eventID=1000,
+            isVerified=0
+        )
+        username = 'communicadoAdmin'
+        password = 'comm'
+        hashed_password = make_password(password)
+        user = users.objects.create(username=username, password=hashed_password, role='Admin')
+        admin = Admin.objects.create(user=user)
+        self.client.post(reverse('login'), {'username': username, 'password': password})
+        response = self.client.post(reverse('approve_event', args=[self.event.eventID]))
+        self.assertEqual(response.status_code, 302)
+        approved_event = Events.objects.get(eventID=self.event.eventID)
+        self.assertEqual(approved_event.isVerified, 1)
+
+    
+    def test_rejected_events(self):
+        self.event1 = Events.objects.create(
+            name="Test Event",
+            eventDateTime="2024-04-11 10:00:00",
+            location="Test Location",
+            capacity=100,
+            category="Test Category",
+            artist="Test Artist",
+            price=10.00,
+            eventID=1000,
+            isVerified=-1
+        )
+        username = 'communicadoAdmin'
+        password = 'comm'
+        hashed_password = make_password(password)
+        user = users.objects.create(username=username, password=hashed_password, role='Admin')
+        admin = Admin.objects.create(user=user)
+        self.client.post(reverse('login'), {'username': username, 'password': password})
+        response = self.client.post(reverse('reject_event', args=[self.event.eventID]))
+        self.assertEqual(response.status_code, 302)
+        rejected_event = Events.objects.get(eventID=self.event.eventID)
+        self.assertEqual(rejected_event.isVerified, -1)
+    
+    def test_deleted_events(self):
+        self.event1 = Events.objects.create(
+            name="Test Event",
+            eventDateTime="2024-04-11 10:00:00",
+            location="Test Location",
+            capacity=100,
+            category="Test Category",
+            artist="Test Artist",
+            price=10.00,
+            eventID=1000,
+            isVerified=1
+        )
+        username = 'communicadoAdmin'
+        password = 'comm'
+        hashed_password = make_password(password)
+        user = users.objects.create(username=username, password=hashed_password, role='Admin')
+        admin = Admin.objects.create(user=user)
+        response = self.client.post(reverse('delete', args=[self.event.eventID]))
+
+        self.assertRedirects(response, reverse('admin_actions'))
+
+        with self.assertRaises(Events.DoesNotExist):
+            Events.objects.get(eventID=self.event.eventID)
+
+
+
+
+  
+
+
+
+
+  
+
         
     def test_logout_functionality(self):
         username = 'ojus1'
@@ -762,3 +920,4 @@ class UsersTestCase(TestCase):
         self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
         
         self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
+
