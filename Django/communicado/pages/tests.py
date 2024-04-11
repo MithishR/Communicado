@@ -6,22 +6,8 @@ from .models import *
 from django.test import LiveServerTestCase
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
-#from selenium import webdriver
-#from selenium.webdriver.common.keys import Keys
-#from selenium.webdriver.chrome.options import Options
 import time
 
-# Example 1
-
-#class Hosttest(LiveServerTestCase):
-  	
-#	def testhomepage(self):
-#		options = Options()
-#		options.headless = True
-#		driver = webdriver.Chrome(options=options)
-#		driver.get(self.live_server_url)
-				# try driver.get(self.live_server_url) if driver.get('http://127.0.0.1:8000/') does not work	
-#		assert "Hello, world!" in driver.title
             
 class UsersTestCase(TestCase):
 
@@ -681,6 +667,58 @@ class UsersTestCase(TestCase):
         for paragraph in expected_paragraphs:
             self.assertContains(response, paragraph, html=True)
             
+    
+    def test_header_ui_not_logged_in(self):
+        response = self.client.get(reverse('home')) 
+        
+        self.assertEqual(response.status_code, 200)
+        
+        self.assertContains(response, '<header id="main-header">')
+        self.assertContains(response, '<img id="logo-img" src="/static/logo.jpg" alt="Logo">')
+        self.assertContains(response, '<nav id="main-nav">')
+        self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
+        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
+        
+        self.assertNotContains(response, '<a id="logout-link" href="/logout/">Log Out</a>')
+        self.assertNotContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
+        self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
+        
+    def test_header_ui_logged_in_user(self):
+        username = 'mahigangal'
+        password = 'mahi123'
+        hashed_password = make_password(password)
+        user = users.objects.create(username=username, password=hashed_password)
+        self.client.post(reverse('login'), {'username': username, 'password': password})
+        response = self.client.get(reverse('home'))              
+
+        self.assertContains(response, '<header id="main-header">')
+        self.assertContains(response, '<img id="logo-img" src="/static/logo.jpg" alt="Logo">')
+        self.assertContains(response, '<nav id="main-nav">')
+        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
+        self.assertContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
+        
+        self.assertNotContains(response, '<a id="login-link" href="/login/">Login</a>')
+        self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
+        
+        
+    def test_header_ui_logged_in_admin(self):
+        username = 'ojus'
+        password = 'ojus123'
+        hashed_password = make_password(password)
+        user = users.objects.create(username=username, password=hashed_password, role='Admin')
+        self.client.post(reverse('login'), {'username': username, 'password': password})
+        response = self.client.get(reverse('home'))              
+
+        self.assertContains(response, '<header id="main-header">')
+        self.assertContains(response, '<img id="logo-img" src="/static/logo.jpg" alt="Logo">')
+        self.assertContains(response, '<nav id="main-nav">')
+        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
+        self.assertContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
+        self.assertContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
+        
+        self.assertNotContains(response, '<a id="login-link" href="/login/">Login</a>')
+        
+            
     def test_confirmation_page_renders_correctly(self):
         response = self.client.get(reverse('confirmation'))
         self.assertEqual(response.status_code, 200)
@@ -691,5 +729,3 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<h2>Confirmation</h2>', html=True)
         self.assertContains(response, '<h1>Communicado</h1>', html=True)
         self.assertContains(response, '<p>Your go-to platform for discovering and booking exciting events</p>', html=True)
-    
-    

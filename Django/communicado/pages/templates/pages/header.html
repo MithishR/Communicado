@@ -44,26 +44,26 @@
 </head>
 <body>
 
-<header>
-    <a href="{% url 'home' %}">
-        <img src="{% static 'logo.jpg' %}" alt="Logo"> 
+<header id="main-header">
+    <a id="logo-link" href="{% url 'home' %}">
+        <img id="logo-img" src="{% static 'logo.jpg' %}" alt="Logo"> 
     </a>
 
-    <nav>
+    <nav id="main-nav">
         {% if not request.session.userID %}
-        <a href="{% url 'login' %}">Login</a>
+        <a id="login-link" href="{% url 'login' %}">Login</a>
         {% else %}
-        <a href="{% url 'useracc' %}">{{ request.session.userName}}'s Account</a>
+        <a id="user-account-link" href="{% url 'useracc' %}">{{ request.session.userName}}'s Account</a>
         {% endif %}
 
-        <a href="#">View Cart</a>
+        <a id="view-cart-link" href="#">View Cart</a>
 
         {% if request.session.userRole == 'Admin' %}
-        <a href="admin">Admin Panel</a>
+        <a id="admin-panel-link" href="admin">Admin Panel</a>
         {% endif %}
 
         {% if request.session.userID %}
-        <a href="{% url 'logout' %}">Log Out</a>
+        <a id="logout-link" href="{% url 'logout' %}">Log Out</a>
         {% endif %}
     </nav>
 </header>
