@@ -680,3 +680,16 @@ class UsersTestCase(TestCase):
         ]
         for paragraph in expected_paragraphs:
             self.assertContains(response, paragraph, html=True)
+            
+    def test_confirmation_page_renders_correctly(self):
+        response = self.client.get(reverse('confirmation'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pages/confirmation.html')
+
+    def test_confirmation_page_contains_header_and_message(self):
+        response = self.client.get(reverse('confirmation'))
+        self.assertContains(response, '<h2>Confirmation</h2>', html=True)
+        self.assertContains(response, '<h1>Communicado</h1>', html=True)
+        self.assertContains(response, '<p>Your go-to platform for discovering and booking exciting events</p>', html=True)
+    
+    
