@@ -738,6 +738,7 @@ class UsersTestCase(TestCase):
 
 
 
+
     def test_admin_actions_ui_elements(self):
         response = self.client.get(reverse('admin_actions'))
         self.assertEqual(response.status_code, 200)
@@ -891,3 +892,32 @@ class UsersTestCase(TestCase):
 
 
   
+
+        
+    def test_logout_functionality(self):
+        username = 'ojus1'
+        password = 'ojus123'
+        hashed_password = make_password(password)
+        user = users.objects.create(username=username, password=hashed_password, role='Admin')
+        self.client.post(reverse('login'), {'username': username, 'password': password})
+                     
+        response = self.client.get(reverse('logout')) 
+        
+        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
+        self.assertNotContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
+        self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
+        self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
+        
+    def test_logout_ui(self):                    
+        response = self.client.get(reverse('logout')) 
+        #print(response.content.decode())  # Print response content for debugging
+
+        self.assertContains(response, '<h1>Logout Confirmation</h1>')
+        self.assertContains(response, '<p>You have been successfully logged out.</p>')
+        self.assertContains(response, '<img src="/static/logout.gif" alt="Logout Image">')
+        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
+        self.assertNotContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
+        self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
+        
+        self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
+
