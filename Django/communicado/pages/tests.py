@@ -567,7 +567,13 @@ class UsersTestCase(TestCase):
             self.assertContains(response, '<strong>Address:</strong> {}'.format(user.address))
             self.assertContains(response, '<a href="#" class="btn">Edit Account Details</a>')
             self.assertContains(response, '<a href="userbookinfo" class="btn">Booking History</a>')  
+            self.assertContains(response, '<li><strong>Role:</strong> Admin</li>', html=True)
+            self.assertContains(response, '<li><strong>Username:</strong> testuser</li>', html=True)
+            self.assertContains(response, '<li><strong>Email:</strong> test@example.com</li>', html=True)
+            self.assertContains(response, '<li><strong>Address:</strong> 123 Test St</li>', html=True)
             
+        
+       
     def test_payment_view_get(self):
         response = self.client.get(reverse('payment'))
         self.assertEqual(response.status_code, 200)
