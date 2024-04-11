@@ -812,22 +812,31 @@ class UsersTestCase(TestCase):
         self.assertNotContains(response, "No rejected events")
 
 
-    # def test_approved_events(self):
-    #     self.event1 = Events.objects.create(
-    #         name="Test Event",
-    #         eventDateTime="2024-04-11 10:00:00"
-    #         location="Test Location",
-    #         capacity=100,
-    #         category="Test Category",
-    #         artist="Test Artist",
-    #         price=10.00,
-    #         eventID=1000,
-    #         isVerified=-1
-    #     )
-    #     response = self.client.post(reverse('approve_event', args=[self.event.eventID]))
-    #     self.assertEqual(response.status_code, 302)
-    #     approved_event = Events.objects.get(eventID=self.event.eventID)
-    #     self.assertEqual(approved_event.isVerified, 1)
+    def test_approved_events(self):
+        self.event1 = Events.objects.create(
+            name="Test Event",
+            eventDateTime="2024-04-11 10:00:00",
+            location="Test Location",
+            capacity=100,
+            category="Test Category",
+            artist="Test Artist",
+            price=10.00,
+            eventID=1000,
+            isVerified=0
+        )
+        username = 'communicadoAdmin'
+        password = 'comm'
+        hashed_password = make_password(password)
+        user = users.objects.create(username=username, password=hashed_password, role='Admin')
+        admin = Admin.objects.create(user=user)
+        self.client.post(reverse('login'), {'username': username, 'password': password})
+        response = self.client.post(reverse('approve_event', args=[self.event.eventID]))
+        self.assertEqual(response.status_code, 302)
+        approved_event = Events.objects.get(eventID=self.event.eventID)
+        self.assertEqual(approved_event.isVerified, 1)
+   
+
+  
 
 
 
