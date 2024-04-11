@@ -666,6 +666,7 @@ class UsersTestCase(TestCase):
         ]
         for paragraph in expected_paragraphs:
             self.assertContains(response, paragraph, html=True)
+            
     
     def test_header_ui_not_logged_in(self):
         response = self.client.get(reverse('home')) 
@@ -699,6 +700,7 @@ class UsersTestCase(TestCase):
         self.assertNotContains(response, '<a id="login-link" href="/login/">Login</a>')
         self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
         
+        
     def test_header_ui_logged_in_admin(self):
         username = 'ojus'
         password = 'ojus123'
@@ -716,4 +718,14 @@ class UsersTestCase(TestCase):
         
         self.assertNotContains(response, '<a id="login-link" href="/login/">Login</a>')
         
-        
+            
+    def test_confirmation_page_renders_correctly(self):
+        response = self.client.get(reverse('confirmation'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pages/confirmation.html')
+
+    def test_confirmation_page_contains_header_and_message(self):
+        response = self.client.get(reverse('confirmation'))
+        self.assertContains(response, '<h2>Confirmation</h2>', html=True)
+        self.assertContains(response, '<h1>Communicado</h1>', html=True)
+        self.assertContains(response, '<p>Your go-to platform for discovering and booking exciting events</p>', html=True)
