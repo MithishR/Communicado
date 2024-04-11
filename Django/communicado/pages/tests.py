@@ -857,6 +857,33 @@ class UsersTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         rejected_event = Events.objects.get(eventID=self.event.eventID)
         self.assertEqual(rejected_event.isVerified, -1)
+    
+    def test_deleted_events(self):
+        self.event1 = Events.objects.create(
+            name="Test Event",
+            eventDateTime="2024-04-11 10:00:00",
+            location="Test Location",
+            capacity=100,
+            category="Test Category",
+            artist="Test Artist",
+            price=10.00,
+            eventID=1000,
+            isVerified=1
+        )
+        username = 'communicadoAdmin'
+        password = 'comm'
+        hashed_password = make_password(password)
+        user = users.objects.create(username=username, password=hashed_password, role='Admin')
+        admin = Admin.objects.create(user=user)
+        response = self.client.post(reverse('delete', args=[self.event.eventID]))
+
+        self.assertRedirects(response, reverse('admin_actions'))
+
+        with self.assertRaises(Events.DoesNotExist):
+            Events.objects.get(eventID=self.event.eventID)
+
+
+
 
   
 
