@@ -260,7 +260,6 @@ def add_to_cart(request, event_ID):
         request.session['cart'].append(event_ID)
         # Important: mark the session as modified to make sure it gets saved
         request.session.modified = True
-
         messages.success(request, 'Event added to cart successfully!')
         return redirect('cart')  # Update 'cart' with your cart route's name or wherever you want to redirect the user
 
@@ -289,7 +288,6 @@ def payment(request):
             # Basic validation for cardholder name
             if not cardholder_name.strip():
                 raise ValueError('Cardholder name cannot be empty')
-
             # If all validations pass, simulate a successful payment
             messages.success(request, 'Payment successful and Booking Confirmed! Please look out for a confirmation email with details of your booking.')
             return redirect('confirmation')
