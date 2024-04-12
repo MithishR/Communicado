@@ -1,6 +1,8 @@
 import datetime
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.urls import reverse 
+from django.http import HttpRequest
 from django.urls import reverse
 
 from pages.views import editacc
@@ -635,9 +637,9 @@ class UsersTestCase(TestCase):
             self.assertContains(response, '<div class="event-category">Category: {}</div>'.format(event.category))
             self.assertContains(response, '<div class="event-artist">Artist: {}</div>'.format(event.artist))
             self.assertContains(response, '<div class="event-price">Price: {}</div>'.format(event.price))
-            event_id = event.pk
-            url = reverse('eventinfo', kwargs={'event_ID': event_id})
-            self.assertContains(response, f'<a href="{url}" class="btn btn-outline-secondary">View</a>')
+            self.assertContains(response, 'class="button btn-outline-secondary">View</a>')
+            self.assertContains(response, 'class="button btn-outline-secondary">Delete Booking</button>')
+            self.assertContains(response, 'Are you sure you want to delete this booking?')
 
     
 
@@ -674,6 +676,7 @@ class UsersTestCase(TestCase):
         ]
         for paragraph in expected_paragraphs:
             self.assertContains(response, paragraph, html=True)
+
             
     
     def test_header_ui_not_logged_in(self):
@@ -733,7 +736,103 @@ class UsersTestCase(TestCase):
         response = self.client.get(reverse('confirmation'))
         self.assertContains(response, '<h2>Confirmation</h2>', html=True)
         self.assertContains(response, '<h1>Communicado</h1>', html=True)
-        self.assertContains(response, '<p>Your go-to platform for discovering and booking exciting events</p>', html=True)
+
+    
+    def test_admin_actions_ui_elements(self):
+        response = self.client.get(reverse('admin_actions'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<h2>Administrator Portal</h2>')
+        self.assertContains(response, '<input type="submit" value="View events pending approval">')
+        self.assertContains(response, '<input type="submit" value="View rejected events">')
+        self.assertContains(response, '<input type="submit" value="Remove an Event">')
+
+    def test_pending_events_page_ui_elements(self):
+        self.event1 = Events.objects.create(name="Test Event 1", eventDateTime="2024-04-10T12:00:00", location="Test Location 1",
+                                            capacity=100, category="Test Category 1", artist="Test Artist 1", price=10.00, eventID=100)
+        self.event2 = Events.objects.create(name="Test Event 2", eventDateTime="2024-04-11T12:00:00", location="Test Location 2",
+                                            capacity=200, category="Test Category 2", artist="Test Artist 2", price=20.00, eventID=200)
+        response = self.client.get(reverse('pending'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<h1>Pending Events</h1>')
+        self.assertContains(response, '<div class="event-container">')
+        self.assertContains(response, '<img src="')  
+        self.assertContains(response, 'Location: Test Location 1')  
+        self.assertContains(response, 'Category: Test Category 2')
+        self.assertContains(response, 'Event ID: 200')
+        self.assertContains(response, '<a href="') 
+
+    def test_pending_events_page_functionality(self):
+        self.event1 = Events.objects.create(name="Test Event 1", eventDateTime="2024-04-10T12:00:00", location="Test Location 1",
+                                        capacity=100, category="Test Category 1", artist="Test Artist 1", price=10.00, eventID=400)
+        self.event2 = Events.objects.create(name="Test Event 2", eventDateTime="2024-04-11T12:00:00", location="Test Location 2",
+                                        capacity=200, category="Test Category 2", artist="Test Artist 2", price=20.00, eventID=500)
+
+        response = self.client.get(reverse('pending'))
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, 'Test Event 1')
+        self.assertContains(response, 'Test Event 2')
+        self.assertContains(response, f'href="{reverse("eventaction", args=[self.event1.eventID])}"')
+        self.assertContains(response, f'href="{reverse("eventaction", args=[self.event2.eventID])}"')
+
+    
+    def test_rejected_events_page_ui_elements(self):
+        self.event1=Events.objects.create(
+            name="Test Event 1",
+            eventDateTime="2024-04-11 10:00:00",
+            location="Test Location 1",
+            capacity=100,
+            category="Test Category 1",
+            artist="Test Artist 1",
+            price=10.00,
+            eventID=500,
+            isVerified=-1
+        )
+        self.event2= Events.objects.create(
+            name="Test Event 2",
+            eventDateTime="2024-04-12 11:00:00",
+            location="Test Location 2",
+            capacity=200,
+            category="Test Category 2",
+            artist="Test Artist 2",
+            price=20.00,
+            eventID=550,
+            isVerified=-1
+        )
+        
+        response = self.client.get(reverse('rejected'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('rejected' in response.context)
+        self.assertContains(response, "Test Event 1")
+        self.assertContains(response, "Test Event 2")
+        self.assertContains(response, "Test Location 1")
+        self.assertContains(response, "Test Location 2")
+        self.assertContains(response, '<form action="/approve_event/500" method="post"')
+        self.assertContains(response, '<form action="/approve_event/550" method="post"')
+        self.assertNotContains(response, "No rejected events")
+
+
+    # def test_approved_events(self):
+    #     self.event1 = Events.objects.create(
+    #         name="Test Event",
+    #         eventDateTime="2024-04-11 10:00:00"
+    #         location="Test Location",
+    #         capacity=100,
+    #         category="Test Category",
+    #         artist="Test Artist",
+    #         price=10.00,
+    #         eventID=1000,
+    #         isVerified=-1
+    #     )
+    #     response = self.client.post(reverse('approve_event', args=[self.event.eventID]))
+    #     self.assertEqual(response.status_code, 302)
+    #     approved_event = Events.objects.get(eventID=self.event.eventID)
+    #     self.assertEqual(approved_event.isVerified, 1)
+
+
+
+
+  
 
 
 

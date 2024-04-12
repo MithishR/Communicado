@@ -289,6 +289,7 @@ def payment(request):
             if not cardholder_name.strip():
                 raise ValueError('Cardholder name cannot be empty')
             # If all validations pass, simulate a successful payment
+            BookedEvent.objects.filter(user=request.session.get('userID')).update(isPaid=True)
             messages.success(request, 'Payment successful and Booking Confirmed! Please look out for a confirmation email with details of your booking.')
             return redirect('confirmation')
         except Exception as e:
@@ -348,6 +349,7 @@ def reject_event(request, event_ID):
     return redirect('admin_actions')
 
 def confirmation(request):
+    
     return render(request, "pages/confirmation.html")
     
 def logout(request):
@@ -383,3 +385,11 @@ def edit(request):
     
 
     return render (request,'pages/edit.html')
+def delete_booking(request, event_ID):
+    if request.method == 'POST':
+        booked_event = get_object_or_404(BookedEvent, eventID=event_ID, user=request.session.get('userID'))
+        booked_event.delete()
+        success_message = "Event booking deleted successfully."
+        messages.success(request, success_message)
+        return redirect('userbookeventinfo')
+
