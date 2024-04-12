@@ -365,3 +365,21 @@ def delete(request, event_ID):
 def remove(request):
     remove = Events.objects.filter(isVerified=1)
     return render(request, 'pages/remove.html', {'remove': remove})
+def editacc(request):
+    user_id = request.session.get('userID')
+    user = users.objects.get(userID=user_id)
+    return render(request , 'pages/editacc.html',{'user':user})
+def edit(request):
+    user_id = request.session.get('userID')
+    user = get_object_or_404(users, userID = user_id)
+    
+
+    if request.method == 'POST':
+        user.name =  request.POST.get('name')
+        user.username = request.POST.get('username')
+        user.email = request.POST.get('email')
+        user.address = request.POST.get('address')
+        user.save()
+    
+
+    return render (request,'pages/edit.html')

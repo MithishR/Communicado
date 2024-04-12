@@ -565,7 +565,7 @@ class UsersTestCase(TestCase):
             self.assertContains(response, '<strong>Username:</strong> {}'.format(user.username))
             self.assertContains(response, '<strong>Email:</strong> {}'.format(user.email))
             self.assertContains(response, '<strong>Address:</strong> {}'.format(user.address))
-            self.assertContains(response, '<a href="#" class="btn">Edit Account Details</a>')
+            self.assertContains(response, '<a href="editacc" class="btn">Edit Account Details</a>')
             self.assertContains(response, '<a href="userbookinfo" class="btn">Booking History</a>')  
             self.assertContains(response, '<li><strong>Role:</strong> Admin</li>', html=True)
             self.assertContains(response, '<li><strong>Username:</strong> testuser</li>', html=True)
