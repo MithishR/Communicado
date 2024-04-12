@@ -650,7 +650,6 @@ class UsersTestCase(TestCase):
 
         # Check if the response contains the expected content
         self.assertContains(response, "Welcome to Communicado")
-        self.assertContains(response, "View Cart")
         self.assertContains(response, "Admin Panel")
 
     def test_xyz_page_contains_header_links(self):
@@ -686,7 +685,6 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<img id="logo-img" src="/static/logo.jpg" alt="Logo">')
         self.assertContains(response, '<nav id="main-nav">')
         self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
-        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
         
         self.assertNotContains(response, '<a id="logout-link" href="/logout/">Log Out</a>')
         self.assertNotContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
@@ -703,7 +701,6 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<header id="main-header">')
         self.assertContains(response, '<img id="logo-img" src="/static/logo.jpg" alt="Logo">')
         self.assertContains(response, '<nav id="main-nav">')
-        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
         self.assertContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
         
         self.assertNotContains(response, '<a id="login-link" href="/login/">Login</a>')
@@ -721,7 +718,6 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<header id="main-header">')
         self.assertContains(response, '<img id="logo-img" src="/static/logo.jpg" alt="Logo">')
         self.assertContains(response, '<nav id="main-nav">')
-        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
         self.assertContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
         self.assertContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
         
@@ -886,6 +882,7 @@ class UsersTestCase(TestCase):
         with self.assertRaises(Events.DoesNotExist):
             Events.objects.get(eventID=self.event.eventID)
 
+
     def test_logout_functionality(self):
         username = 'ojus1'
         password = 'ojus123'
@@ -895,10 +892,10 @@ class UsersTestCase(TestCase):
                      
         response = self.client.get(reverse('logout')) 
         
-        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
         self.assertNotContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
         self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
         self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
+      
         
     def test_logout_ui(self):                    
         response = self.client.get(reverse('logout')) 
@@ -907,11 +904,11 @@ class UsersTestCase(TestCase):
         self.assertContains(response, '<h1>Logout Confirmation</h1>')
         self.assertContains(response, '<p>You have been successfully logged out.</p>')
         self.assertContains(response, '<img src="/static/logout.gif" alt="Logout Image">')
-        self.assertContains(response, '<a id="view-cart-link" href="#">View Cart</a>')
         self.assertNotContains(response, '<a id="user-account-link" href="/useracc">\'s Account</a>')
         self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
         
         self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
+        
     def test_edituseracc(self):
         user = users.objects.create(
             role="customer",

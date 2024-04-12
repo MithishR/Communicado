@@ -56,8 +56,6 @@
         <a id="user-account-link" href="{% url 'useracc' %}">{{ request.session.userName}}'s Account</a>
         {% endif %}
 
-        <a id="view-cart-link" href="#">View Cart</a>
-
         {% if request.session.userRole == 'Admin' %}
         <a id="admin-panel-link" href="admin">Admin Panel</a>
         {% endif %}
