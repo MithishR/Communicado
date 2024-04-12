@@ -938,7 +938,7 @@ class UsersTestCase(TestCase):
     
 #    < def test_total_price_calculation(self):
         # Mock event ID
-        event_id = 1  # Replace with any valid event ID
+        # event_id = 1  # Replace with any valid event ID
         
         # Construct URL with the mock event ID
     #   <  url = reverse('add_to_cart', kwargs={'event_ID': event_id})
