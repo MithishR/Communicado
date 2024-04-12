@@ -26,7 +26,8 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('delete/<int:event_ID>/', views.delete, name='delete'),
     path('remove',views.remove, name='remove'),
-    
+    path('editacc',views.editacc, name = 'editacc'),
+    path('edit',views.edit,name = 'edit')
     
 
  
