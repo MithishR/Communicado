@@ -1,7 +1,10 @@
 import datetime
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.urls import reverse 
+from django.urls import reverse
+
+from pages.views import editacc
+
 from .models import *
 from django.test import LiveServerTestCase
 from django.contrib.auth.hashers import make_password
@@ -883,17 +886,6 @@ class UsersTestCase(TestCase):
         with self.assertRaises(Events.DoesNotExist):
             Events.objects.get(eventID=self.event.eventID)
 
-
-
-
-  
-
-
-
-
-  
-
-        
     def test_logout_functionality(self):
         username = 'ojus1'
         password = 'ojus123'
@@ -920,4 +912,41 @@ class UsersTestCase(TestCase):
         self.assertNotContains(response, '<a id="admin-panel-link" href="admin">Admin Panel</a>')
         
         self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
+    def test_edituseracc(self):
+        user = users.objects.create(
+            role="customer",
+            name="test",
+            username="testuser",
+            email="test@example.com",
+            address="123 Test St"
+        )
+
+        response = render(None, "pages/editacc.html", {'user': user})  
+       
+        self.assertEqual(response.status_code, 200)
+       
+        expected_snippets = [
+        '<h1>Edit Your Account Details</h1>',
+        '<title>Edit User Account</title>',
+        '<div class="center">',
+        '<div class="btn-container">'
+        
+       
+    ]
+
+        for snippet in expected_snippets:
+            self.assertContains(response, snippet)
+    
+        self.assertContains(response, f'value="{user.role}" readonly')
+        self.assertContains(response, f'value="{user.username}" readonly')
+        self.assertContains(response, f'value="{user.name}"')
+        self.assertContains(response, f'value="{user.email}"')
+        self.assertContains(response, f'>{user.address}<')
+        #self.assertContains(response, '{% csrf_token %}')
+
+
+       
+
+        
+
 
