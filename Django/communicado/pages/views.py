@@ -238,7 +238,6 @@ def userbookeventinfo(request):
             return render(request, 'pages/userbookinghistory.html', {'events': events})
 
         
-       
 def add_to_cart(request, event_ID):
     # Check if the user is logged in (assuming you're storing user_id in the session)
     if not request.session.get('userID'):
@@ -246,22 +245,23 @@ def add_to_cart(request, event_ID):
         return redirect('login')  # Update 'login_url_name' with your login route's name
 
     event = get_object_or_404(Events, eventID=event_ID)
+    user=get_object_or_404(users,userID=request.session['userID'])
 
     if request.method == 'POST':
+        # Retrieve the quantity from the form submission
+        quantity = int(request.POST.get('quantity'))
 
-        # Here, you would normally add the event to the user's cart.
-        # Since you don't have a Cart model yet, let's simulate it with session (temporary solution)
-
-        # Check if a cart exists in session, if not, create one
-        if 'cart' not in request.session or not request.session['cart']:
-            request.session['cart'] = []
-
-        # Add the event ID to the session cart
-        request.session['cart'].append(event_ID)
-        # Important: mark the session as modified to make sure it gets saved
-        request.session.modified = True
-        messages.success(request, 'Event added to cart successfully!')
-        return redirect('cart')  # Update 'cart' with your cart route's name or wherever you want to redirect the user
+        # Create a new BookedEvent object and save it to the database
+        booked_event = BookedEvent(
+            eventID=event,
+            quantity=quantity,
+            isPaid=False,  # Assuming the event is not paid immediately upon booking
+            user=user  # Assuming the user is logged in
+        )
+        booked_event.save()
+        # Optionally, you can add a success message or redirect the user to a confirmation page
+       
+        return redirect('payment')  # Redirect the user to the payment page after booking
 
     # If it's not a POST request, just render the add_to_cart page
     return render(request, 'pages/add_to_cart.html', {'event': event})
