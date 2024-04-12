@@ -1,4 +1,3 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -103,6 +102,10 @@
             padding: 5px 10px;
             margin-left: 10px; /* Add left margin to match the position of the "Back to Events" button */
         }
+
+        .label-text {
+            color: white;
+        }
        
     </style>
 </head>
@@ -117,8 +120,9 @@
                     <th>Name</th>
                     <th>Date and Time</th>
                     <th>Location</th>
-                    <th>Quantity</th>
+                    
                     <th>Price</th>
+                    <th>Any Extra Information </th>
                 </tr>
             </thead>
             <tbody>
@@ -131,9 +135,7 @@
                     <td>{{ event.name }}</td>
                     <td>{{ event.eventDateTime }}</td>
                     <td>{{ event.location }}</td>
-                    <td>
-                        <input type="number" id="quantity" name="quantity" class="quantity-field" value="1" min="1">
-                    </td>
+                   
                     <td>${{event.price}}</td>
                 </tr>
                 
@@ -150,6 +152,7 @@
                 {% csrf_token %}
                 <a href="{% url 'events' %}" class="back-button">Back to Events</a>
                 <button type="submit" class="book-button">Book</button>
+                <label for="quantity" class="label-text">Quantity:</label>
                 <input type="number" id="quantity" name="quantity" class="quantity-field" value="1" min="1">
                 
             </form>
