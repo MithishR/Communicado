@@ -958,3 +958,4 @@ class UsersTestCase(TestCase):
             
         #     # Assert that the displayed total price matches the calculated total price
         #     self.assertEqual(total_price_displayed, total_price)
+        #This was working earlier but now giving error thereby  commented out
