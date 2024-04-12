@@ -637,9 +637,9 @@ class UsersTestCase(TestCase):
             self.assertContains(response, '<div class="event-category">Category: {}</div>'.format(event.category))
             self.assertContains(response, '<div class="event-artist">Artist: {}</div>'.format(event.artist))
             self.assertContains(response, '<div class="event-price">Price: {}</div>'.format(event.price))
-            event_id = event.pk
-            url = reverse('eventinfo', kwargs={'event_ID': event_id})
-            self.assertContains(response, f'<a href="{url}" class="btn btn-outline-secondary">View</a>')
+            self.assertContains(response, 'class="button btn-outline-secondary">View</a>')
+            self.assertContains(response, 'class="button btn-outline-secondary">Delete Booking</button>')
+            self.assertContains(response, 'Are you sure you want to delete this booking?')
 
     
 
