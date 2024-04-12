@@ -44,18 +44,18 @@
         }
 
         .event-image {
-            width: 80px; /* Set a fixed width for the image container */
-            height: 80px; /* Set a fixed height for the image container */
-            overflow: hidden; /* Ensures the image does not overflow its container */
+            width: 80px;
+            height: 80px;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .event-image img {
-            max-width: 100%; /* Ensure the image max-width is 100% of its container */
-            max-height: 100%; /* Ensure the image max-height is 100% of its container */
-            object-fit: cover; /* Cover the area without losing aspect ratio */
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
         }
 
         .quantity-field {
@@ -81,32 +81,22 @@
             margin-top: 20px;
             text-align: right;
         }
-        .back-button {
+
+        .back-button, .book-button {
             background-color: white; 
-            font-color: black;
+            color: black; 
             cursor: pointer;
             padding: 5px 10px;
-            margin-left: 10px; /* Adjust margin as needed */
-            float: left;
-            
-        }
-        
-        .back-button:hover {
-            text-decoration: underline;
+            margin-left: 10px; 
         }
 
-        .book-button {
-            background-color: white; 
-            font-color: black;
-            cursor: pointer;
-            padding: 5px 10px;
-            margin-left: 10px; /* Add left margin to match the position of the "Back to Events" button */
+        .back-button:hover, .book-button:hover {
+            text-decoration: underline;
         }
 
         .label-text {
             color: white;
         }
-       
     </style>
 </head>
 <body>
@@ -120,9 +110,8 @@
                     <th>Name</th>
                     <th>Date and Time</th>
                     <th>Location</th>
-                    
                     <th>Price</th>
-                    <th>Any Extra Information </th>
+                    <th>Extra Information</th>
                 </tr>
             </thead>
             <tbody>
@@ -135,15 +124,13 @@
                     <td>{{ event.name }}</td>
                     <td>{{ event.eventDateTime }}</td>
                     <td>{{ event.location }}</td>
-                   
-                    <td>${{event.price}}</td>
+                    <td>${{ event.price }}</td>
                 </tr>
-                
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="5" class="total-row">Total:</td>
-                    <td class="total-price">${{event.price}}</td>
+                    <td class="total-price" id="total-price">${{ event.price }}</td>
                 </tr>
             </tfoot>
         </table>
@@ -153,10 +140,18 @@
                 <a href="{% url 'events' %}" class="back-button">Back to Events</a>
                 <button type="submit" class="book-button">Book</button>
                 <label for="quantity" class="label-text">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" class="quantity-field" value="1" min="1">
-                
+                <input type="number" id="quantity" name="quantity" class="quantity-field" value="1" min="1" onchange="updateTotal()">
             </form>
         </div>
     </div>
+
+    <script>
+        function updateTotal() {
+            const quantity = document.getElementById('quantity').value;
+            const pricePerTicket = {{ event.price }};
+            const total = quantity * pricePerTicket;
+            document.getElementById('total-price').textContent = '$' + total.toFixed(2);
+        }
+    </script>
 </body>
 </html>
