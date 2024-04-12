@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -148,7 +149,8 @@
             <form method="POST" action="{% url 'add_to_cart' event_ID=event.eventID %}">
                 {% csrf_token %}
                 <a href="{% url 'events' %}" class="back-button">Back to Events</a>
-                <a href="{% url 'payment' %}" class="book-button">Book</a>
+                <button type="submit" class="book-button">Book</button>
+                <input type="number" id="quantity" name="quantity" class="quantity-field" value="1" min="1">
                 
             </form>
         </div>
