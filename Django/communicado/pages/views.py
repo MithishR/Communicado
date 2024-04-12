@@ -11,6 +11,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import *
 from django.db.models import Q
 from django.shortcuts import redirect
+from django.core.mail import send_mail
+from django.conf import settings
 
 def home(request):
     return render(request, "pages/home.html")
@@ -64,7 +66,14 @@ def signup(request):
         if role.__eq__('EventOrganizer'):
             event_organizer = EventOrganizer(user=user, phoneNumber=phoneNumber)
             event_organizer.save()
- 
+            
+        send_mail(
+            'Welcome to Communicado ',
+            "Your account has been successfully created ! Welcome to Communicado "+name,
+            'settings.EMAIL_HOST_USER',
+            [email],
+            fail_silently=False
+        )
         success_message = "User Account Created for: " + user.name
         return render(request, 'pages/login.html', {'success_message': success_message})
         
@@ -290,6 +299,30 @@ def payment(request):
                 raise ValueError('Cardholder name cannot be empty')
             # If all validations pass, simulate a successful payment
             BookedEvent.objects.filter(user=request.session.get('userID')).update(isPaid=True)
+            bookedwalaevent = BookedEvent.objects.filter(user=request.session.get('userID'))
+            bookedwalaeventref = BookedEvent.objects.filter(user=request.session.get('userID')).last()
+            eventslist =   bookedwalaevent.values_list('eventID',flat = True)
+            bookedwalaeventkainfo = Events.objects.filter(eventID__in=eventslist).last() 
+            organiserIDEvents = Events.objects.filter(eventID__in=eventslist)
+            organsierID = organiserIDEvents.values_list('eventOrganizerID',flat=True).last()
+            organiser = users.objects.filter(userID = organsierID).first()
+            date_time_string = bookedwalaeventkainfo.eventDateTime.strftime("%Y-%m-%d %H:%M:%S")
+            ID = request.session.get('userID')
+            userbooking = get_object_or_404(users,userID = ID)
+            send_mail(
+            'Booking Confirmation ',
+            " Hi "+userbooking.name+",Your Booking for "+bookedwalaeventkainfo.name +"on"+date_time_string +"in"+bookedwalaeventkainfo.location+"is confirmed! Your reference Number is "+bookedwalaeventref.referenceNumber,
+            'settings.EMAIL_HOST_USER',
+            [userbooking.email],
+            fail_silently=False
+        )
+            send_mail(
+            'New Booking',
+            " Hi a new booking has been made by"+userbooking.name+", for "+bookedwalaeventkainfo.name +"on"+date_time_string +"in"+bookedwalaeventkainfo.location+"is confirmed! Booking reference Number is "+bookedwalaeventref.referenceNumber,
+            'settings.EMAIL_HOST_USER',
+            [organiser.email],
+            fail_silently=False
+        )
             messages.success(request, 'Payment successful and Booking Confirmed! Please look out for a confirmation email with details of your booking.')
             return redirect('confirmation')
         except Exception as e:
