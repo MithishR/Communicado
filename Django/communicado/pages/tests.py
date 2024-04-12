@@ -921,3 +921,40 @@ class UsersTestCase(TestCase):
         
         self.assertContains(response, '<a id="login-link" href="/login/">Login</a>')
 
+    
+    def test_page_loads_successfully(self):
+        # Mock event ID
+        event_id = 1  # Replace with any valid event ID
+        
+        # Construct URL with the mock event ID
+        url = reverse('add_to_cart', kwargs={'event_ID': event_id})
+        
+        # Make a GET request to the URL
+        response = self.client.get(url, follow=True)  # Follow redirects
+        
+        # Assert that the final response status code is 200 (page loads successfully)
+        self.assertEqual(response.status_code, 200)
+
+    
+    def test_total_price_calculation(self):
+        # Mock event ID
+        event_id = 1  # Replace with any valid event ID
+        
+        # Construct URL with the mock event ID
+        url = reverse('add_to_cart', kwargs={'event_ID': event_id})
+        
+        # Make a GET request to the URL
+        response = self.client.get(url)
+        
+        # Check if the 'event' object exists in the template context
+        self.assertIn('event', response.context)
+        
+        # Extract the total price displayed on the page if the 'event' object exists
+        if 'event' in response.context:
+            total_price_displayed = response.context['event'].price
+            
+            # Replace the following line with your actual calculation logic
+            total_price = 50  # For example
+            
+            # Assert that the displayed total price matches the calculated total price
+            self.assertEqual(total_price_displayed, total_price)
