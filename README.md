@@ -139,9 +139,9 @@ chmod +x mac_testing.sh
 ## Sample User Details
 1. **Customer**:
 
-   Username: sparshkhanna
+   Username: mahigangal
 
-   Password: sparsh123
+   Password: mahi123
    
 2. **Event Organizer**:
 
@@ -154,6 +154,14 @@ chmod +x mac_testing.sh
    Username: communicadoAdmin
 
    Password: comm
+
+4. **System Administrator**:
+
+   Username: comunicado
+
+   Password: PMSOM84*
+
+
 
 
 
