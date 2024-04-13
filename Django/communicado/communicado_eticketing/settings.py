@@ -31,7 +31,7 @@ DEBUG = bool(os.environ.get("DEBUG", default=0))
 
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(" ")
-ALLOWED_HOSTS.append("146.190.55.145")
+
 
 
 
@@ -181,4 +181,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER ='communicadoevents@gmail.com' 
 EMAIL_HOST_PASSWORD = 'lilarcwvtyifsmbt'
-ALLOWED_HOSTS = []

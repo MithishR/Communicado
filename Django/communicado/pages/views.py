@@ -311,14 +311,14 @@ def payment(request):
             userbooking = get_object_or_404(users,userID = ID)
             send_mail(
             'Booking Confirmation ',
-            " Hi "+userbooking.name+",Your Booking for "+bookedwalaeventkainfo.name +"on"+date_time_string +"in"+bookedwalaeventkainfo.location+"is confirmed! Your reference Number is "+bookedwalaeventref.referenceNumber,
+            " Hi "+userbooking.name+",Your Booking for "+bookedwalaeventkainfo.name +" on "+date_time_string +" in "+bookedwalaeventkainfo.location+" is confirmed!",
             'settings.EMAIL_HOST_USER',
             [userbooking.email],
             fail_silently=False
         )
             send_mail(
             'New Booking',
-            " Hi a new booking has been made by"+userbooking.name+", for "+bookedwalaeventkainfo.name +"on"+date_time_string +"in"+bookedwalaeventkainfo.location+"is confirmed! Booking reference Number is "+bookedwalaeventref.referenceNumber,
+            " Hi a new booking has been made by "+userbooking.name+", for "+bookedwalaeventkainfo.name +" on "+date_time_string +" in "+bookedwalaeventkainfo.location+" is confirmed!",
             'settings.EMAIL_HOST_USER',
             [organiser.email],
             fail_silently=False
