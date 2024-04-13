@@ -136,6 +136,19 @@ chmod +x mac_testing.sh
 - Open your favourite internet browser.
 - Navigate to this address: [127.0.0.1:8000 ](http://127.0.0.1:8000/)
 
+## Sample User Details
+1. **Customer**:
+   Username: sparshkhanna
+   Password: sparsh123
+   
+2. **Event Organizer**:
+   Username: mithsEventOrg
+   Password: mithish
+
+3. **Administrator**:
+   Username: communicadoAdmin
+   Password: comm
+
 
 
 ## Team Agreements
