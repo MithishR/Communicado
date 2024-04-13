@@ -68,7 +68,6 @@
             text-align: center; /* Center-align the title */
             color: #fff;
             margin-top: 20px; /* Adjust top margin to move the heading below the ribbon */
-            margin-bottom: 490px;
             font-size: 30px;
         }
 
@@ -79,36 +78,82 @@
             color: #fff; /* Match text color with Login page */
         }
 
+        .image-container {
+            margin-top: 20px;
+        }
+    
+        img {
+            width: 500px; 
+            height: auto; 
+        }
+
         label {
             display: block;
             color: #fff;
         }
-        
+
+        /* Button styles */
+        .back-link, .book-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: transparent; 
+            color: #fff; 
+            text-decoration: none;
+            border: 2px solid #fff; 
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s; 
+            text-align: center;
+        }
+
+        .back-link:hover, .book-btn:hover {
+            background-color: #fff; 
+            border-color: #fff; 
+            color: #000; 
+        }
+
+        .back-link {
+            margin-right: 10px;
+        }
+
+        /* Additional styling for the button */
+        .book-btn {
+            margin-top: 20px;
+        }
+
     </style>
 </head>
-{% include './header.html' %}
 <body>
-    {% if messages %}
-        {% for message in messages %}
-            <p style="color: white;">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-
+    <!-- Include header -->
     {% include './header.html' %}
-   
+    
+    <!-- Header ribbon -->
     <div class="ribbon">
        <h1>Communicado</h1>
        <p>Your go-to platform for discovering and booking exciting events</p>
-      
     </div>
 
     <!-- Move the heading below the ribbon -->
     <h2>Confirmation</h2>
-
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="{% url 'userbookeventinfo' %}" style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">View Booking History</a>
+   
+    <div class="image-container">
+        <img src="{% static 'siuuu.gif' %}" alt="Logout Image">
     </div>
 
+    <!-- Display messages at the top -->
+    {% if messages %}
+        <div style="background-color: #333; color: white; padding: 10px; text-align: center;">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Button to userbookinghistory page -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'userbookeventinfo' %}" class="book-btn">View Booking History</a>
+    </div>
     
 </body>
 </html>
