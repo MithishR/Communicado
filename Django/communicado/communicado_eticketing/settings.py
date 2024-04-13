@@ -30,8 +30,8 @@ SECRET_KEY = 'l6!yrun%q_xzz-w1eu70-i1_%hf-b#+4(ugm)_*+tha7akt)37'
 DEBUG = bool(os.environ.get("DEBUG", default=0))
 
 
-
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(" ")
+ALLOWED_HOSTS.append("146.190.55.145")
 
 
 
