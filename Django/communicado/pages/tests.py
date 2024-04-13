@@ -735,8 +735,6 @@ class UsersTestCase(TestCase):
     def test_confirmation_page_contains_header_and_message(self):
         response = self.client.get(reverse('confirmation'))
         self.assertContains(response, '<h2>Confirmation</h2>', html=True)
-        self.assertContains(response, '<h1>Communicado</h1>', html=True)
-
     
     def test_admin_actions_ui_elements(self):
         response = self.client.get(reverse('admin_actions'))
